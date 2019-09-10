@@ -66,3 +66,26 @@
 
 ---
 # day 4
+- display:flex 弹性布局，参考[阮一峰大佬的文章](http://www.ruanyifeng.com/blog/2015/07/flex-grammar.html)
+ 
+- 相对长度<br>
+  |单位|描述|
+  |:--:|:--|
+  |em|它是描述相对于应用在当前元素的字体尺寸，所以它也是相对长度单位。一般浏览器字体大小默认是16px，则2em=32px|
+  |ex|依赖于英文字母小x的高度|
+  |ch|数字0的高度|
+  |rem|根元素(html)的font-size|
+  |vm|viewpoint width，视窗宽度，1vw=视窗宽度的1%|
+  |vh|viewpoint height，视窗高度，1vh=视窗高度的1%|
+  |vmin|vw和vh的较小的那个|
+  |vmax|vw和vh中较大的那个|
+
+- 绝对长度<br>
+  |单位|描述|
+  |:--:|:--|
+  |cm|厘米|
+  |mm|毫米|
+  |in|英寸|
+  |px|像素|
+  |pt|point|
+  |pc|pica|
