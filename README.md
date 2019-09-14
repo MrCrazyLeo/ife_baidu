@@ -274,9 +274,55 @@ var re = new RegExp("ab+c");
 ```
 create a Fibonacci function, fabonacci(n), which returns the nth element of the Fibonacci sequence
 ```
+```html
+//解法1使用递归：
+function fibonacci1(nth){
+    if(nth == 1 || nth ==2){
+        return 1;}
+    else{
+        return fibonacci1(nth-1)+fibonacci1(nth-2);
+        }}
+
+//解法2使用迭代：
+function fibonacci2(nth){
+    if(nth == 1 ||nth ==2){
+        return 1;}
+    else{
+        var result=0;var one=1; var two=1;
+        for(var i = 2; i<nth; i++){
+            result = one+two;
+            two = one;
+            one = result;}
+        return result;}
+}
+//通用公式法
+function fibonacci3(n) {
+      const SQRT_FIVE = Math.sqrt(5);
+      return Math.round(1/SQRT_FIVE * (Math.pow(0.5 + SQRT_FIVE/2, n) - Math.pow(0.5 - SQRT_FIVE/2, n)));
+    }
+```
 
 - 隐藏语句
 ```
 create a function hideVowel(str), which returns a string replacing all vowels in the given str with “*”
 ```
-- 
+```
+function hideVowel(str){
+    var result = '';
+    for(var i=0;i<str.length;i++){
+        result+="*";}
+    return result;}
+```
+- 对于一些由value属性定义其显示内容的元素，例如：文本框、各种按钮等，不能使用textContent和innerHTML ，而应该通过其DOM元素的value property来获取/改变其显示内容。
+- |DOM style property|CSS|
+  |:---:|:--:|
+  |backgroundColor|background-color|
+  |border|border|
+  |color|color|
+  |cssFloat|float|
+  |fontWeight|font-weight|
+  |fontSize|font-size|
+  |zIndex|z-index|
+
+- **常见错误**对于fontSize、borderWidth、padding这些有单位的style属性，应该赋予字符串，而不是直接赋值。
+- 非侵入式编程：避免在HTML标签中写上onchange、onclick等属性来注册JS事件处理程序，而是通过id、class等简单标识来找到相应需要改动的HTML元素，从而使HTML和JS分离开来。
