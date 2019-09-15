@@ -326,3 +326,14 @@ function hideVowel(str){
 
 - **常见错误**对于fontSize、borderWidth、padding这些有单位的style属性，应该赋予字符串，而不是直接赋值。
 - 非侵入式编程：避免在HTML标签中写上onchange、onclick等属性来注册JS事件处理程序，而是通过id、class等简单标识来找到相应需要改动的HTML元素，从而使HTML和JS分离开来。
+- |property名|描述|
+  |---|---|
+  |nodeName|节点名，元素节点为HTML标签名（大写），属性节点为HTML属性名，文本节点始终为“#text”，文档节点名为“#document”|
+  |nodeValue|节点值，元素节点值为null，属性节点值为属性值，文本节点值为文本内容。**文档节点值为？？？**|
+  |nodeType|节点类型，元素节点为1，属性节点为2，文本节点为3，文档节点为9，注释节点为8。|
+  |parentNode|父节点|
+  |previousSibling|前一个兄弟节点|
+  |nextSibling|后一个兄弟节点|
+  |firstChild|第一个子节点|
+  |lastChild|最后一个子节点|
+  |childNodes|所有子节点的数目|
