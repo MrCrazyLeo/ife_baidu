@@ -337,3 +337,41 @@ function hideVowel(str){
   |firstChild|第一个子节点|
   |lastChild|最后一个子节点|
   |childNodes|所有子节点的数目|
+
+  ---
+# day9
+- 文档节点和元素节点可以拥有子节点，但是文本节点和属性节点不行；
+- window.onload()：用于浏览器加载完网页之后立刻执行某些操作。这是因为JS中的函数方法等需要在HTML文件渲染完成之后才可使用；如果没有渲染完成，此时的DOM树是不完整的，这样JS文件可能报出“undefined”错误。
+- |BOM对象|描述|
+  |:---:|:---:|
+  |window|浏览器用于显示网页的窗口|
+  |document|浏览器窗口内当前的网页，DOM树的根（即使BOM成员，又是DOM成员）
+  |location|当前网页的URL|
+  |navigator|浏览器本身|
+  |screen|浏览器当前占据的屏幕区域|
+  |history|浏览器用户访问历史|
+
+- |window对象常用方法：对象名|描述|
+  |----|----|
+  |alert、confirm、prompt|弹出对话框|
+  |setInterval、setTimeout、clearInterval、clearTimeout|定时器|
+  |open(url, name, options)、close()|打开新的浏览器窗口，关闭当前浏览器窗口|
+  |print()|打印当前网页|
+  |focus()、blur()|使当前浏览器获得焦点/失去焦点|
+  |scrollBy(dx,dy)、scrollBy(x,y)|将浏览器窗口内页面纵向滚动dx（负值为向上），横向滚动dy（负值向左）；将浏览器窗口内页面滚动到(x,y)坐标处。|  
+
+- |document对象property列表|描述|
+  |---|---|
+  |cookie|当前网页有效的所有cookie，以键值对的形式返回|
+  |domain|提供当前网页的Web服务器域名|
+  |referrer|前一个网页，用户从那里点击链接访问了当前网页|
+  |title|当前网页的title|
+  |URL|以字符串形式返回文档的地址栏链接。|
+  |anchors|返回文档中所有锚点元素的列表|
+
+
+
+--- 
+# day10
+- 什么时候不带“()”，什么时候带？
+- HTML文档和DOM都是树型结构，因此当一个事件发生的时候，既作用在当前元素上，也作用在当前元素的父元素和祖先元素上。
