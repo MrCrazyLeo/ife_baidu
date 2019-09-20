@@ -374,7 +374,27 @@ function hideVowel(str){
 --- 
 # day10
 - 什么时候不带“( )”，什么时候带？
+> 加括号会立即调用函数。
 - HTML文档和DOM都是树型结构，因此当一个事件发生的时候，既作用在当前元素上，也作用在当前元素的父元素和祖先元素上。
 
 --- 
 # day11
+- Don`t write a loaded document.
+- 给事件添加监听器，方法第一个参数为时间名，第二个参数为事件处理器。
+```
+button.addEventListener('click', function(){alert('hello world');});
+```
+- |比较对象|说明|
+  |---|---|
+  |this|**this表示当前对象的一个引用**。在方法中，this表示该方法所属的对象；如果单独使用，this表示全局对象；在函数中，this表示全局对象；在函数中，在严格模式下，this是未定义的；在实践中，this表示接收事件的元素；类似call()和apply()方法可以将this引用到任何对象。
+  |self|self 指窗口本身，它返回的对象跟window对象是一模一样的。也正因为如此，window对象的常用方法和函数都可以用self代替window。|
+  |window||
+
+--- 
+# day12
+- JS中的let
+- 当使用 position 属性时，IE8 以及更早的版本存在一个问题。如果容器元素（在我们的案例中是 <div class="container">）设置了指定的宽度，并且省略了 !DOCTYPE 声明，那么 IE8 以及更早的版本会在右侧增加 17px 的外边距。这似乎是为滚动条预留的空间。当使用 position 属性时，请始终设置 !DOCTYPE 声明。
+
+---
+# day13
+- ES6中新增了两个重要的关键字：**let**和**const**。let声明的变量只在let命令所在的代码块中有效；const声明一个只读变量，一旦声明就不能改变。ES6之前，JS只有全局变量和函数内局部变量这两种作用域。
