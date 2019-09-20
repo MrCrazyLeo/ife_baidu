@@ -397,4 +397,28 @@ button.addEventListener('click', function(){alert('hello world');});
 
 ---
 # day13
-- ES6中新增了两个重要的关键字：**let**和**const**。let声明的变量只在let命令所在的代码块中有效；const声明一个只读变量，一旦声明就不能改变。ES6之前，JS只有全局变量和函数内局部变量这两种作用域。
+- ES6中新增了两个重要的关键字：**let**和**const**。let声明的变量只在let命令所在的代码块中有效；const声明一个只读变量，一旦声明就不能改变。ES6之前，JS只有全局变量和函数内局部变量这两种作用域。let可以理解为局部变量的局部变量。关于js作用域的范围，我还理解不够彻底。
+```
+var x = 10;
+// 这里输出 x 为 10
+{ 
+    var x = 2;
+    // 这里输出 x 为 2
+}
+// 这里输出 x 为 2
+
+------------------------------
+
+var x = 10;
+// 这里输出 x 为 10
+{ 
+    let x = 2;
+    // 这里输出 x 为 2
+}
+// 这里输出 x 为 10
+```
+
+- display : grid 参考[阮一峰大神的博客](http://www.ruanyifeng.com/blog/2019/03/grid-layout-tutorial.html)。grid布局是比flex布局更强大的一种布局。grid-template-columns设置多少列，grid-template-rows设置行数。repeat()能重复写入相同的值，或者重复某种模式。1fr表示某种比例关系，比如“grid-template-columns: repeat(10, 1fr)”表示列宽设成10列，每列是当前块width的1/10。
+
+- event.dataset
+- html5的**data-\*** 属性用于存储私有页面后应用的自定义数据，是新增的属性。自定义的数据可以让页面拥有更好的交互体验（不需要使用 Ajax 或去服务端查询数据）。自定义属性前缀 "data-" 会被客户端忽略。
