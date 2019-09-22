@@ -67,7 +67,7 @@
 ---
 # day 4
 - display:flex 弹性布局，参考[阮一峰大佬的文章](http://www.ruanyifeng.com/blog/2015/07/flex-grammar.html)
- 
+
 - 相对长度<br>
 - 
   |单位|描述|
@@ -99,7 +99,7 @@
 ---
 # day6
 - 逆波兰表达式：又叫“后缀表达式”，需要利用一个栈和一个输出字符串Output，从左到右读入中缀表达式：
-```
+```javascript
 class Stack {
   constructor() {
     // 使用 Array 保存栈数据
@@ -274,7 +274,7 @@ var re = new RegExp("ab+c");
 ```
 create a Fibonacci function, fabonacci(n), which returns the nth element of the Fibonacci sequence
 ```
-```html
+```javascript
 //解法1使用递归：
 function fibonacci1(nth){
     if(nth == 1 || nth ==2){
@@ -306,7 +306,7 @@ function fibonacci3(n) {
 ```
 create a function hideVowel(str), which returns a string replacing all vowels in the given str with “*”
 ```
-```
+```javascript
 function hideVowel(str){
     var result = '';
     for(var i=0;i<str.length;i++){
@@ -358,7 +358,7 @@ function hideVowel(str){
   |open(url, name, options)、close()|打开新的浏览器窗口，关闭当前浏览器窗口|
   |print()|打印当前网页|
   |focus()、blur()|使当前浏览器获得焦点/失去焦点|
-  |scrollBy(dx,dy)、scrollBy(x,y)|将浏览器窗口内页面纵向滚动dx（负值为向上），横向滚动dy（负值向左）；将浏览器窗口内页面滚动到(x,y)坐标处。|  
+  |scrollBy(dx,dy)、scrollBy(x,y)|将浏览器窗口内页面纵向滚动dx（负值为向上），横向滚动dy（负值向左）；将浏览器窗口内页面滚动到(x,y)坐标处。|
 
 - |document对象property列表|描述|
   |---|---|
@@ -371,13 +371,13 @@ function hideVowel(str){
 
 
 
---- 
+---
 # day10
 - 什么时候不带“( )”，什么时候带？
 > 加括号会立即调用函数。
 - HTML文档和DOM都是树型结构，因此当一个事件发生的时候，既作用在当前元素上，也作用在当前元素的父元素和祖先元素上。
 
---- 
+---
 # day11
 - Don`t write a loaded document.
 - 给事件添加监听器，方法第一个参数为时间名，第二个参数为事件处理器。
@@ -390,7 +390,7 @@ button.addEventListener('click', function(){alert('hello world');});
   |self|self 指窗口本身，它返回的对象跟window对象是一模一样的。也正因为如此，window对象的常用方法和函数都可以用self代替window。|
   |window||
 
---- 
+---
 # day12
 - JS中的let
 - 当使用 position 属性时，IE8 以及更早的版本存在一个问题。如果容器元素（在我们的案例中是 <div class="container">）设置了指定的宽度，并且省略了 !DOCTYPE 声明，那么 IE8 以及更早的版本会在右侧增加 17px 的外边距。这似乎是为滚动条预留的空间。当使用 position 属性时，请始终设置 !DOCTYPE 声明。
@@ -398,7 +398,7 @@ button.addEventListener('click', function(){alert('hello world');});
 ---
 # day13
 - ES6中新增了两个重要的关键字：**let**和**const**。let声明的变量只在let命令所在的代码块中有效；const声明一个只读变量，一旦声明就不能改变。ES6之前，JS只有全局变量和函数内局部变量这两种作用域。let可以理解为局部变量的局部变量。关于js作用域的范围，我还理解不够彻底。
-```
+```javascript
 var x = 10;
 // 这里输出 x 为 10
 { 
@@ -422,3 +422,169 @@ var x = 10;
 
 - event.dataset
 - html5的**data-\*** 属性用于存储私有页面后应用的自定义数据，是新增的属性。自定义的数据可以让页面拥有更好的交互体验（不需要使用 Ajax 或去服务端查询数据）。自定义属性前缀 "data-" 会被客户端忽略。
+- do{....}while(...)相比while(...){...}，无论while的条件满不满足，前者都会执行一次循坏的代码块，后者则不会。
+
+---
+# day14
+- nested function嵌套函数
+```javascript
+var outer = function(){
+    var a = 1;
+    return function(){
+        var b = 2;
+        console.log("a:%s, b:%s", a, b);
+    }
+}
+inner = outer(); // 调用outer函数，返回函数inner
+inner(); // a:1, b:2
+```
+
+- **IIFE**: Inmediately-Invoeked Function Expression 立即调用函数表达式
+```javascript
+var foo = 'fool';
+( function(){
+    console.log('Original value is '+foo); // ... is undefined
+    var foo = 'foobar';
+    console.log('New value is ' + foo) // ... is foobar
+})();
+```
+
+- 变量提升Variable Hoisting
+```javascript
+var foo = 'fool';
+( function(){
+    var foo;
+    console.log('Original value is '+foo); // ... is undefined
+    foo = 'foobar';
+    console.log('New value is ' + foo) // ... is foobar
+})();
+console.log('foo is ' + foo); // ... is fool
+```
+
+- 除了**数字字面表达** （number literal）和**undefined**，其他在JS中都是“对象”。
+
+- 函数提升function hoisting 
+```javascript
+var a = function(){
+    b = function c(){};
+    function d(){};
+}
+
+console.log(typeof a, typeof b, typeof c, typeof d, typeof e); // function, undefined, undefined, undefined, function
+a();
+console.log(typeof a, typeof b, typeof c, typeof d, typeof e); // (因为执行了函数a) function, function, undefined, undefined, function
+function e(){}; // 函数被提升了
+```
+
+- 函数提升仅用于声明，不用于表达
+```javascript
+var a = function(){
+    b = function c(){};
+    function d(){};
+}
+
+console.log(typeof a, typeof b, typeof c, typeof d, typeof e); // function, undefined, undefined, undefined, undefined
+a();
+console.log(typeof a, typeof b, typeof c, typeof d, typeof e); // (因为执行了函数a) function, function, undefined, undefined, undefined
+f = function e(){}; // 函数被提升了
+```
+
+- 调用者caller和被调用对象callee
+```javascript
+var a = function(){
+    console.log("callee:", arguments.callee);
+    console.log("caller:", arguments.callee.caller);
+}
+
+function b(){a();}
+```
+
+- 参数argument
+```javascript
+function a(b,c){};
+console.log(a.length); // 这里将得到函数a的参数的长度，即“2”
+```
+
+- **四种函数提升**：普通函数、方法（method）调用、构造子、应用（apply、call）调用
+
+- 函数**构造子**：
+```
+var Foo = function(){
+    this.name = 'foo'; // 全局变量name
+}
+
+var result = Foo(); // 普通函数
+alert(result); // undefined
+alert(name); // foo
+
+```
+- call, apply**函数应用模式**
+```javascript
+var sayHello = function(message, to){
+    alert(this.name + 'says' + message + 'to' + to};
+};
+var peter = {name:'peter'};
+var name = 'global';
+sayHello.apply(this, ['hello', 'Marry']); // global says hello to Marry
+sayHello.apply(peter, ['hello', 'Marry']); // peter says hello to Marry
+sayHello.call(this, 'hello', 'Marry'); // global says hello to Marry
+sayHello.call(peter, 'hello', 'Marry'); // peter says hello to Marry
+```
+
+
+|4种函数提升的调用模式|this|无return时的返回值|
+|:-:|:--|:--|
+|普通函数|顶层对象（在浏览器种执行时就是window）|undefined|
+|方法模式|当前对象（方法从属的对象，即成员操作符“.”的左侧|undefined|
+|构造子模式（new）|正在构造的对象|this（构造好的对象）|
+|应用模式（call、apply）|第一个参数|undefined|
+
+- 在作用域中，不管变量和函数写在什么位置，所有变量会被整体提升到作用域顶部，所有函数也会被整体提升到作用域顶部，但是函数整体在变量整体的后面。
+
+- **闭包（closure）**，我认为是JS中通过公有函数修改私有变量的做法。
+
+  ```javascript
+  // 计数器困境的解决
+  function outerFunction() {
+      var counter = 0;
+      function innerFunction(){
+          return counter += 1;
+      }
+      return innerFunction;
+      /*
+       注意 typeof innerFunction 是：function；而typeof innerFunction（）是number；
+      */
+  }
+  var add = outerFunction();
+  
+  /* 
+  调用 outerFunction()返回的是内部函数innerFucntion,那么调用几次add()将调用几次
+  内部函数inner Function，内部函数公用了counter，所以能够计数,所以说闭包就是将内部嵌套函数变成外部可调用的。
+  */
+  
+  add();
+  add();
+  add();
+  
+  ```
+
+  
+
+- 搞不懂**词法作用域**（lexical scope)是什么东西。
+
+- **this丢失问题**。参考[这里](https://www.cnblogs.com/pssp/p/5216085.html)和[这里](https://blog.csdn.net/qq_22855325/article/details/76267925)。
+
+- **Jquery哲学**：1. 找些HTML元素；2. 对其做一些变动
+
+- **伪元素和伪类**：参考[腾讯全端AlloyTeam团队的文章](http://www.alloyteam.com/2016/05/summary-of-pseudo-classes-and-pseudo-elements/)，伪元素用于创建不在DOM中的元素，并为其创建样式；伪类描述了DOM无法描述的某些状态并为其创建样式，比如:hover表示鼠标悬停在某一元素上时的状态。CSS3 规范中的要求使用双冒号 (::) 表示伪元素，以此来区分伪元素和伪类，比如::before 和::after 等伪元素使用双冒号 (::)，:hover 和:active 等伪类使用单冒号 (:)。除了一些低于 IE8 版本的浏览器外，大部分浏览器都支持伪元素的双冒号 (::) 表示方法。然而，除了少部分伪元素，如::backdrop 必须使用双冒号，大部分伪元素都支持单冒号和双冒号的写法，比如::after，写成:after 也可以正确运行。
+
+- | Jquery 方法的类别       | 具体                                         |
+  | ----------------------- | -------------------------------------------- |
+  | 移动元素Moving Elements | append(), appendTo(), before(), after()      |
+  | 属性Attributes          | css(), attr(), html(), val(), addClass()     |
+  | 事件Events              | bind(), trigger(), unbind(), live(), click() |
+  | 特效Effects             | show(), fadeOut(), toggle(), animate()       |
+  | 遍历Traversing          | find(), is(), prevAll(), next(), hasClass()  |
+  | Ajax                    | get(), getJSON(), post(), ajax(), load()     |
+
+  
