@@ -1,7 +1,7 @@
 # ife_baidu
 百度前端技术学院的作业代码仓库
 ---- 
-# day 1
+# 09.09 day 1
 
 - HTML5新增特性：
   - 用于绘画的canvas元素；
@@ -23,7 +23,7 @@
 - web语义化是使用恰当的html标签、class类名让页面有良好的结构和含义，方便人和机器理解。
 
 ---
-# day 2 
+# 09.10 day 2
 - - JS中表示“假”：0、0.0、NaN、""、null和undefined；
   - 表示“真":除上边几个的其他所有，比如字符串零（"0"） 
 -
@@ -59,13 +59,13 @@
   - JS变量生命周期在它声明时初始化，局部变量在函数执行完毕后销毁；全局变量在页面关闭后销毁。
 
 ---
-# day 3
+# 09.11 day 3
 - **DOM**，Document Objuct Model，文档对象模型，是HTML和XML编程接口。
 - \<button \>貌似没有data-value这个属性啊，什么鬼。
 - Node类型：文档类、元素类、文本类、属性类、内容类
 
 ---
-# day 4
+# 09.12 day 4
 - display:flex 弹性布局，参考[阮一峰大佬的文章](http://www.ruanyifeng.com/blog/2015/07/flex-grammar.html)
 
 - 相对长度<br>
@@ -92,12 +92,12 @@
   |pc|pica|
 
 ---
-# day 5
+# 09.13 day 5
 - JS是由ECMAScript、DOM、BOM组成。
 - JS字符串不可改变，除非重新赋值。
 
 ---
-# day6
+# 09.14 day 6
 - 逆波兰表达式：又叫“后缀表达式”，需要利用一个栈和一个输出字符串Output，从左到右读入中缀表达式：
 ```javascript
 class Stack {
@@ -265,11 +265,11 @@ var re = new RegExp("ab+c");
 - flexbox盒子模型
 
 ---
-# day7
+# 09.15 day 7
 - JS里的快排，[阮一峰大神的博客](http://www.ruanyifeng.com/blog/2011/04/quicksort_in_javascript.html)，主要用了递归和分治法的思想。
 
 ---
-# day8
+# 09.16 day 8
 - 斐波那契数列的解法：
 ```
 create a Fibonacci function, fabonacci(n), which returns the nth element of the Fibonacci sequence
@@ -339,7 +339,7 @@ function hideVowel(str){
   |childNodes|所有子节点的数目|
 
   ---
-# day9
+# 09.17 day 9
 - 文档节点和元素节点可以拥有子节点，但是文本节点和属性节点不行；
 - window.onload()：用于浏览器加载完网页之后立刻执行某些操作。这是因为JS中的函数方法等需要在HTML文件渲染完成之后才可使用；如果没有渲染完成，此时的DOM树是不完整的，这样JS文件可能报出“undefined”错误。
 - |BOM对象|描述|
@@ -372,13 +372,13 @@ function hideVowel(str){
 
 
 ---
-# day10
+# 09.18 day 10
 - 什么时候不带“( )”，什么时候带？
 > 加括号会立即调用函数。
 - HTML文档和DOM都是树型结构，因此当一个事件发生的时候，既作用在当前元素上，也作用在当前元素的父元素和祖先元素上。
 
 ---
-# day11
+# 09.19 day 11
 - Don`t write a loaded document.
 - 给事件添加监听器，方法第一个参数为时间名，第二个参数为事件处理器。
 ```
@@ -391,12 +391,12 @@ button.addEventListener('click', function(){alert('hello world');});
   |window||
 
 ---
-# day12
+# 09.20 day 12
 - JS中的let
 - 当使用 position 属性时，IE8 以及更早的版本存在一个问题。如果容器元素（在我们的案例中是 <div class="container">）设置了指定的宽度，并且省略了 !DOCTYPE 声明，那么 IE8 以及更早的版本会在右侧增加 17px 的外边距。这似乎是为滚动条预留的空间。当使用 position 属性时，请始终设置 !DOCTYPE 声明。
 
 ---
-# day13
+# 09.21 day 13
 - ES6中新增了两个重要的关键字：**let**和**const**。let声明的变量只在let命令所在的代码块中有效；const声明一个只读变量，一旦声明就不能改变。ES6之前，JS只有全局变量和函数内局部变量这两种作用域。let可以理解为局部变量的局部变量。关于js作用域的范围，我还理解不够彻底。
 ```javascript
 var x = 10;
@@ -425,7 +425,7 @@ var x = 10;
 - do{....}while(...)相比while(...){...}，无论while的条件满不满足，前者都会执行一次循坏的代码块，后者则不会。
 
 ---
-# day14
+# 09.22 day 14
 - nested function嵌套函数
 ```javascript
 var outer = function(){
@@ -588,3 +588,24 @@ sayHello.call(peter, 'hello', 'Marry'); // peter says hello to Marry
   | Ajax                    | get(), getJSON(), post(), ajax(), load()     |
 
   
+
+---
+
+# 09.23 day 15
+
+- 无法向已存在的对象构造器中添加新属性，但是可以通过对象的原型属性（prototype）给对象的构造函数添加新的属性
+- 原型链
+  - \_\_proto\_\_，缺属性去那儿找；
+  - \_\_proto\_\_指向构造子的prototype；
+  - 构造子的prototype用constructor反指向构造子
+  - 构造子的prototype也是object，也有自己的构造子
+  - 形成了\_\_proto\_\_链条
+- JS只有一种结构：对象。每个实例对象
+
+
+
+---
+
+# 09.24 day 16
+
+- 每个对象都有\_\_proto\_\_属性，但是只有函数对象才有prototype属性。
