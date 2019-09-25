@@ -608,4 +608,94 @@ sayHello.call(peter, 'hello', 'Marry'); // peter says hello to Marry
 
 # 09.24 day 16
 
-- 每个对象都有\_\_proto\_\_属性，但是只有函数对象才有prototype属性。
+- JS中万物皆对象，但是对象有别，分为普通对象Object和函数对象Function。姑且理解变量声明时带function或者Functioin的就是函数对象，其他是普通对象。每个对象都有\_\_proto\_\_属性，但是**只有函数对象才有prototype属性**。
+
+- \_\_proto\_\_，"构造器的原型"，是每个对象都有的属性，但不是一个规范属性，只是部分浏览器实现了此属性。对应的标准属性是[[ Prototype ]]。
+
+- xxxx.prototype.constructor == xxxx，即“构造子的prototype用constructor反指向构造子”。
+
+- 原型链的顶端是Object.prototype，该对象的\_\_proto\_\_ ===  null，即没有原型。
+
+  ```javascript
+  Object.prototype.__proto__ === null
+  ```
+
+- 所有构造子的constructor都指向Function；Function的prototype指向一个特殊的匿名函数，而这个特殊的匿名函数的\_\_proto\_\_ 指向Object.prototype
+
+- 所有函数对象的\_\_proto\_\_ 都指向Function.prototype（包括根构造器Object及Function自身），它是一个空函数。这里不说成“构造子”是因为JavaScript中有内置(build-in)构造器/对象共计12个（ES5中新加了JSON），Global不能直接访问，Arguments仅在函数调用时由JS引擎创建，Math，JSON是以对象形式存在的，无需new。它们的_\_proto\_\_是Object.prototype。[参考](https://www.jianshu.com/p/a4e1e7b6f4f8)
+
+- 用Object.create构造出来的对象，不符合 xxxx._\_proto\_\_ === xxxx.constructor.prototype
+
+  ```javascript
+  var a1 = {a:1};
+  a2 = Object.create(a1);
+  a2.__proto__ === a2.constructor.prototype // false
+  ```
+
+- null没有_\_proto\_\_，但是typeof null == object，解释说[是个历史遗留bug](https://www.jianshu.com/p/dee9f8b14771)
+
+- 代码复用Code reuse
+
+  ```javascript
+  function Animal(name){this.name = name;};
+  Animal.prototype.sleep = function(){console.log(this, name);};
+  ```
+
+- 函数式编程——缓存
+
+  ```javascript
+  // 斐波那契数列
+  var count = 0; // 记录调用fibonacci的次数
+  var fibonacci = function(){
+      var memo = [0, 1];
+      var fib = function(n){
+          var result = memo[n];
+          if(typeof result !== 'number'){
+              result = fib(n-1) + fib(n-2);
+              memo[n] = result;}
+          count++;
+          return result;
+      };
+      return fib;
+  }();
+  
+  for (var i = 0; i <= 10; i += 1){
+      console.log(i + ': ' + fibonacci(i));} 
+  
+  console.log('调用fibonacci的次数为：' + count); // fibonacci调用29次
+  ```
+
+  ```javascript
+  var memoizer = function(memo, fundamental){
+      var shell = function(n){
+          var result = memo[n]; // 用一个数组memo来存储历史数据避免重复计算
+          
+          if(typeof result !== 'number'){
+              result = fundamental(shell, n);
+              memo[n] = result;
+          }
+          return result;
+      };
+      return shell;
+  };
+  
+  var fabonacci = memoizer([0, 1], function(shell, n){
+      return shell(n-1) + shell(n-2); // memorizer fibonacci函数
+  });
+  
+  var factorial = memoizer([1, 1], function(shell, n){
+      return n*shell(n-1); // memorizer阶乘函数
+  });
+  ```
+
+  
+
+---
+
+# 09.25 day17 
+
+- 如何使Chrome控制台支持多行js模式?
+
+> Chrome本来就支持多行模式。按下Shift+Enter进行换行，或者将多行JS代码直接粘贴到控制台，回车即可
+
+- 缓存：xxxx.cache，记得初始化。
