@@ -381,18 +381,18 @@ function hideVowel(str){
 # 09.19 day 11
 - Don`t write a loaded document.
 - 给事件添加监听器，方法第一个参数为时间名，第二个参数为事件处理器。
-```
+```javascript
 button.addEventListener('click', function(){alert('hello world');});
 ```
-- |比较对象|说明|
-  |---|---|
-  |this|**this表示当前对象的一个引用**。在方法中，this表示该方法所属的对象；如果单独使用，this表示全局对象；在函数中，this表示全局对象；在函数中，在严格模式下，this是未定义的；在实践中，this表示接收事件的元素；类似call()和apply()方法可以将this引用到任何对象。
-  |self|self 指窗口本身，它返回的对象跟window对象是一模一样的。也正因为如此，window对象的常用方法和函数都可以用self代替window。|
-  |window||
+- | 比较对象 | 说明                                                         |
+  | :------: | :----------------------------------------------------------- |
+  |   this   | **this表示当前对象的一个引用**。在方法中，this表示该方法所属的对象；如果单独使用，this表示全局对象；在函数中，this表示全局对象；在函数中，在严格模式下，this是未定义的；在实践中，this表示接收事件的元素；类似call()和apply()方法可以将this引用到任何对象。 |
+  |   self   | self 指窗口本身，它返回的对象跟window对象是一模一样的。也正因为如此，window对象的常用方法和函数都可以用self代替window。 |
+  |  window  | 浏览器窗口                                                   |
 
 ---
 # 09.20 day 12
-- JS中的let
+- JS中的let：可以代替var。es6的新特性。
 - 当使用 position 属性时，IE8 以及更早的版本存在一个问题。如果容器元素（在我们的案例中是 <div class="container">）设置了指定的宽度，并且省略了 !DOCTYPE 声明，那么 IE8 以及更早的版本会在右侧增加 17px 的外边距。这似乎是为滚动条预留的空间。当使用 position 属性时，请始终设置 !DOCTYPE 声明。
 
 ---
@@ -666,7 +666,7 @@ sayHello.call(peter, 'hello', 'Marry'); // peter says hello to Marry
   ```
 
   ```javascript
-  var memoizer = function(memo, fundamental){
+  var memorizer = function(memo, fundamental){
       var shell = function(n){
           var result = memo[n]; // 用一个数组memo来存储历史数据避免重复计算
           
@@ -679,11 +679,11 @@ sayHello.call(peter, 'hello', 'Marry'); // peter says hello to Marry
       return shell;
   };
   
-  var fabonacci = memoizer([0, 1], function(shell, n){
+  var fabonacci = memorizer([0, 1], function(shell, n){
       return shell(n-1) + shell(n-2); // memorizer fibonacci函数
   });
   
-  var factorial = memoizer([1, 1], function(shell, n){
+  var factorial = memorizer([1, 1], function(shell, n){
       return n*shell(n-1); // memorizer阶乘函数
   });
   ```
@@ -699,3 +699,107 @@ sayHello.call(peter, 'hello', 'Marry'); // peter says hello to Marry
 > Chrome本来就支持多行模式。按下Shift+Enter进行换行，或者将多行JS代码直接粘贴到控制台，回车即可
 
 - 缓存：xxxx.cache，记得初始化。
+- 函数式编程关心数据的映射，命令式编程关心解决问题的方法。函数式编程是一种编程范式。我们常见的编程范式有命令式编程、函数式编程、逻辑式编程。常见的面向对象编程是一种命令式编程。
+
+
+
+---
+
+# 09.26 day18
+
+- 闭包就是私有变量+私有函数
+- 理解变量提升和函数提升可以使我们更了解这门语言，更好地驾驭它，但是在开发中，我们不应该使用这些技巧，而是要规范我们的代码，做到可读性和可维护性。具体做法就是：**无论变量还是函数，都必须先声明后使用。**
+- this的指向是由它所在函数调用的上下文决定的，而不是由它所在函数定义的上下文决定的。
+- （更加熟悉原型链）：[JavaScript中的原型与原型链](https://segmentfault.com/a/1190000018895543)
+
+
+
+---
+
+# 09.27 day19
+
+- JQuery
+
+---
+
+# 09.28 day20
+
+- 如果this所在的方法不在对象的第一层，这是this只是指向前一层的对象，而不会继承更上面的层。
+
+```javascript
+var a = {
+  p: 'Hello',
+  b: {
+    m: function() {
+      console.log(this.p);
+    }
+  }
+};
+
+a.b.m() // undefined
+```
+
+- 切勿包含多层this
+
+```javascript
+var o = {
+  f1: function () {
+    console.log(this);
+    var f2 = function () {
+      console.log(this);
+    }();
+  }
+}
+
+o.f1()
+// Object
+// Window
+```
+
+  	上面代码包含两层`this`，结果运行后，第一层指向对象`o`，第二层指向全局对象，因为实际执行的是下面的代码。
+
+```javascript
+var temp = function(){
+    console.log(this);
+}
+
+var o ={
+    f1: function(){
+        console.log(this);
+        var f2 = temp();
+    }
+}
+```
+
+​	解决办法是在第二层改用一个指向外层this的变量
+
+```javascript
+var o = {
+    f1: function(){
+        console.log(this);
+        var that = this;
+        var f2 = function(){
+            console.log(that);
+        }();
+    }
+}
+
+o.f1();
+// Object
+// Object
+```
+
+[this](https://wangdoc.com/javascript/oop/this.html)
+
+
+
+---
+
+# 09.29 day21
+- 重新看了阮一峰的grid布局，对其加深了理解。
+
+---
+
+# 09.30 day22
+
+- 加深对this指针的理解。
