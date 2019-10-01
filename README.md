@@ -803,3 +803,117 @@ o.f1();
 # 09.30 day22
 
 - 加深对this指针的理解。
+
+  ```javascript
+  // 【法1】
+  var o = {
+      v: "hello",
+  	p: ['a1', 'a2'],
+  	f: function f(){
+  		var that = this;
+          this.p.forEach(function(item){
+  			console.log(that.v + ' ' + item);// 如果这里用this，因为是多层嵌套的this，会导致这里的this不指向上一层，而是指向顶层对象
+          });
+      }
+  }
+  
+  o.f();  
+  // hello a1
+  //hello a2
+  
+  ```
+
+  ```javascript
+  // 【法2】
+  var o = {
+    v: 'hello',
+    p: [ 'a1', 'a2' ],
+    f: function f() {
+      this.p.forEach(function (item) {
+        console.log(this.v + ' ' + item);
+      }, this);
+    }
+  }
+  
+  o.f()
+  // hello a1
+  // hello a2
+  ```
+
+  - 回调函数种的this往往会改变指向，最好避免使用 ==> 使用绑定this的方法！
+
+    - JS提供了call、apply、bind三种方法，来切换/固定this的指向。
+
+    - `call`
+
+      - call方法没有参数，或者参数为`null`或`undefined`，则等同于指向全局对象。
+
+        ```javascript
+        var n = 123;
+        var obj = { n: 456 };
+        function a() {
+          console.log(this.n);
+        }
+        
+        a.call() // 123
+        a.call(null) // 123
+        a.call(undefined) // 123
+        a.call(window) // 123
+        a.call(obj) // 456
+        ```
+      
+      - 如果`call`方法的参数是一个原始值，那么这个原始值会自动转成对应的包装对象，然后传入`call`方法。
+      
+        ```javascript
+        var f = function () {
+              return this;
+            };
+            
+            f.call(5)
+            // Number {[[PrimitiveValue]]: 5}
+        ```
+      
+      - call方法的一个应用是调用对象的原生方法
+      
+        ```javascript
+        var obj = {};
+        obj.hasOwnProperty('toString') // false
+        
+        // 覆盖掉继承的 hasOwnProperty 方法
+        obj.hasOwnProperty = function () {
+          return true;
+        };
+        obj.hasOwnProperty('toString') // true
+        
+        Object.prototype.hasOwnProperty.call(obj, 'toString') // false
+        
+        //上面代码中，hasOwnProperty是obj对象继承的方法，如果这个方法一旦被覆盖，就不会得到正确结果。call方法可以解决这个问题，它将hasOwnProperty方法的原始定义放到obj对象上执行，这样无论obj上有没有同名方法，都不会影响结果。
+        ```
+      
+    - `apply`
+    
+      - 与call类似。call接受若干个参数；apply接受一个数组作为函数执行时的参数
+    
+        ```javascript
+        func.call(thisValue, arg1, arg2...);
+        
+        func.apply(thisValue, [arg1, arg2...]);
+        ```
+    
+    - `bind`
+    
+      - bind方法用于将函数体内的this绑定到某个对象，然后返回一个新函数。
+
+- 空元素与`undefined`的差别在于，数组的`forEach`方法会跳过空元素，但是不会跳过`undefined`。因此，遍历内部元素的时候，会得到不同的结果。
+
+- 看了[别人的成长历程](https://juejin.im/post/5ae3338d6fb9a07aca79e63e)，收获不少。
+
+- 再看“原型链”，还是不太懂。
+
+
+
+---
+
+# 19.10.01 day23
+
+- 今天国庆，放假一天。
