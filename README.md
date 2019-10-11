@@ -914,6 +914,264 @@ o.f1();
 
 ---
 
-# 19.10.01 day23
+# 10.05 day23
 
-- 今天国庆，放假一天。
+- 浅拷贝：实则为“引用”，新旧变量指向同一内存地址；深拷贝：为真正的拷贝，新旧变量是独立的相同对象，不共享同一内存地址
+
+
+
+---
+
+# 10.08 day24
+
+- map and reduce
+
+- apply bind
+
+- CSS属性选择器
+
+  ```scss
+  [title]
+  {
+  	color:blue;
+  }
+  ```
+
+- document.getElementById()返回的是DOM对象，而$()返回的是jQuery对象
+
+	```
+alert($("#div")) // [object Object]
+	alert(document.getElementById("div")) // [object HTMLDivElement]
+	alert($("#div")[0]) // [object HTMLDivElement]
+	```
+
+---
+
+# 10.09 day25
+
+- 主流浏览器内核
+  - Trident ，又称IE内核 -> EdgeHTML
+    - IE浏览器、Edge、
+    - 360（双核）、猎豹（双核）、搜狗、遨游、QQ浏览器的兼容模式
+    - 百度浏览器、世界之窗
+  - Gecko -> Firefox内核
+    - FireFox及其他仿Firefox开源的浏览器
+  - Webkit
+    - Safari浏览器
+    - 搜狗、遨游、QQ浏览器的高速模式
+  - Chromium/Blink（V8引擎）
+    - Chrome
+    - 360（双核）、猎豹（双核）
+  - Presto（已弃）
+    - Opera浏览器
+  
+- Sass （Scss） & Less
+
+  - Sass是一种css的开发工具，提供了很多便利写法，大大节省设计者的时间，同时使得CSS开发变得简单、可维护。
+
+  - Sass，Sassy CSS，时髦的CSS
+
+  - Sass文件就是普通的文本文件，里面可以直接使用CSS语法，文件后缀名是.scss
+
+  - Sass提供四种编译风格
+
+    - nested：嵌套缩进的css代码，默认；
+
+    - expanded：没有缩进、拓展的css代码；
+
+    - compact：简洁格式的css代码；
+
+    - compressed：压缩后的css代码。生产环境当中，一般都使用它。
+
+  - Sass的语法：
+
+      - include
+
+      - 如果变量需要镶嵌在字符串之中，就必须需要写在#{}之中
+
+      - SASS允许在代码中使用算式
+
+      - SASS允许选择器嵌套，属性也可以嵌套，在嵌套的代码块内，可以使用&引用父元素。CSS支持逻辑上的嵌套，但在代碼本身並不是嵌套的。
+
+      - @extend ：SASS允许一个选择器，继承另一个选择器。        
+    ```scss
+        .class2{
+        @extend .class1;
+            font-size:120%;
+        }
+    ```
+    
+      - Mixin：Mixin有点像C语言的宏（macro），是可以重用的代码块
+      
+        ```scss
+        // 使用@mixin定义一个代码块
+        @mixin left {
+            float: left;
+            margin-left: 10px;
+        }
+        //使用@include调用这个mixin
+        div {
+            @include left;
+        }
+        ```
+      
+        
+      
+      - 可以指定参数和缺省值
+      
+        ```scss
+        @mixin left($value: 10px) {
+            float: 10px;
+            margin-right: $value;
+        }
+        // 使用时，根据需要加入参数
+        div {
+            @include left(20px);
+        }
+        ```
+      
+        
+      
+      - 颜色参数
+      
+        ```
+        lighten(#cc3, 10%) // #d6d65c
+        darken(#cc3, 10%) // #a3a329
+        grayscale(#cc3) // #808080
+        complement(#cc3) // #33c
+        ```
+      
+        
+      
+      - @import：插入命令
+      
+      - 条件语句
+      
+        - @if
+        - @else
+      
+      - 循环语句
+      
+        - @for
+        
+          ```scss
+          @for $i from 1 to 20{
+              .border-#{$i} {
+                  border: #{$i}px solid blue;
+              }
+          }
+          ```
+        
+          
+        
+        - @while 
+        
+          ```scss
+          $i: 6;
+          @while $i > 0 {
+              .item-#{$i} { width: 2em * $1; };
+              $i: $i - 2;
+          }
+          ```
+        
+        - @each
+        
+          ```scss
+          @each $member in a, b, c, d {
+              .#{$member} {
+                  background-image: url("/image/#{$member}.jpg");
+              }
+          }
+          ```
+        
+          
+      
+      - 能自定义函数
+      
+        ```scss
+        @function double($n){
+            @return $n *2;
+        }
+        
+        #sidebar {
+            width: double(5px);
+        }
+        ```
+    
+  - SCSS 是 Sass 3 引入新的语法，其语法完全兼容 CSS3，并且继承了 Sass 的强大功能
+    
+  - Less跟SCSS很像，变量用@，后者变量用$。    
+
+  
+
+- 响应式布局
+
+  - 媒体查询：根据不同media类型渲染页面
+  - 百分比布局：难用
+  - rem布局：根据根元素html的font-size来决定
+    - 缺点：必须通过js来控制根元素font-size的大小，也就是css和js有一定的耦合性，且必须将改变font-size的代码放在css样式之前。
+  - css3中引入了vw/vh与视图窗口有关，`vw`表示相对于视图窗口的宽度，`vh`表示相对于视图窗口高度。
+  - 响应式布局成型方案：
+    - 原生方法，css3 media query、rem、vw等；
+    - Flex弹性布局，兼容性较差；
+    - Grid网格布局，兼容性较差；
+    - BFC，块格式化上下文
+    - Columns栅格系统，往往依赖某个UI库，如Bootstrap
+
+
+
+---
+
+# 10.10 day26
+
+- 前端发展很快，现代浏览器原生 API 已经足够好用。我们并不需要为了操作 DOM、Event 等再学习一下 jQuery 的 API。同时由于 React、Angular、Vue 等框架的流行，直接操作 DOM 不再是好的模式，jQuery 使用场景大大减少
+- HTTP
+  - HTTP请求
+  - HTTP响应
+- 前后端分离是什么？
+- 设计模式是什么？
+- OOP设计开发理念？
+- Typescript
+  - Typescript是JS的一个超集，经过编译之后能编程原生的JS，支持 ECMAScript 6 标准。语法相对原生JS更加优雅、好写。
+  - 相对JS增加的功能有：
+    - 类型批注和编译时类型检查；
+    - 类型推断；
+    - 类型擦除；
+    - 接口interface；
+    - 枚举 enum
+    - Mixin；
+    - 泛型编程；
+    - 名字空间；
+    - 元组；
+    - Await
+  - 从ES6反向移植过来的功能：
+    - 类；
+    - 模块；
+    - lambda函数的箭头语法；
+    - 可选参数以及默认参数
+  - Any
+  - **（待完善！！！）**
+- 代码规范
+- Vue：
+  - **拿来即用**！
+  - 无需操作DOM，而是让人更加专注业务逻辑；
+- MVC
+	- 	 Django是MVT框架，Model、View、Template
+	- 	 MVC架构初衷就是为解耦和复用提出的
+	- 	 "古代"网页是前端后端融在一起的，比如之前的PHP，JSP等
+- Spring 	 
+  - JAVA那边的一个著名框架，暂时不用理。
+  - 另外两个流行的JAVA MVC框架是Struts（支柱）、Hibernate（冬眠），俗称“SSH”。
+- REST，Representational State Transfer，表现层状态转换
+  - ResTful
+- SEO，Search Engine Optimization，搜索引擎优化
+- **重要！！！！**学好OOP，实战OOP编程！！！
+- leaflet或其他开源的网页地图框架
+- **不同的技术栈**
+  - react+Typescript
+  - 踩坑越多、经验越丰富，越是大佬
+- Node.js
+  1. 引入required模块
+  2. 创建服务器
+  3. 接收请求与相应请求
+-   
