@@ -949,20 +949,39 @@ alert($("#div")) // [object Object]
 
 # 10.09 day25
 
-- 主流浏览器内核
+- 主流浏览器内核（由于各个浏览器更新换代，以下结果仅供参考）
   - Trident ，又称IE内核 -> EdgeHTML
     - IE浏览器、Edge、
     - 360（双核）、猎豹（双核）、搜狗、遨游、QQ浏览器的兼容模式
     - 百度浏览器、世界之窗
+    
   - Gecko -> Firefox内核
+    
     - FireFox及其他仿Firefox开源的浏览器
+    
   - Webkit
     - Safari浏览器
     - 搜狗、遨游、QQ浏览器的高速模式
+    
   - Chromium/Blink（V8引擎）
+    
+    - > - **Chromium**是一个建立在WebKit之上的浏览器开源项目，由Google发起的。
+      >
+      > - **Blink**是Google退出WebKit项目，从而自己创建的渲染引擎。但并不是全新的引擎，Blink目前就是从WebKit直接复制出一个版本出来，然后将与chromium无关的Ports全部移除掉，将代码结构重新整理，就目前而言，Blink的渲染和WebKit是一样，但是，以后两者将各自走不同的路。
+      
     - Chrome
+    
     - 360（双核）、猎豹（双核）
+    
+    - QQ浏览器：6.2版本之后使用blink内核
+    
+    - 微信是QQ浏览器的X5内核 。最新版应该是blink内核。
+    
+      - X5 tbs 1.x：版本号为02xxxx，使用webkit内核。
+      - X5 tbs 2.x：版本号为03xxxx。使用blink内核。
+    
   - Presto（已弃）
+    
     - Opera浏览器
   
 - Sass （Scss） & Less
@@ -1102,21 +1121,38 @@ alert($("#div")) // [object Object]
     
   - Less跟SCSS很像，变量用@，后者变量用$。    
 
+-  弹性布局：
   
-
-- 响应式布局
-
-  - 媒体查询：根据不同media类型渲染页面
-  - 百分比布局：难用
-  - rem布局：根据根元素html的font-size来决定
-    - 缺点：必须通过js来控制根元素font-size的大小，也就是css和js有一定的耦合性，且必须将改变font-size的代码放在css样式之前。
+  - rem/em布局，根据根元素html的font-size来决定
+  - 缺点：rem布局必须通过js来控制根元素font-size的大小，也就是css和js有一定的耦合性，且必须将改变font-size的代码放在css样式之前。
+  
+- 流式布局：
+  - 一开始只是给出最大宽度或者最小宽度或者百分比来改变布局，高度和文字大小等没有改变
+  - 代表作栅栏系统（网格系统）。Grid网格布局，兼容性较差；栅格系统往往依赖某个UI库，如Bootstrap
   - css3中引入了vw/vh与视图窗口有关，`vw`表示相对于视图窗口的宽度，`vh`表示相对于视图窗口高度。
-  - 响应式布局成型方案：
-    - 原生方法，css3 media query、rem、vw等；
-    - Flex弹性布局，兼容性较差；
-    - Grid网格布局，兼容性较差；
-    - BFC，块格式化上下文
-    - Columns栅格系统，往往依赖某个UI库，如Bootstrap
+  
+- 即使页面所有元素的高宽都等比例缩放时，也就是大屏幕下导航是横的，小屏幕下还是横的只不过变小了，在很小或者很大的屏幕显示效果都不会好。
+  
+-  响应式布局
+  
+  - [HTML和CSS高级指南之四——响应式设计](https://www.w3cplus.com/css/advanced-html-css-lesson4-responsive-web-design.html)
+  - 响应式布局缺点：
+    1. 代码量大，难以适用于大型门户网站；
+    2. 媒体查询是有限的，也就是可以枚举出来的，只能适应主流的宽高。
+  
+- 自适应布局：
+
+  - 相对于响应式布局，自适应布局是基于断点使用静态布局。这里断点指的是针对几种常见屏幕进行布局，比如width为320px、480px、768px、960px、1024px、1200px这6种布局进行设计。自适应布局会自动检测屏幕的大小来加载适当的工作布局，但是，一旦页面被加载完成就不再进行自适应。
+
+  - 会逐渐被淘汰。
+
+- 布局建议：
+	
+  	1. 如果只做pc端，那么静态布局（定宽度）是最好的选择；
+   	2. 如果做移动端，且设计对高度和元素间距要求不高，那么弹性布局（rem+js）是最好的选择，一份css+一份js调节font-size搞定；
+   	3. 如果pc，移动要兼容，而且要求很高那么响应式布局还是最好的选择，前提是设计根据不同的高宽做不同的设计，响应式根据媒体查询做不同的布局。
+  
+    
 
 
 
@@ -1318,7 +1354,7 @@ alert($("#div")) // [object Object]
       	<font>
       	<frame>
       	<frameset>
-     	<noframes>
+        	<noframes>
       	<strike>
 
 - 编程范式：
@@ -1335,16 +1371,20 @@ alert($("#div")) // [object Object]
 - [D3.js](https://d3js.org/)
   - 全称Data-Driven Document，数据驱动文档
   - 专门为数据展示用的JS，同类的有百度的Echars
+  
 - [moment.js](https://momentjs.com/)
   
   - 专门用于日期处理类的js库，解析、检验、操作、以及显示日期.
+  
 - [sugar.js](https://sugarjs.com/)
   
   - 用于处理本机对象的js库
+  
 - [Underscore](http://github.com/jashkenas/underscore/) 
   
   - Underscore是一个 JavaScript 工具库，它提供了一整套函数式编程的实用功能，但是没有扩展任何 JavaScript 内置对象。 他解决了这个问题：“如果我面对一个空白的 HTML 页面，并希望立即开始工作，我需要什么？” 他弥补了 [jQuery](http://jquery.com/) 没有实现的功能，同时又是 [Backbone](http://backbonejs.org/) 必不可少的部分。
   - underscore中文是“下划线”的意思，调用符号也为“\_”；
+  
 - [require.js](https://requirejs.org/)
   
   - RequireJS是一个JavaScript文件和模块加载程序。它针对浏览器内使用进行了优化，但也可以用于其他javascript环境，如rhino和node。
@@ -1354,4 +1394,72 @@ alert($("#div")) // [object Object]
     ```
   
   - 
+  
+- CSS flex模型
+
+  - Flex是Flexible Box的缩写，弹性布局，为了给盒装模型提供最大的灵活性；
+
+  - Flex布局能轻松解决诸如垂直居中的问题。
+
+  - 设为Flex布局之后，子元素的float、clear和vertical-align属性将会失效；
+
+  - 容器的6个属性：
+
+    - flex-direction：指定纵向排列还是横向排列。默认row水平向右排列。
+    - flex-wrap：指定跨行之后如何排列。默认nowrap，不换行。
+    - flex-flow：是flex-direction和flex-wrap的简写，默认row nowrap。
+    - justify-content：定义项目在主轴上的对齐方式，默认flex-start，左对齐。
+    - align-items：定义项目在交叉轴上的对齐方式，默认flex-start，交叉轴的起点对齐。
+    - align-content：定义了多根轴线的对齐方式，若只有一根轴线则设置无效，默认flex-start，交叉轴的起点对齐。
+
+  - 项目（content）的6个属性：
+
+    - order：数值越小，排列越靠前，默认为0；
+    - flex-grow：定义项目的放大比例，默认为0；
+    - flex-shrink：定义项目的缩小比例，默认为1；
+    - flex-basis：定义在分配多余空间之前，项目占据的主轴空间，默认为auto
+    - flex：flex-grow、flex-shrink、flex-basis的简写，默认为0 1 auto。
+    - align-self：允许单个项目与其他项目不一样的对齐方式，默认为auto
+
+  - 垂直居中布局：
+
+    ```css
+    .box{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    ```
+
+    
+
+- angular、react、vue、jquery区别
+
+  - 
+
+- 渐进增强、平稳退化
+
+  - 本质都是尽量cover所有浏览器；
+  - 平稳退化又叫“优雅降级”，就是在实现所有功能和特效之后，为无法支持所有功能的浏览器增加候选方案，使其上边可以降级体验而不至于完全失效；
+  - 渐进增加指从最基本的可用性出发，在保证站点页面在低级浏览器中的可用性和可访问性的基础上，逐步增强功能及提高用户体验。
+
+- IE兼容性问题及解决方案
+
+  - [浏览器兼容性问题解决方案 · 总结](https://juejin.im/post/59a3f2fe6fb9a0249471cbb4)
+
+- 浏览器前缀：
+
+  - css前缀
+    - `-webkit- (`谷歌, Safari, 新版Opera浏览器, 以及几乎所有iOS系统中的浏览器(包括iOS 系统中的火狐浏览器); 简单的说，所有基于WebKit 内核的浏览器)
+    - `-moz- `(火狐浏览器)
+    - `-o-` (旧版Opera浏览器)
+    - `-ms-` (IE浏览器 和 Edge浏览器)
+  - API前缀
+    - 接口前缀 ===> 大写
+    - 属性和方法前缀 ===> 小写
+
+- [前端性能优化之雅虎35条军规](https://juejin.im/post/5b73ef38f265da281e048e51)
+
+  ![雅虎军规](/img/35rules.png)
+
 - 
