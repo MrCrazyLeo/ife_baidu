@@ -1129,8 +1129,10 @@ alert($("#div")) // [object Object]
   - HTTP请求
   - HTTP响应
 - 前后端分离是什么？
+  - 本质是前后端业务分开，中间通过特定接口（如Ajax、JSONP）连接。前端项目与后端项目是两个项目，放在两个不同的服务器，需要独立部署，两个不同的工程，两个不同的代码库，不同的开发人员。前端只需要关注页面的样式与动态数据的解析及渲染，而后端专注于具体业务逻辑。
+  - 从经典的JSP+Servlet+JavaBean的MVC时代，到SSM（Spring + SpringMVC + Mybatis）和SSH（Spring + Struts + Hibernate）的Java 框架时代，再到前端框架（KnockoutJS、AngularJS、vueJS、ReactJS）为主的MV*时代，然后是Nodejs引领的全栈时代，技术和架构一直都在进步。
+  - [前后端分离架构概述](https://blog.csdn.net/fuzhongmin05/article/details/81591072)
 - 设计模式是什么？
-- OOP设计开发理念？
 - Typescript
   - Typescript是JS的一个超集，经过编译之后能编程原生的JS，支持 ECMAScript 6 标准。语法相对原生JS更加优雅、好写。
   - 相对JS增加的功能有：
@@ -1165,13 +1167,180 @@ alert($("#div")) // [object Object]
 - REST，Representational State Transfer，表现层状态转换
   - ResTful
 - SEO，Search Engine Optimization，搜索引擎优化
-- **重要！！！！**学好OOP，实战OOP编程！！！
+- **重要**！！！学好OOP，实战OOP编程！！！
 - leaflet或其他开源的网页地图框架
-- **不同的技术栈**
-  - react+Typescript
-  - 踩坑越多、经验越丰富，越是大佬
 - Node.js
   1. 引入required模块
   2. 创建服务器
-  3. 接收请求与相应请求
--   
+  3. 接收请求与响应请求
+
+---
+
+# 10.11 day27
+
+- **不同的技术栈**
+  - MEAN，包括：
+    - MongoDB
+    - Express，NodeJS的web开发框架
+    - AngularJS，超凡的前端框架
+    - NodeJS，基于事件的并发环境
+  - LAMP
+    - Linux
+    - Apache
+    - MySQL
+    - PHP
+  - ROR
+    - Ruby
+    - Rails
+  - react+Typescript
+  
+- PWA：渐进式Web应用
+
+- 函数组合：嵌套函数
+
+- lodash/fp
+  
+  - lodash的一个模块，用于减少代码量。 
+  
+- OOP设计开发理念？
+
+- 中间件：
+  - 介于操作系统和应用程序之间的套件
+  - 将具体业务和底层逻辑解耦的组件。其实跟上边是同一个意思。
+  
+- 前端框架
+
+  - Vue
+    - 爆发力很强
+  - React
+    - 老牌、目前使用人数最多
+  - Angular
+  - AngularJS
+  - Express
+  - Koa
+    - 基于NodeJS的下一代服务器 	 
+  -  Egg
+    - 继承于Koa
+  - Electron
+    - Github开发的开源js框架
+  - Redux
+    - Redux是JS状态容器，提供可预测的状态管理
+  - mpvue
+    - 基于Vue.JS的小程序开发框架
+  - 其他
+
+- UI框架
+
+  - Bootstrap
+
+    -  经典
+
+  - ElementUI
+
+    -  基于Vue.js的组件库
+
+  - iView
+
+    -  基于Vue.js的高质量UI组件库
+
+  - Ant Design
+
+    -  基于 React 的 UI 组件库，主要用于研发企业级中后台产品。阿里蚂蚁金服的
+
+  - Ant Design Mobile
+
+    -  一个基于 Preact / React / React Native 的 移动端 UI 组件库
+
+  - Ant Design of Vue
+
+    - Ant Design 的 Vue 实现，开发和服务于企业级后台产品。
+
+
+- SOAP
+
+  - Simple Object Access Protocol，简单对象访问协议
+  - SOAP是一种简单的基于XML的协议，它使应用程序通过HTTP交换信息
+  - SOAP是一种简单的基于XML的协议，它使应用程序通过HTTP交换信息
+
+- CRUD
+
+  - 数据库基本操作，Create增加、Retrieve读取、Update更新、Delete删除
+
+- HTML、XML、XHTML区别：
+
+  - HTML：HyperText Markup Language / 超文本标记语言；XML：Extensible Markup Language / 可扩展标记语言；XHTML：Extensible Hypertext Markup Language / 可扩展超文本标记语
+
+  - XHTML是以XML语法形式写HTML，以便阅读和维护。
+
+    > 3C组织在2000年的1月26日，以XML为根本重构了HTML 4.01，取名为：XHTML。
+
+  - 然而HTML5语法又不严谨了，：）
+
+    > HTML5的设计目的是为了在移动设备上支持多媒体。新的语法特征被引进以支持这一点，如video、audio和canvas 标记。HTML5还引进了新的功能，可以真正改变用户与文档的交互方式。这些特性是XHTML不能满足的。
+    >
+    > HTML5将会取代1999年制定的HTML 4.01、XHTML 1.0标准，以期能在互联网应用迅速发展的时候，使网络标准达到符合当代的网络需求，为桌面和移动平台带来无缝衔接的丰富内容
+
+    傻傻又搞不清楚了。什么叫标签自定义？
+
+  - HTML5添加了很多语义定义
+
+     > | 标签         | 描述                                                         |
+     > | :----------- | :----------------------------------------------------------- |
+     > | <article>    | 定义页面独立的内容区域。                                     |
+     > | <aside>      | 定义页面的侧边栏内容。                                       |
+     > | <bdi>        | 允许您设置一段文本，使其脱离其父元素的文本方向设置。         |
+     > | <command>    | 定义命令按钮，比如单选按钮、复选框或按钮                     |
+     > | <details>    | 用于描述文档或文档某个部分的细节                             |
+     > | <dialog>     | 定义对话框，比如提示框                                       |
+     > | <summary>    | 标签包含 details 元素的标题                                  |
+     > | <figure>     | 规定独立的流内容（图像、图表、照片、代码等等）。             |
+     > | <figcaption> | 定义 <figure> 元素的标题                                     |
+     > | <footer>     | 定义 section 或 document 的页脚。                            |
+     > | <header>     | 定义了文档的头部区域                                         |
+     > | <mark>       | 定义带有记号的文本。                                         |
+     > | <meter>      | 定义度量衡。仅用于已知最大和最小值的度量。                   |
+     > | <nav>        | 定义导航链接的部分。                                         |
+     > | <progress>   | 定义任何类型的任务的进度。                                   |
+     > | <ruby>       | 定义 ruby 注释（中文注音或字符）。                           |
+     > | <rt>         | 定义字符（中文注音或字符）的解释或发音。                     |
+     > | <rp>         | 在 ruby 注释中使用，定义不支持 ruby 元素的浏览器所显示的内容。 |
+     > | <section>    | 定义文档中的节（section、区段）。                            |
+     > | <time>       | 定义日期或时间。                                             |
+     > | <wbr>        | 规定在文本中的何处适合添加换行符。                           |
+  - 从HTML4.01移除的元素
+  
+      > - <acronym>
+      > - <applet>
+      > - <basefont>
+      > - <big>
+      > - <center>
+      > - <dir>
+      > - <font>
+      > - <frame>
+      > - <frameset>
+      > - <noframes>
+      > - <strike>
+
+- 编程范式：
+  
+  - [编程范式，程序员的编程世界观](http://www.nowamagic.net/librarys/veda/detail/2488)
+- ![前端开发路线](img\FrontEndLearnPath.png)
+
+
+
+---
+
+# 10.12 day28
+
+- [D3.js](https://d3js.org/)
+  - 全称Data-Driven Document，数据驱动文档
+  - 专门为数据展示用的JS，同类的有百度的Echars
+- [moment.js](https://momentjs.com/)
+  - 专门用于日期处理类的js库，解析、检验、操作、以及显示日期.
+- [sugar.js](https://sugarjs.com/)
+  - 用于处理本机对象的js库
+- [Underscore](http://github.com/jashkenas/underscore/) 
+  - Underscore是一个 JavaScript 工具库，它提供了一整套函数式编程的实用功能，但是没有扩展任何 JavaScript 内置对象。 他解决了这个问题：“如果我面对一个空白的 HTML 页面，并希望立即开始工作，我需要什么？” 他弥补了 [jQuery](http://jquery.com/) 没有实现的功能，同时又是 [Backbone](http://backbonejs.org/) 必不可少的部分。
+- [require.js](https://requirejs.org/)
+  - RequireJS是一个JavaScript文件和模块加载程序。它针对浏览器内使用进行了优化，但也可以用于其他javascript环境，如rhino和node。
+- 
