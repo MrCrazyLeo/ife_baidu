@@ -1324,7 +1324,7 @@ alert($("#div")) // [object Object]
 - 编程范式：
   
   - [编程范式，程序员的编程世界观](http://www.nowamagic.net/librarys/veda/detail/2488)
-- ![前端开发路线](img\FrontEndLearnPath.png)
+- ![前端开发路线](/img/FrontEndLearnPath.png)
 
 
 
