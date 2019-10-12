@@ -840,11 +840,11 @@ o.f1();
   // hello a2
   ```
 
-  - 回调函数种的this往往会改变指向，最好避免使用 ==> 使用绑定this的方法！
+  - 回调函数中的this往往会改变指向，最好避免使用  ==>  使用绑定this的方法！
 
-    - JS提供了call、apply、bind三种方法，来切换/固定this的指向。
+- JS提供了call、apply、bind三种方法，来切换/固定this的指向。
 
-    - `call`
+  - `call`
 
       - call方法没有参数，或者参数为`null`或`undefined`，则等同于指向全局对象。
 
@@ -861,9 +861,9 @@ o.f1();
         a.call(window) // 123
         a.call(obj) // 456
         ```
-      
+  
       - 如果`call`方法的参数是一个原始值，那么这个原始值会自动转成对应的包装对象，然后传入`call`方法。
-      
+  
         ```javascript
         var f = function () {
               return this;
@@ -872,9 +872,9 @@ o.f1();
             f.call(5)
             // Number {[[PrimitiveValue]]: 5}
         ```
-      
+  
       - call方法的一个应用是调用对象的原生方法
-      
+  
         ```javascript
         var obj = {};
         obj.hasOwnProperty('toString') // false
@@ -889,11 +889,11 @@ o.f1();
         
         //上面代码中，hasOwnProperty是obj对象继承的方法，如果这个方法一旦被覆盖，就不会得到正确结果。call方法可以解决这个问题，它将hasOwnProperty方法的原始定义放到obj对象上执行，这样无论obj上有没有同名方法，都不会影响结果。
         ```
-      
+  
     - `apply`
     
       - 与call类似。call接受若干个参数；apply接受一个数组作为函数执行时的参数
-    
+      
         ```javascript
         func.call(thisValue, arg1, arg2...);
         
@@ -1309,17 +1309,17 @@ alert($("#div")) // [object Object]
      > | <wbr>        | 规定在文本中的何处适合添加换行符。                           |
   - 从HTML4.01移除的元素
   
-      > - <acronym>
-      > - <applet>
-      > - <basefont>
-      > - <big>
-      > - <center>
-      > - <dir>
-      > - <font>
-      > - <frame>
-      > - <frameset>
-      > - <noframes>
-      > - <strike>
+      > <acronym>
+      	<applet>
+      	<basefont>
+      	<big>
+      	<center>
+      	<dir>
+      	<font>
+      	<frame>
+      	<frameset>
+     	<noframes>
+      	<strike>
 
 - 编程范式：
   
@@ -1336,11 +1336,22 @@ alert($("#div")) // [object Object]
   - 全称Data-Driven Document，数据驱动文档
   - 专门为数据展示用的JS，同类的有百度的Echars
 - [moment.js](https://momentjs.com/)
+  
   - 专门用于日期处理类的js库，解析、检验、操作、以及显示日期.
 - [sugar.js](https://sugarjs.com/)
+  
   - 用于处理本机对象的js库
 - [Underscore](http://github.com/jashkenas/underscore/) 
+  
   - Underscore是一个 JavaScript 工具库，它提供了一整套函数式编程的实用功能，但是没有扩展任何 JavaScript 内置对象。 他解决了这个问题：“如果我面对一个空白的 HTML 页面，并希望立即开始工作，我需要什么？” 他弥补了 [jQuery](http://jquery.com/) 没有实现的功能，同时又是 [Backbone](http://backbonejs.org/) 必不可少的部分。
+  - underscore中文是“下划线”的意思，调用符号也为“\_”；
 - [require.js](https://requirejs.org/)
+  
   - RequireJS是一个JavaScript文件和模块加载程序。它针对浏览器内使用进行了优化，但也可以用于其他javascript环境，如rhino和node。
+  
+  - ```html
+    <script src="js/require.js" defer async="true" ></script>
+    ```
+  
+  - 
 - 
