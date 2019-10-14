@@ -1151,8 +1151,8 @@ alert($("#div")) // [object Object]
   	1. 如果只做pc端，那么静态布局（定宽度）是最好的选择；
    	2. 如果做移动端，且设计对高度和元素间距要求不高，那么弹性布局（rem+js）是最好的选择，一份css+一份js调节font-size搞定；
    	3. 如果pc，移动要兼容，而且要求很高那么响应式布局还是最好的选择，前提是设计根据不同的高宽做不同的设计，响应式根据媒体查询做不同的布局。
-  
-    
+   
+   
 
 
 
@@ -1193,6 +1193,11 @@ alert($("#div")) // [object Object]
 - Vue：
   - **拿来即用**！
   - 无需操作DOM，而是让人更加专注业务逻辑；
+  - 全家桶：
+    - Vuex
+    - Vue-router
+    - Vue-cli
+    - Axios
 - MVC
 	- 	 Django是MVT框架，Model、View、Template
 	- 	 MVC架构初衷就是为解耦和复用提出的
@@ -1344,23 +1349,17 @@ alert($("#div")) // [object Object]
      > | <time>       | 定义日期或时间。                                             |
      > | <wbr>        | 规定在文本中的何处适合添加换行符。                           |
   - 从HTML4.01移除的元素
-  
-      > <acronym>
-      	<applet>
-      	<basefont>
-      	<big>
-      	<center>
-      	<dir>
-      	<font>
-      	<frame>
-      	<frameset>
-        	<noframes>
-      	<strike>
+  	 	
+  	 	
+  	 	
+  	 	
+  	 	
+  	 	> <acronym>、<applet>、<basefont>、<big>、<center>、<dir>、<font>、<frame>、<frameset>、<noframes>、<strike>
 
 - 编程范式：
   
   - [编程范式，程序员的编程世界观](http://www.nowamagic.net/librarys/veda/detail/2488)
-- ![前端开发路线](/img/FrontEndLearnPath.png)
+- ![前端开发路线](img/FrontEndLearnPath.png)
 
 
 
@@ -1435,7 +1434,7 @@ alert($("#div")) // [object Object]
 
 - angular、react、vue、jquery区别
 
-  - 
+  - Angluar.js是一代，从2代开始叫angular，2代是1代很大的改进
 
 - 渐进增强、平稳退化
 
@@ -1460,6 +1459,114 @@ alert($("#div")) // [object Object]
 
 - [前端性能优化之雅虎35条军规](https://juejin.im/post/5b73ef38f265da281e048e51)
 
-  ![雅虎军规](/img/35rules.png)
+  ![雅虎军规](img/35rules.png)
 
+- 如果替换了prototype对象，那么，下一步必须为新的prototype对象加上constructor属性，并将这个属性指回原来的构造函数，否则会导致继承链混乱。（还是不太明白）
+
+  ```javascript
+  // 定义Animal类
+  function Animal(){
+  
+  　　　　this.species = "动物";
+  
+  　　}
+  // 定义继承Animal的子类Cat
+  function Cat(name,color){
+  
+  　　　　this.name = name;
+  
+  　　　　this.color = color;
+  
+  　　}
+  // Cat的原型指向一个Animal实例，表示继承
+  Cat.prototype = new Animal();
+  var cat1 = new Cat("大毛","黄色");
+  alert(cat1.species); // 动物
+  
+  // 不写Cat.prototype.constructor = Cat;
+  alert(Cat.prototype.constructor == Animal); //true
+  alert(cat1.constructor == Cat.prototype.constructor); // true
+  // 前边都没问题，但是下边这句有问题。cat1的构造函数应该是Cat才对，但是现在确是Animal，而不是Cat
+  alert(cat1.constructor == Animal); // true
+  alert(cat1.constructor == Cat); // false
+  
+  // 因此替换了prototype对象，下一步必须为新的prototype对象加上constructor属性，并将这个属性指回原来的构造函数
+  Cat.prototype.constructor = Cat;
+  alert(cat1.constructor == Animal); // false
+  alert(cat1.constructor == Cat); // true
+  ```
+
+- Ajax
+
+  - Asyco
+- BOM ===> 浏览器五大对象
+	
+	-  Window
+	-  History
+	-  Location
+	-  Navigator
+	-  Screen
+
+
+
+---
+
+# 10.13 day29
+
+- Node.js
+  - Node.js is a JavaScript runtime built on Chrome`s V8 JavaScript engine.
+  - 简单来说就是运行在服务端的JS程序。
+  - 三大步骤：
+    - 引入（require）node.js自带的http模块
+    - 创建服务器
+    - 接收请求和相应请求
+    
+  - node.js常用API
+  - File System
+    - HTTP
+    - Path
+  - 事件驱动程序 -> 事件回调函数![](img/event_loop.jpg)
+  
+    
+  
+- 箭头函数表达式
+
+  - 没有自己的**this**、**arguments**、**super**、**new.target**。
+
+  - 适合取代原本需要匿名函数的地方；
+
+  - 不能用作构造函数
+
+  - 箭头函数改写的闭包
+
+    ```javascript
+    function outer(){
+        var i = 0;
+        function inner(){
+            ++i;
+            return i;
+        }
+        return inner;
+    }
+    var v = outer();
+    v(); // 1
+    v(); // 2
+    
+    // 改写下
+    var outer2 = (i=0) => () => (++i);
+    var v = outer2();
+    v(); // 1
+    v(); // 2
+    ```
+
+  - 箭头函数递归
+
+    ```javascript
+    var fact = (x) => (x==0 ? 1 : x*fact(x-1));
+    fact(5) // 5*4*3*2*1 = 120
+    ```
+
+    
+---
+# 10.14 day30
 - 
