@@ -4,7 +4,7 @@
 # 09.09 day 1
 
 - HTML5新增特性：
-  - 用于绘画的canvas元素；
+  - 用于绘画的canvas元素；（\<canvas\>只是图形容器，需要用js脚本来绘制）
   - 用于媒介回放的video和audio元素；
   - 对本地离线存储有更好的支持；
   - 新的特殊内容元素，比如article、footer、header、nav、section
@@ -1004,23 +1004,85 @@ alert($("#div")) // [object Object]
 
   - Sass的语法：
 
+      - 指定变量
+
+          ```scss
+  $primary-color: #333;
+          ```
+
+          
+
       - include
-
-      - 如果变量需要镶嵌在字符串之中，就必须需要写在#{}之中
-
-      - SASS允许在代码中使用算式
-
-      - SASS允许选择器嵌套，属性也可以嵌套，在嵌套的代码块内，可以使用&引用父元素。CSS支持逻辑上的嵌套，但在代碼本身並不是嵌套的。
-
-      - @extend ：SASS允许一个选择器，继承另一个选择器。        
-    ```scss
+      
+        ```scss
+        @mixin left {
+        　　　　float: left;
+        　　　　margin-left: 10px;
+        　　}
+        div {
+        	@include left;
+        }
+        ```
+      
+        
+      
+    - 如果变量需要镶嵌在字符串之中，就必须需要写在#{}之中
+    
+        ```scss
+        p {
+            border: {
+                color: red;
+            }
+        　}
+        
+        $side : left;
+        .rounded {
+            border-#{$side}-radius: 5px;
+        　}
+        ```
+    
+        
+    
+    - SASS允许在代码中使用算式
+    
+        ```scss
+        .container {
+          width: 100%;
+        }
+        
+        article[role="main"] {
+          float: left;
+          width: 600px / 960px * 100%;
+        }
+        
+        aside[role="complementary"] {
+          float: right;
+          width: 300px / 960px * 100%;
+        }
+        ```
+    
+        
+    
+    - SASS允许选择器嵌套，属性也可以嵌套，在嵌套的代码块内，可以使用&引用父元素。CSS支持逻辑上的嵌套，但在代碼本身並不是嵌套的。
+    
+        ```scss
+        a {
+        　　　　&:hover { color: #ffb3ff; }
+        　　}
+        ```
+    
+        
+    
+    - @extend ：SASS允许一个选择器，继承另一个选择器。        
+    
+        ```scss
         .class2{
         @extend .class1;
             font-size:120%;
         }
-    ```
+        ```
     
-      - Mixin：Mixin有点像C语言的宏（macro），是可以重用的代码块
+    - @mixin：Mixin有点像C语言的宏（macro），是可以重用的代码块
       
         ```scss
         // 使用@mixin定义一个代码块
@@ -1033,11 +1095,8 @@ alert($("#div")) // [object Object]
             @include left;
         }
         ```
-      
-        
-      
       - 可以指定参数和缺省值
-      
+    
         ```scss
         @mixin left($value: 10px) {
             float: 10px;
@@ -1048,26 +1107,52 @@ alert($("#div")) // [object Object]
             @include left(20px);
         }
         ```
-      
+    
         
-      
+    
       - 颜色参数
-      
-        ```
+    
+        ```scss
         lighten(#cc3, 10%) // #d6d65c
         darken(#cc3, 10%) // #a3a329
         grayscale(#cc3) // #808080
         complement(#cc3) // #33c
         ```
-      
+    
         
-      
+    
       - @import：插入命令
+    
+      ```scss
+      @import "path/style.scss"
+      ```
+    
       
+    
       - 条件语句
       
         - @if
-        - @else
+        
+        ```scss
+        p{
+            @if 1+1 == 2 { border: 1px solid;}
+            @if 5<3 { boeder: 2px dotted;}
+        }
+        ```
+      
+        
+      
+      - @else
+      
+        ```scss
+        @if lightess($color) > 30% {
+            background-color: #000;
+        } @else {
+            background-color: #fff;
+        }
+        ```
+      
+        
       
       - 循环语句
       
@@ -1321,9 +1406,9 @@ alert($("#div")) // [object Object]
     >
     > HTML5将会取代1999年制定的HTML 4.01、XHTML 1.0标准，以期能在互联网应用迅速发展的时候，使网络标准达到符合当代的网络需求，为桌面和移动平台带来无缝衔接的丰富内容
 
-    傻傻又搞不清楚了。什么叫标签自定义？
+  - 标签自定义？就是能自己定义叫“xxxx“的标签。
 
-  - HTML5添加了很多语义定义
+  - HTML5添加了很多语义定义（语义定义仅仅是为了方便程序员理解用，并不会产生特定样式，比如aside并不会让括号内的内容移动到侧边。）
 
      > | 标签         | 描述                                                         |
      > | :----------- | :----------------------------------------------------------- |
@@ -1349,6 +1434,13 @@ alert($("#div")) // [object Object]
      > | <time>       | 定义日期或时间。                                             |
      > | <wbr>        | 规定在文本中的何处适合添加换行符。                           |
   - 从HTML4.01移除的元素
+  	 	
+  	 	
+  	 	
+  	 	
+  	 	
+  	 	
+  	 	
   	 	
   	 	
   	 	
@@ -1392,7 +1484,7 @@ alert($("#div")) // [object Object]
     <script src="js/require.js" defer async="true" ></script>
     ```
   
-  - 
+  - node自带了require
   
 - CSS flex模型
 
@@ -1435,6 +1527,7 @@ alert($("#div")) // [object Object]
 - angular、react、vue、jquery区别
 
   - Angluar.js是一代，从2代开始叫angular，2代是1代很大的改进
+  - https://www.cnblogs.com/zhuzhenwei918/p/7447434.html说到，react周边是整个社区在维护，Vue主要是作者尤雨溪在维护。Vue和React都采用虚拟DOM的方式，都是渐进式、组件化的。
 
 - 渐进增强、平稳退化
 
@@ -1498,7 +1591,7 @@ alert($("#div")) // [object Object]
 
 - Ajax
 
-  - Asyco
+  - Asynchronous JavaScript and XML
 - BOM ===> 浏览器五大对象
 	
 	-  Window
@@ -1515,16 +1608,26 @@ alert($("#div")) // [object Object]
 
 - Node.js
   - Node.js is a JavaScript runtime built on Chrome`s V8 JavaScript engine.
+  
   - 简单来说就是运行在服务端的JS程序。
+  
   - 三大步骤：
     - 引入（require）node.js自带的http模块
     - 创建服务器
     - 接收请求和相应请求
     
   - node.js常用API
-  - File System
+  
+  - 常用API
+    
+    - File System
     - HTTP
     - Path
+    - Process
+    - REPL
+    - Times
+    - Events
+    
   - 事件驱动程序 -> 事件回调函数![](img/event_loop.jpg)
   
     
@@ -1568,5 +1671,159 @@ alert($("#div")) // [object Object]
 
     
 ---
-# 10.14 day30
+# 10.15 day30
+- 查询字符串
+
+  - 就是querystring啦
+  - 通过“?”附加在URL末尾，由以“&”分隔的多个参数名值对构成，参数名和参数值用等号“=”连接
+
+- 正则表达式
+
+  - JS中用夹在两个左斜杆中间的部分表示正则表达式的模式，也可用RegExp( )函数
+
+    ```javascript
+    /abc/.test("sdafjalkfabcskf") // 形式一，true
+    
+    RegExp("abc").test("AabcA")  // 形式二，true
+    ```
+
+    
+
+  - . 匹配除了换行符\\n之外的任意字符
+
+  - i 紧接在右斜杆表示该正则表达式不区分大小写
+
+    ```javascript
+    /mart/i.test("WALMART") // true
+    ```
+
+    
+
+  - | 表示“或”
+
+    ```javascript
+    /abc|def|g/.test('def') // true
+    ```
+
+    
+
+  - ( ) 表示一种组合
+
+  - ^ 表示匹配开头某字符的形式，$表示匹配结尾为某字符的形式
+
+  - \ 表示对字符进行转义
+
+    >  / \ $ . [ ]  ( ) ^ * + ? 
+
+  - \* 表示匹配0个以上的某字符/模式串
+
+    ```
+    "/a.*a/" matches "aa", "aba", "a8qa", "a!?_a", ..
+    ```
+
+    
+
+  - \+ 表示匹配1个以上的某字符/模式串
+
+    ```
+    "/Goo+gle/" matches "Google", "Gooogle", "Goooogle", ...
+    ```
+
+    
+
+  - ? 表示匹配0次或1次前边紧挨着的某字符/模式串
+
+    ```
+    "/a(bc)?/" matches "a" or "abc” 
+    ```
+
+    
+
+  - {min,max}表示匹配出现次数介于min和max之间的字符/模式串
+
+    - {min,} 匹配最少min次
+    - {,max} 匹配最高max次
+    - {n} 匹配恰好n次
+
+  - [] 表示匹配[ ]中任意组合的字符串
+
+    ```
+    "/[bcd]art/"  ==  "/(b|c|d)art/"
+    ```
+
+  - 特殊转义字符串
+
+    - \d, [0-9]
+    - \D, 除去[0-9]
+    - \w, [a-zA-Z_0-9]
+    - \W, 除去[a-zA-Z_0-9]
+    - \s, 任意空白字符(, \t, \n, etc.)
+    - \S, 除去任意空白字符
+
+  - 通过在 *****、**+** 或 **?** 限定符之后放置 **?**，该表达式从"贪心"表达式转换为"非贪心"表达式或者最小匹配。
+
+    ```javascript
+    /<.*>/.exec("<H1>Chapter 1 - 介绍正则表达式</H1>") // 匹配所有
+    /<.*?>/.exec("<H1>Chapter 1 - 介绍正则表达式</H1>") // 只匹配<H1>
+    ```
+
+    
+
+- request.url
+
+  - 提取查询字段
+
+    ```javascript
+    $node 
+    require('url').parse('/status?name=ryan', true)
+    // 或者
+    require('querystring').parse('/status?name=ryan')
+    ```
+
+    
+
+---
+
+# 10.16 day31
+
+- 重温“绝对定位”
+
+  - 绝对定位相对于最近的**已定位**的祖先元素。如果没有已定位的祖先元素，那么它的位置将相对于最初的包含块（指window？）![](img/ct_css_positioning_absolute_example.gif)
+  - 如果对一个元素进行相对定位，它将出现在它所在的位置上。然后，可以通过设置垂直或水平位置，让这个元素“相对于”它的起点进行移动。注意，在使用相对定位时，无论是否进行移动，元素仍然占据原来的空间。因此，移动元素会导致它覆盖其它框。![](img/ct_css_positioning_relative_example.gif)
+
+- axios
+
+  - 是一个基于Promise的HTTP库，可以用在浏览器或者node.js中。
+
+- 服务端渲染
+
+- JSX
+
+  - 是JS的拓展。JSX 可以生成 React “元素”。
+
+  ```jsx
+  const element = <h1>hello,world</h1>
+  ```
+
+  
+
+- RIA
+
+  - rich Internet Applications，丰富性互联网应用程序，是一种具有近似于传统桌面[应用软件](https://zh.wikipedia.org/wiki/应用软件)系统功能和特性的[网络应用](https://zh.wikipedia.org/wiki/网络应用程序)系统。
+  - RIA系统最大的特点是将大部分处理任务都从[用户界面](https://zh.wikipedia.org/wiki/用户界面)端移植到[客户端](https://zh.wikipedia.org/wiki/客户端)，仅保留一些必要数据与[服务器](https://zh.wikipedia.org/wiki/服务器)端进行信息交互。
+
+---
+
+# 10.17 day32
+
+- AJAX
+
+  - load() 方法从服务器加载数据，并把返回的数据放入被选元素中。
+
+    ```javascript
+    $(selector).load( URL, data, callback);
+    ```
+
+  - 
+
 - 
