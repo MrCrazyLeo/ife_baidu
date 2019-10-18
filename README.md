@@ -1434,7 +1434,9 @@ alert($("#div")) // [object Object]
      > | <time>       | 定义日期或时间。                                             |
      > | <wbr>        | 规定在文本中的何处适合添加换行符。                           |
   - 从HTML4.01移除的元素
+  	```
   	<acronym>、<applet>、<basefont>、<big>、<center>、<dir>、<font>、<frame>、<frameset>、<noframes>、<strike>
+  	```
   
 - 编程范式：
   
@@ -1889,4 +1891,3 @@ alert($("#div")) // [object Object]
 ---
 
 # 10.18 day33
-
