@@ -595,8 +595,8 @@ sayHello.call(peter, 'hello', 'Marry'); // peter says hello to Marry
 
 - 无法向已存在的对象构造器中添加新属性，但是可以通过对象的原型属性（prototype）给对象的构造函数添加新的属性
 - 原型链
-  - \_\_proto\_\_，缺属性去那儿找；
-  - \_\_proto\_\_指向构造子的prototype；
+  - \_\_proto\_\_，缺属性去这里找；
+  - \_\_proto\_\_ 指向构造子的prototype；
   - 构造子的prototype用constructor反指向构造子
   - 构造子的prototype也是object，也有自己的构造子
   - 形成了\_\_proto\_\_链条
@@ -617,7 +617,7 @@ sayHello.call(peter, 'hello', 'Marry'); // peter says hello to Marry
 - 原型链的顶端是Object.prototype，该对象的\_\_proto\_\_ ===  null，即没有原型。
 
   ```javascript
-  Object.prototype.__proto__ === null
+  Object.prototype.__proto__ === null // “无”中生“有”
   ```
 
 - 所有构造子的constructor都指向Function；Function的prototype指向一个特殊的匿名函数，而这个特殊的匿名函数的\_\_proto\_\_ 指向Object.prototype
@@ -1434,20 +1434,8 @@ alert($("#div")) // [object Object]
      > | <time>       | 定义日期或时间。                                             |
      > | <wbr>        | 规定在文本中的何处适合添加换行符。                           |
   - 从HTML4.01移除的元素
-  	 	
-  	 	
-  	 	
-  	 	
-  	 	
-  	 	
-  	 	
-  	 	
-  	 	
-  	 	
-  	 	
-  	 	
-  	 	> <acronym>、<applet>、<basefont>、<big>、<center>、<dir>、<font>、<frame>、<frameset>、<noframes>、<strike>
-
+  	<acronym>、<applet>、<basefont>、<big>、<center>、<dir>、<font>、<frame>、<frameset>、<noframes>、<strike>
+  
 - 编程范式：
   
   - [编程范式，程序员的编程世界观](http://www.nowamagic.net/librarys/veda/detail/2488)
@@ -1609,7 +1597,7 @@ alert($("#div")) // [object Object]
 - Node.js
   - Node.js is a JavaScript runtime built on Chrome`s V8 JavaScript engine.
   
-  - 简单来说就是运行在服务端的JS程序。
+  - 简单来说就是运行在服务端的JS程序，或者说是服务端上跑JS程序的一个运行环境。
   
   - 三大步骤：
     - 引入（require）node.js自带的http模块
@@ -1824,6 +1812,81 @@ alert($("#div")) // [object Object]
     $(selector).load( URL, data, callback);
     ```
 
-  - 
+  - callback还可以规定当请求完成时其他动作。
 
-- 
+    - *response* - 包含来自请求的结果数据
+    - *status* - 包含请求的状态（"success", "notmodified", "error", "timeout" 或 "parsererror"）
+    - *xhr* - 包含 XMLHttpRequest 对象
+
+    ```javascript
+    $("#div1").load("/example/jquery/demo_twest.txt",function(responseTxt,statusTxt,xhr){
+          if(statusTxt=="success")
+            alert("外部内容加载成功！");
+          if(statusTxt=="error")
+            alert("Error: "+xhr.status+": "+xhr.statusText);
+        });
+    ```
+
+- 常见的表单组建的应用（Echarts.D3.js等）
+
+- windows任务栏没办法自动隐藏
+
+  - 因为资源管理器挂了
+  - ctrl+shift+esc打开资源管理器，点击详细信息，找到“windows资源管理器”，右键“重启”
+
+- 同源策略
+
+  - 一种安全策略
+    - 若两个页面协议、主机、端口相同，则视为同源
+
+- JS里边的指针？
+
+- 浮点数精度问题
+
+  ```
+  0.1 + 0.2 == 0.3 // false，由于精度误差，结果为0.30000000000000004，17位小数。
+  0.15 + 0.15 == 0.3 // true，由于精度误差，这里反而结果为true
+  				// 所以永远不要测试某个特定的浮点数值。
+  ```
+
+  
+
+- 按位非操作：操作数的负值减一（正负都一样）。
+
+- 表示false：
+
+  ```javascript
+  '' NaN null undefined 0
+  ```
+
+  
+
+- 同时使用两个逻辑非操作符，实际上等同于Boolean()
+
+  ```javascript
+  !!"blue" // true
+  !!0 // false
+  !!NaN // false
+  !!"" //fasle
+  !!12345 // true
+  ```
+
+  
+
+- python里边没有自增运算符？
+
+  > Python等语言，for的逻辑是使用迭代器，连三段for的语法都没有，也禁止使用赋值语句的结果来做条件判断，自然也就不需要递增递减了。
+  > python整数型是不可变的，无法“自增”，只能增加之后赋值给新的同名变量
+  
+- Zepto
+
+  - **Zepto**是一个**轻量级**的针对现代高级浏览器的**JavaScript 库**， 它**与jquery 有着类似的api**。 如果你会用 jquery，那么你也会用 zepto。
+
+- 前端代码规范https://github.com/ecomfe/spec
+
+- Serverless
+
+---
+
+# 10.18 day33
+
