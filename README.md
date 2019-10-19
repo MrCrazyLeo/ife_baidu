@@ -1973,4 +1973,24 @@ alert($("#div")) // [object Object]
 
   - 
 
-- 
+- localStorage
+
+  - 拓展了cookiet的4K限制；
+  - 会将第一次请求的数据直接保存在本地，相当于有了一个5M的数据库。
+  - 在隐私模式下不可读。
+  - 只能在高级点的浏览器使用，IE8以上。每个浏览器对于localStorage的大小不一。
+  - 不能被爬虫抓到。
+  - API：
+    - 存 localStorage.setItem(key, value)	
+    - 读 localStorage.readItem(key)
+    - 删除单个数据 localStorage.removeItem(key)
+    - 删除全部数据 localStorage.clear()
+    - 得到某个索引的key localStorage.key(index)
+
+
+---
+
+# 10.19 day34
+
+- **变量一定要在声明之后使用**
+- ES6 规定暂时性死区和`let`、`const`语句不出现变量提升，主要是为了减少运行时错误，防止在变量声明前就使用这个变量，从而导致意料之外的行为。这样的错误在 ES5 是很常见的，现在有了这种规定，避免此类错误就很容易了。暂时性死区的本质就是，只要一进入当前作用域，所要使用的变量就已经存在了，但是不可获取，只有等到声明变量的那一行代码出现，才可以获取和使用该变量。
