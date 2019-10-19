@@ -1944,7 +1944,7 @@ alert($("#div")) // [object Object]
   - v-bind缩写 `:`
 
     ```vue
-  <!-- 完整语法 -->
+  	<!-- 完整语法 -->
     <a v-bind:href="url">...</a>
     
     <!-- 缩写 -->
@@ -1956,7 +1956,7 @@ alert($("#div")) // [object Object]
   - v-on缩写`@`
 
     ```vue
-  <!-- 完整语法 -->
+  	<!-- 完整语法 -->
     <a v-on:click="doSomething">...</a>
     
     <!-- 缩写 -->
