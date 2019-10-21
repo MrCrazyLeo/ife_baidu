@@ -1976,21 +1976,152 @@ alert($("#div")) // [object Object]
 - localStorage
 
   - 拓展了cookiet的4K限制；
+  - 大多数桌面浏览器会设置每个来源5MB的限制，Chrome和Safari对每个来源的限制是2.5MB，而IOS版Safari和Android版WebKit的限制也是2.5MB；
   - 会将第一次请求的数据直接保存在本地，相当于有了一个5M的数据库。
   - 在隐私模式下不可读。
   - 只能在高级点的浏览器使用，IE8以上。每个浏览器对于localStorage的大小不一。
   - 不能被爬虫抓到。
+  - 同域名、同协议、同端口
   - API：
-    - 存 localStorage.setItem(key, value)	
-    - 读 localStorage.readItem(key)
-    - 删除单个数据 localStorage.removeItem(key)
-    - 删除全部数据 localStorage.clear()
-    - 得到某个索引的key localStorage.key(index)
+    - 存： localStorage.setItem(key, value)	
+    - 读： localStorage.readItem(key)
+    - 删除单个数据： localStorage.removeItem(key)
+    - 删除全部数据： localStorage.clear()
+    - 得到某个索引的key： localStorage.key(index)
+
+---
+
+# 10.20 day34
+
+- **变量一定要在声明之后使用**
+
+- ES6 规定暂时性死区和`let`、`const`语句不出现变量提升，主要是为了减少运行时错误，防止在变量声明前就使用这个变量，从而导致意料之外的行为。这样的错误在 ES5 是很常见的，现在有了这种规定，避免此类错误就很容易了。暂时性死区的本质就是，只要一进入当前作用域，所要使用的变量就已经存在了，但是不可获取，只有等到声明变量的那一行代码出现，才可以获取和使用该变量。
+
+- 基本类型：undefined、null、Boolean、Number、String；引用类型：指那些可能由多个值组成的对象
+
+  - 不能给基本数据类型添加属性，尽管不报错
+
+    ```javascript
+    var name = "leo";
+    name.age = 24;
+    alert(name.age) //undefined
+    ```
+    可以向引用类型添加属性
+    ```javascript
+    var person = new Object();
+    person.age = 24;
+    alert(person.age); // 24
+    ```
+
+  - 复制变量值时基本数据类型是创建独立的副本；引用类型的副本本质是一个指针，所以修改其中一个变量，也会影响另一个变量。
+
+  - ECMAScript中所有函数的参数都是**按值传递**的，**并非按引用传递**。
+
+    ```javascript
+    function setName(obj){
+        obj.name = 'leo';
+        var obj = new Object();
+        obj.name = 'ant';
+    }
+    var person = new Object();
+    setName(person);
+    console.log(person.name) // leo，而不是ant，尽管内部重新定义了obj，
+    						// 但是后来的obj是个局部变量，在函数执行完毕就被销毁了。
+    ```
+
+  - 
+
+- with语句
+
+  - with是将代码的作用域设置到一个特定的对象中，还能延长变量的作用域
+
+  - with语句主要是为了简化多次编写同一对象的工作，比如下边多次用到location对象时，用with就简洁得多：
+
+    ```javascript
+    var qs = location.search.substring(1);
+    var hostName = location.hostname;
+    var url = location.href;
+    ```
+
+    ```javascript
+    with(location){
+        var qs = search.substring(1);
+        var hostName = hostname;
+        var url = href;
+    }
+    ```
+    严格模式下不允许使用with语句。由于大量使用with语句会使性能下降，在开发大型程序时，不建议使用with语句。
+
+    
+
+- 垃圾收集
+
+  - 标记清除 mark-and-sweep
+  - 引用计数 reference counting
+
+- JS栈
+
+  - push() & pop()
+
+- JS队列
+
+  - 队列队头移除、队尾添加：shift( ) & push( );
+  - 队列队头添加，队尾移除：unshift( ) & pop( )
+
+---
+# 10.21 day 35
+
+- 检测数组
+
+  - Array.isArray( )，不要用instanceof Array，因为后者无法辨识多个全局执行环境
+
+- sort在比较每一项的时候，会先调用各项toString( ) 方法，所以是对各项的字符串值比较
+
+  ```javascript
+  var A = [ 0, 1 , 5 , 10, 15 ]
+  A.sort() // [0, 1, 10, 15, 5]
+  ```
+
+   通过设定一个比较函数解决这问题。
+
+  ```javascript
+  A.sort(function(){}) // [0, 1, 5, 10, 15]
+  A.sort(function(a,b){return b-a}) // [15, 10, 5, 1, 0] 
+  ```
+
+- localStorage，兼容只支持globalStorage的浏览器
+
+  ```javascript
+  function getLocalStorage(){
+      if(typeof localStorage == "object") return localStorage;
+      else if(typeof globalStorage == "object") return globalStorage(location.host);
+      else throw new Error("Local storage not available !!")
+  }
+  ```
+
+- sprite雪碧图
+
+  - CSS Sprite(CSS 精灵), 也称作**雪碧图**，是一种css图向合成技术
+  - 不使用雪碧图， 单纯调用小图片有以下优缺点：
+    优点：调用简单、维护方便； 缺点：请求文件过多、引发性能问题；
+  - 用webpack、gulp之类构建、维护
+
+- IE=edge,chrome=1
+
+  ```html
+  <meta http-equiv="X-UA-COMPATIBLE" content="IE=edge,chrome=1"/>
+  ```
+
+  - X-UA-COMPATIBLE是从IE8新加的一个设置，对于IE8以下的浏览器是不识别的。通过在meta中设置X-UA-COMPATIBLE来指定兼容性。上述代码告诉IE浏览器，IE 8-10的版本都以Edge引擎来渲染，IE11默认了此设置；chrome=1表示如果用户有安装Google Chrome Frame插件则优先启动它。这个插件可以让用户的IE浏览器外不变，但用户在浏览网页时，实际上使用的是Google Chrome浏览器内核，而且支持IE6、7、8等多个版本的IE浏览器。但是，由于chrome框架项目已经结束，chrome=1部分对于还没有安装chrome框架插件的浏览器来说是多余的。因此照下边写就可以了：
+
+  ```html
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  ```
+
 
 
 ---
 
-# 10.19 day34
+# 10.22 day36
+- 
 
-- **变量一定要在声明之后使用**
-- ES6 规定暂时性死区和`let`、`const`语句不出现变量提升，主要是为了减少运行时错误，防止在变量声明前就使用这个变量，从而导致意料之外的行为。这样的错误在 ES5 是很常见的，现在有了这种规定，避免此类错误就很容易了。暂时性死区的本质就是，只要一进入当前作用域，所要使用的变量就已经存在了，但是不可获取，只有等到声明变量的那一行代码出现，才可以获取和使用该变量。
