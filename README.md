@@ -1259,7 +1259,7 @@ alert($("#div")) // [object Object]
   - [前后端分离架构概述](https://blog.csdn.net/fuzhongmin05/article/details/81591072)
 - 设计模式是什么？
 - Typescript
-  - Typescript是JS的一个超集，经过编译之后能编程原生的JS，支持 ECMAScript 6 标准。语法相对原生JS更加优雅、好写。
+  - Typescript是JS的一个超集，经过编译之后能编程原生的JS，支持 ECMAScript 6 标准。语法相对原生JS更加优雅、好写。需要理解接口（Interfaces）、泛型（Generics）、类（Classes）、枚举类型（Enums）等前端工程师可能不是很熟悉的概念， 有一定的学习成本。
   - 相对JS增加的功能有：
     - 类型批注和编译时类型检查；
     - 类型推断；
@@ -2026,10 +2026,10 @@ alert($("#div")) // [object Object]
     var person = new Object();
     setName(person);
     console.log(person.name) // leo，而不是ant，尽管内部重新定义了obj，
-    						// 但是后来的obj是个局部变量，在函数执行完毕就被销毁了。
+    // 但是后来的obj是个局部变量，在函数执行完毕就被销毁了。
     ```
 
-  - 
+    
 
 - with语句
 
@@ -2101,9 +2101,10 @@ alert($("#div")) // [object Object]
 
 - sprite雪碧图
 
-  - CSS Sprite(CSS 精灵), 也称作**雪碧图**，是一种css图向合成技术
+  - CSS Sprite(CSS 精灵), 也称作雪碧图，是一种css图向合成技术
   - 不使用雪碧图， 单纯调用小图片有以下优缺点：
-    优点：调用简单、维护方便； 缺点：请求文件过多、引发性能问题；
+    - 优点：调用简单、维护方便； 
+    - 缺点：请求文件过多、引发性能问题；
   - 用webpack、gulp之类构建、维护
 
 - IE=edge,chrome=1
@@ -2112,7 +2113,7 @@ alert($("#div")) // [object Object]
   <meta http-equiv="X-UA-COMPATIBLE" content="IE=edge,chrome=1"/>
   ```
 
-  - X-UA-COMPATIBLE是从IE8新加的一个设置，对于IE8以下的浏览器是不识别的。通过在meta中设置X-UA-COMPATIBLE来指定兼容性。上述代码告诉IE浏览器，IE 8-10的版本都以Edge引擎来渲染，IE11默认了此设置；chrome=1表示如果用户有安装Google Chrome Frame插件则优先启动它。这个插件可以让用户的IE浏览器外不变，但用户在浏览网页时，实际上使用的是Google Chrome浏览器内核，而且支持IE6、7、8等多个版本的IE浏览器。但是，由于chrome框架项目已经结束，chrome=1部分对于还没有安装chrome框架插件的浏览器来说是多余的。因此照下边写就可以了：
+  - X-UA-COMPATIBLE是从IE8新加的一个设置，对于IE8以下的浏览器是不识别的。通过在meta中设置X-UA-COMPATIBLE来指定兼容性。上述代码告诉IE浏览器，IE 8-10的版本都以Edge引擎来渲染，IE11默认了此设置；chrome=1表示如果用户有安装Google Chrome Frame插件则优先启动它。这个插件可以让用户的IE浏览器外不变，但用户在浏览网页时，实际上使用的是Google Chrome浏览器J内核，而且支持IE6、7、8等多个版本的IE浏览器。但是，由于chrome框架项目已经结束，chrome=1部分对于还没有安装chrome框架插件的浏览器来说是多余的。因此照下边写就可以了：
 
   ```html
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -2123,5 +2124,123 @@ alert($("#div")) // [object Object]
 ---
 
 # 10.22 day36
-- 
+- 不建议直接实例化Number类型，原因与显式创建Boolean对象一样。具体来讲，就是在使用typeof和instanceof操作符测试基本类型数值与引用类型数值时，得到结果完全不同。
 
+  ```javascript
+  var numCreated = new Number;
+  var num = 600;
+  typeof numCreated; // "object"
+  typeof num; // "number"
+  numCreated instanceof Number // true
+  num instanceof Number // false
+  ```
+
+  
+
+- toPrecision( ) ：看哪种格式最格式，自动选择toFixed( )或者toExponential( )
+
+- 字符串操作方法：slice( )、substr( )、substring( )
+
+- 字符串位置方法：indexOf( )、lastIndexOf( )
+
+- 带**toLocale**的函数方法时针对特定地区的实现。对有些地区来说，针对地区的方法与其通用方法得到的结果相同，但少数语言（如土耳其语）会设置特殊的规则，所以使用针对地区的方法稳妥些。
+
+  - toLowerCase( ) --> toLocaleLowerCase( ); toUpperCase( ) --> toLocaleUpperCase( )
+
+- RegExp正则表达式
+
+  - 在ES3中，正则表达式字面量始终会共享同一个RegExp实例，而使用构造函数创建的每一个新RegExp实例都是一个新实例。ES5中使用正则表达式字面量必须像直接俄调用RegExp后遭函数一样，每次创建新的RegExp实例。所以下边例子都报错。
+
+    ```javascript
+    var re = null , i;
+    
+    for ( i = 0; i < 10; i++){
+        re  = /cat/g;
+        re.test("catastrophe")
+    } // 本来这个在循环中再次调用test()方法会失败。
+    
+    for ( i = 0; i < 10; i++){
+        re  = new RegExp("cat" , "g");
+        re.test("catastrophe")
+    }
+    
+    ```
+  - exec( ) 专门为捕获组而设计；设置全局标志后，在匹配到了第一个匹配项之后会继续查找新匹配项
+  - test( ) 只检测目标字符串与模式是否匹配而不关心字符串的实际内容
+    
+
+- 事件流
+
+  - IE事件冒泡流
+    
+    -  事件开始时由最具体的元素（文档中嵌套层次最深的那个节点）接收，然后逐级向上传播
+  - Netscape Communicator事件捕获流
+    
+    -  与事件冒泡流相反，从不具体的节点向下传播到具体、深层次的节点
+  -  除非有特殊需求，否则尽管放心使用事件冒泡流
+  - DOM2级事件流
+    
+    -  三个阶段：事件捕获阶段、处于目标阶段、事件冒泡阶段
+    
+    
+
+---
+# 10.23 day36
+- \<time\>
+  
+  - \<time\> 标签是 HTML5 中的新标签。
+  
+  - \<time\> 标签定义公历的时间（24 小时制）或日期，时间和时区偏移是可选的。该元素能够以机器可读的方式对日期和时间进行编码，这样，举例说，用户代理能够把生日提醒或排定的事件添加到用户日程表中，搜索引擎也能够生成更智能的搜索结果。
+    
+  -  新增表单控件之一
+  
+- 重拾闭包
+
+  - 闭包是提供公有函数接口访问私有变量；
+
+  - 闭包的私有变量常驻内存，需要手动删除
+
+  - 下边是个闭包的例子，结合了this的指向
+
+    ```javascript
+    var name = "The Window";
+    
+    　　var object = {
+    　　　　name : "My Object",
+    
+    　　　　getNameFunc : function(){
+    　　　　　　var that = this;
+    　　　　　　return function(){
+    　　　　　　　　return that.name;
+    　　　　　　};
+    
+    　　　　},
+    		getThis: function(){
+    			return function(){
+    　　　　　　　　return this.name;
+    　　　　　　};} 
+    
+    　　};
+    
+    	alert(object.getNameFunc()()); // My Object
+    	alert(object.getThis()()); // Window
+    ```
+
+    
+
+- JS里边没有指针？
+
+- JS操纵cookie
+
+  - 每个cookie最大为4kB；每个域最多20个cookiet（每个浏览器略有不同）；cookie是其域名专有的，网站无法读其它域的cookie，只能读它自己的。
+  - 获取当前页面的cookie：document.cookie
+
+- JS写HTML脚本
+
+- link与@import
+
+- 相对定位、绝对定位
+
+  ![如图](/img/positionAbsoluteAndRelative.png)
+
+-  
