@@ -1896,12 +1896,6 @@ alert($("#div")) // [object Object]
 
 # 10.18 day33
 
-- 重温前边call、apply、bind的知识点
-
-- 快速过一遍Vue的官方教程，弄明白开源的TodoList代码，然后自己动手写一个明天能用的。
-
-- 继续看《JS高级程序设计》
-
 - Vue
 
   - 声明式渲染：用一个简洁的模板来声明式地将数据渲染到DOM系统。
@@ -2075,6 +2069,33 @@ alert($("#div")) // [object Object]
 
   - Array.isArray( )，不要用instanceof Array，因为后者无法辨识多个全局执行环境
 
+    ```javascript
+    var iframe = document.createElement("iframe");
+    document.body.appendChild(iframe);
+    xArray = window.frames[window.frames.length-1].Array; //这个的意思其实是找到最新的frame，也就是刚才创建的iframe，可以认为是一个新的网页，然后调用里边的Array，命名为xArray
+    var arr = new xArray(1, 2, 3); //[1, 2, 3]
+    
+    // 正确检测出为数组类型
+    Array.isArray(arr) // true
+    // 用instanceof Array方法出错了，因为在多frames环境下不适用
+    arr instanceof Array; // false
+    // 这个所谓常用方法也出错了。
+    arr.constructor == Array; // false
+    ```
+    
+  - 若没有Array.isArray()，则在其他代码之前运行下面代码来创建该方法
+    
+    ```javascript
+    if (!Array.isArray) {
+      Array.isArray = function(arg) {
+          // 在原型找
+        return Object.prototype.toString.call(arg) === '[object Array]';
+      };
+    }
+    ```
+    
+    
+
 - sort在比较每一项的时候，会先调用各项toString( ) 方法，所以是对各项的字符串值比较
 
   ```javascript
@@ -2185,7 +2206,7 @@ alert($("#div")) // [object Object]
     
 
 ---
-# 10.23 day36
+# 10.23 day37
 - \<time\>
   
   - \<time\> 标签是 HTML5 中的新标签。
@@ -2243,4 +2264,157 @@ alert($("#div")) // [object Object]
 
   ![如图](/img/positionAbsoluteAndRelative.png)
 
--  
+  - relative相对定位都以它原本元素出现位置为基准进行平移，注意relative移动后的元素仍会占据原本出现的位置空间；
+  - absolute绝对定位是以最接近的已定位的父元素进行定位，若没有父元素设置定位属性，则以body为基准
+
+- \<link\>和@import
+
+  -  \<link\>是XHTML的标签，除了加载CSS之外，还可以定义RSS等其他业务；@import属于CSS范畴，只能加载CSS；
+  -  当一个页面被加载时，\<link\>所引用的CSS会当程序运行到\<link\>所处位置时被加载；而@import会等页面全部加载完再加载所引用的CSS；
+  -  \<link\>是XHTML标签，无兼容问题；@import在CSS2.1提出，低版本浏览器不支持；
+  -  link支持JavaScript控制DOM去改变样式，而@import只能加载CSS文件，所以不支持。
+
+- 为什么网页要符合W3C标准
+
+  - https://validator.w3.org/docs/help.html#why-validate
+  -  为了规范化、统一化。符合此标准的网站，在相同客户端浏览器上渲染出来的页面是一致的
+
+- HTTP常见相应代码
+
+  -  200：请求成功；
+  -  403：表示资源不可用，服务器理解客户的请求，但拒绝处理它，通常由于服务器上文件或目录的权限设置导致的WEB访问错误；
+  -  404：请求失败，请求的资源服务器未能提供；
+  -  500：服务器遇到了不知道如何处理的情况；
+  -  502：服务器作为网关需要得到一个处理这个请求的响应，但是得到一个错误的响应；
+  -  503：服务器没有准备好处理请求。 常见原因是服务器因维护或重载而停机。
+
+---
+# 10.24 day38
+
+- font-size: 62.5%？
+  - 《响应式Web设计实践》中提到过这一点，桌面浏览器默认页面字体大小是16px，这种情况下设置成具体像素大小或者对应的百分比，看起来的效果是一样的，但是其他类型的设备的默认字体大小不一定是16px,特别是高分辨率的设备，16px大小的字体在它们上面看起来会非常小；
+  - 这是因为HTML默认的font-size是1em = 16px，1em = 100%。为了兼容性采用使用了百分比的rem（root-em）的方式，默认1rem = 10px，所以1rem = 62.5%em = 62.5%
+  
+- 垂直居中：
+  - display: flex
+  - transform
+  - display：table + inline-block
+  
+- [网页特殊符号(HTML字符实体)大全](https://blog.csdn.net/u013778905/article/details/53177042)
+
+- window.opener
+
+  - 返回创建调用对象（窗口）的window对象，可理解为指向其源窗口
+
+    ```html
+    <!DOCTYPE html>
+    <html>
+    <head>
+    <meta charset="utf-8">
+    <title>菜鸟教程(runoob.com)</title>
+    <script>
+    function openWin(){
+        myWindow=window.open('','','width=200,height=100');
+        myWindow.document.write("<p>这是'我的窗口'</p>");
+        myWindow.focus();
+        myWindow.opener.document.write("<p>这是父窗口");
+    }
+    </script>
+    </head>
+    <body>
+    
+    <input type="button" value="打开窗口" onclick="openWin()" />
+    
+    </body>
+    </html>
+    ```
+
+    
+
+- JS脚本直接写HTML
+
+  - document.write
+    - 直接在页面写内容，覆盖页面内容，写死的
+  - innerHTML
+    - 是DOM元素对象的一个属性，用于设置内容
+
+- innerHTML、innerText、textContent、outerHTML
+
+  - textContent是Node对象属性，innerText是HTMLElement对象属性，innerHTML是Element对象属性。innerHTML原封不动返回嵌套在调用对象内的所有内容，包括嵌套的标签。“innerText”和“textContent”是无法把html标签转化成标签的，而是当做纯文本内容显示出来，textContent包括 `<script>` 和 `<style>` 元素的文本内容，然而 innerText 不显示包括在其中的内容。直接使用innerHTML可能会遭受XSS攻击。
+
+  -   使用innerText 会有兼容性，低版本的火狐浏览器不支持使用，而是支持使用textContent
+
+    ```javascript
+    // 兼容性设置
+    function getInnerText(element){
+        return (typeof element.textContent == "string")?element.textContent : element.innerText;
+    }
+    ```
+  - 另外，innerHTML获取对象起始标签和结束标签内的HTML，outerHTML获取对象及其内容的HTML
+    
+
+- 昨天的笔试题：统计给定字符串中出现次数最多的字符，返回该字符和出现的次数 --> 没用过字典啊，伤！
+
+  ```javascript
+  // 昨天写的时候直接用两个数组遍历，之前没用过JS的字典类型，现在重新写一下
+  // 其实字典的原型就是Array类。
+  // 如果Max有多个，只能检测出第一个，小bug得改改。
+  var str = 'asdfkljgornlknxknaldfhojvfgnpbmskoiuxlkjvsejnklvn';
+  var result = {}
+  for(var i = 0; i < str.length; i++){
+      if(!result[str.charAt(i)]){
+          result[str.charAt(i)] = 1;
+      }
+      else{
+          result[str.charAt(i)]++;
+      }
+  }
+  console.log(result)
+  
+  var Max = 0, Char = '';
+  for(var key in result){
+      if(result[key] > Max){ 
+          Max = result[key];
+          Char = key;
+      }
+  }
+  
+  console.log("出现次数最多的是" + Char + "，出现次数为" + Max + "次");
+  ```
+
+  
+
+- 如何判断一个字符串真的是String类型
+
+- 如何判断一个数组真的是Array类型
+
+  ```javascript
+  if(!Array.isArray){
+      Array.isArray = function(arg){
+          return Object.prototype.toString.call(arg) === '[object Array]'
+      }
+  }
+  ```
+
+  
+
+- 交换两数
+
+  ```javascript
+  // 无需开辟新的存储空间，只使用数值型
+  a ^= b;
+  b ^= a;
+  a ^= b;
+  
+  // 万能法，使用任何类型
+  a=[b,b=a][0] // 其实就是a=b,b=a的浓缩形式，构造得很巧妙。
+  ```
+
+- [JavaScript排序算法总结](https://juejin.im/post/57dcd394a22b9d00610c5ec8)
+
+  - 冒泡排序：核心是两两比较，遇到前者比后者大的就互换，最多得执行n-1遍，出来结果是升序。
+    - 传统冒泡排序中每一趟排序操作只能找到一个最大值或最小值,我们考虑利用在每趟排序中进行正向和反向两遍冒泡的方法一次可以得到两个最终值(最大者和最小者) , 从而使排序趟数几乎减少了一半
+  - 
+
+- node.js的优缺点
+
