@@ -2262,7 +2262,7 @@ alert($("#div")) // [object Object]
 
 - 相对定位、绝对定位
 
-  ![如图](/img/positionAbsoluteAndRelative.png)
+  ![如图](img/positionAbsoluteAndRelative.png)
 
   - relative相对定位都以它原本元素出现位置为基准进行平移，注意relative移动后的元素仍会占据原本出现的位置空间；
   - absolute绝对定位是以最接近的已定位的父元素进行定位，若没有父元素设置定位属性，则以body为基准
@@ -2416,5 +2416,11 @@ alert($("#div")) // [object Object]
     - 传统冒泡排序中每一趟排序操作只能找到一个最大值或最小值,我们考虑利用在每趟排序中进行正向和反向两遍冒泡的方法一次可以得到两个最终值(最大者和最小者) , 从而使排序趟数几乎减少了一半
   - 
 
+---
+# 10.25 day39
 - node.js的优缺点
-
+- boostrap是什么？
+- A*算法
+  - 核心思想：
+  - A* in JS
+- 
