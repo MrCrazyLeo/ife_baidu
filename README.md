@@ -2051,7 +2051,7 @@ alert($("#div")) // [object Object]
 - 垃圾收集
 
   - 标记清除 mark-and-sweep
-  - 引用计数 reference counting
+  - 引用计数 reference counting 
 
 - JS栈
 
@@ -2340,7 +2340,7 @@ alert($("#div")) // [object Object]
 
 - innerHTML、innerText、textContent、outerHTML
 
-  - textContent是Node对象属性，innerText是HTMLElement对象属性，innerHTML是Element对象属性。innerHTML原封不动返回嵌套在调用对象内的所有内容，包括嵌套的标签。“innerText”和“textContent”是无法把html标签转化成标签的，而是当做纯文本内容显示出来，textContent包括 `<script>` 和 `<style>` 元素的文本内容，然而 innerText 不显示包括在其中的内容。直接使用innerHTML可能会遭受XSS攻击。
+  - textContent是Node对象属性，innerText是HTMLElement对象属性，innerHTML是Element对象属性。innerHTML原封不动返回嵌套在调用对象内的所有内容，包括嵌套的标签。“innerText”和“textContent”是无法把html标签转化成标签的，而是当做纯文本内容显示出来，**textContent包括 `<script>` 和 `<style>` 元素的文本内容，然而 innerText 不显示包括在其中的内容**。直接使用innerHTML可能会遭受XSS攻击。
 
   -   使用innerText 会有兼容性，低版本的火狐浏览器不支持使用，而是支持使用textContent
 
@@ -2350,8 +2350,12 @@ alert($("#div")) // [object Object]
         return (typeof element.textContent == "string")?element.textContent : element.innerText;
     }
     ```
+    
   - 另外，innerHTML获取对象起始标签和结束标签内的HTML，outerHTML获取对象及其内容的HTML
     
+  - textContent会获取display:none的节点的文本；而innerText好像会感知到节点是否呈现一样，不作返回。也就是说，textContent能够获取元素的所有子节点上的文本，不管这个节点是否呈现；而innerText只返回呈现到页面上的文本。
+    
+  - 由于 innerText 受 CSS 样式的影响，它会触发重排（reflow），但 textContent 不会
 
 - 昨天的笔试题：统计给定字符串中出现次数最多的字符，返回该字符和出现的次数 --> 没用过字典啊，伤！
 
@@ -2407,20 +2411,168 @@ alert($("#div")) // [object Object]
   a ^= b;
   
   // 万能法，使用任何类型
-  a=[b,b=a][0] // 其实就是a=b,b=a的浓缩形式，构造得很巧妙。
+  a=[b,b=a][0] // 这个数组第一个值是b，第二个值是执行 b = a 的结果，最后a取这个数组的第一个值
   ```
 
 - [JavaScript排序算法总结](https://juejin.im/post/57dcd394a22b9d00610c5ec8)
 
   - 冒泡排序：核心是两两比较，遇到前者比后者大的就互换，最多得执行n-1遍，出来结果是升序。
+    
     - 传统冒泡排序中每一趟排序操作只能找到一个最大值或最小值,我们考虑利用在每趟排序中进行正向和反向两遍冒泡的方法一次可以得到两个最终值(最大者和最小者) , 从而使排序趟数几乎减少了一半
+    
+      ```javascript
+      // 原始冒泡排序
+      function bubbleSort(arr){
+          var len = arr.length;
+          for(var i = 0; i< len -1; i++){ // 总共n-1趟就可以了
+              for(var j = 0; j < len-1; j++){
+                  if(arr[j] > arr[j+1]) arr[j] = [arr[j+1], arr[j+1] = arr[j]][0]; // 万能互换法
+              }
+          }
+          return arr;
+      }
+      var arr=[3,44,38,5,47,15,36,26,27,2,46,4,19,50,48];
+      console.log(bubbleSort(arr));
+      ```
+    
+      ```javascript
+      
+      ```
+    
+      
+    
+      ```javascript
+      // 同趟正反双冒泡
+      function bubbleSort(arr){
+          var low = 0;
+          var high = arr.length - 1;
+          var j=0;
+          while(low < high){
+              for(j = low; j < high; j++){ // 正向冒泡，每趟找到该趟最大者
+                  if(arr[j] > arr[j+1]){
+                      arr[j] = arr[j+1] ^ arr[j];
+                      arr[j+1] = arr[j+1] ^ arr[j];
+                		arr[j] = arr[j+1] ^ arr[j];}
+              }
+              --high; // 前移一位，去掉当前最大者
+              for(j = high; j > low; j--){ // 反向冒泡，找到该趟最小者
+                  if(arr[j] < arr[j-1]){
+                      arr[j-1] = arr[j] ^ arr[j-1];
+                      arr[j] = arr[j] ^ arr[j-1];
+                      arr[j-1] = arr[j] ^ arr[j-1];}
+      		}
+              ++low;
+          }
+      	return arr;}	
+      }
+      ```
+    
+      ```javascript
+      // 同趟正反双冒泡标记法
+      ```
+    
+      
   - 
 
 ---
 # 10.25 day39
 - node.js的优缺点
+  - 优点：使用事件驱动、非阻塞式I/O模型；轻量、高效；前后端可以用同一种语言写，减轻开发者负担
+  - 缺点：不适合构建大型服务器网站
 - boostrap是什么？
 - A*算法
   - 核心思想：
   - A* in JS
+- BFC：块格式化上下文
+- 如何搭建一个购物车？
+
+  
+
+---
+
+# 10.26 day40
+
+- css3跟css2有什么区别？
+
+- JS中有set()函数吗？
+
+  - ES6才提供的新的数据结构Set
+
+  - 对数组重复元素进行删除并排序
+
+    ```javascript
+    var array = [1,2,3,4,5,6,2,4,5,1];
+    var set = new Set(array);
+    array = Array.from(set);
+    array.sort(function(a,b){return a-b}) // [1, 2, 3, 4, 5, 6]
+    ```
+    
+  - set 通过values()\keys()取得内部的items
+  
+  - 拓展运算符（...）内部使用for...of循环，所以也可以用于Set结构。将扩展运算符与Set结合，可以去除数组的重复成员。
+  
+    ```javascript
+    var arr = [3, 5, 2, 2, 5, 5];
+    var unique = [...new Set(arr)]; 
+    unique; // [3, 5, 2]
+    ```
+  
+  - 数组的`map`和`filter`方法也可以间接用于 Set 了
+  
+    ```javascript
+    var set = new Set([1, 2, 3]);
+    set = new Set([...set].map(x => x * 2));
+    console.log(set);
+    // 返回Set结构：{2, 4, 6}
+    
+    var set = new Set([1, 2, 3, 4, 5]);
+    set = new Set([...set].filter(x => (x % 2) == 0));
+    console.log(set);
+    // 返回Set结构：{2, 4}
+    ```
+
+
+- JS辗转相除求最大公约数
+
+  ```javascript
+  function f(num1, num2){
+  	var yushu = 0;
+  	if(num1 < num2){
+  		num1 = [num2, num2 = num1][0];} // 保证num1大于等于num2
+  	yushu = num1 % num2;
+  	if(yushu !== 0){
+  		num1 = num2;
+  		num2 = yushu;
+  		}
+  	return yushu == 0? num2 : f(num1, num2)} // 如果余数为0，返回较小的值作为最大公约数，如果不为0，继续递归求值
+  ```
+
+- JavaScript11种内置对象：
+
+
+  - Array、String、Boolean、Number、Math、Object、Date、Function、Global、Error、RegExp
+
+- JavaScript的typeof有6种：object、function、string、boolean、number、undefined
+
+
+
+---
+
+# 10.27 day38
+
+- **JavaScript中没有类的概念！！！** **JavaScript中没有类的概念！！！** **JavaScript中没有类的概念！！！**
+
+  > ECMAScript中没有类的概念。
+  >
+  > ECMA-262把对象定义为：“无序属性的集合，其属性可以包含其他值、对象或者函数。” 
+
+- 类
+
+  - 类是ES6引入的，实质上是JavaScript现有的基于原型继承的**语法糖**。类语法不会为JavaScript引入新的面向对象的继承模型
+  - 函数声明会提升，但是类声明并不会。因此要先声明类再使用。
+  - 一个类只能有一个constructor初始化方法，包含多个会报错。
+  - 一个构造函数可以使用super关键字来调用一个父类的构造函数
+  - static关键字用来定义一个类的静态方法。静态方法通常用于为一个应用程序创建工具函数。
+
 - 
+
