@@ -27,8 +27,7 @@ ife_baidu
 # 09.10 day2
 - - JS中表示“假”：0、0.0、NaN、""、null和undefined；
   - 表示“真":除上边几个的其他所有，比如字符串零（"0"） 
--
-    |    表达式    | 真假  |
+|    表达式    | 真假  |
     | :----------: | :---: |
     |  10 < "42"   | true  |
     | 10 < "42人"  | false |
@@ -62,7 +61,7 @@ ife_baidu
 ---
 # 09.11 day3
 - **DOM**，Document Objuct Model，文档对象模型，是HTML和XML编程接口。
-- \<button \>貌似没有data-value这个属性啊，什么鬼。
+- \<button\>貌似没有data-value这个属性啊，什么鬼。
 - Node类型：文档类、元素类、文本类、属性类、内容类
 
 ---
@@ -2478,11 +2477,17 @@ alert($("#div")) // [object Object]
 - node.js的优缺点
   - 优点：使用事件驱动、非阻塞式I/O模型；轻量、高效；前后端可以用同一种语言写，减轻开发者负担
   - 缺点：不适合构建大型服务器网站
+  
 - boostrap是什么？
+
+  - 一个UI库，太老了，直接学Ant Design等新库吧
+
 - A*算法
   - 核心思想：
   - A* in JS
+  
 - BFC：块格式化上下文
+
 - 如何搭建一个购物车？
 
   
@@ -2491,30 +2496,99 @@ alert($("#div")) // [object Object]
 
 # 10.26 day40
 
-- css3跟css2有什么区别？
+- css3新特性：
 
   - 边框样式：CSS3增加了圆角边框（border-radius）、阴影框（box-shadow）、边框图片（border-image）
+
   - 背景样式：新增了几种背景属性background-image背景图片、background-size背景图片大小、background-origin指定背景图像的位置区域（content-box, padding-box,和 border-box）、background-clip从指定位置开始绘制；还有增加了多重背景
+
   - 渐变样式：linear-gradient，可以设置线性渐变、透明度；repeating-linear-gradient()设置多重线性渐变；radial-gradient，径向渐变，外加shape 参数定义了形状，可以是值 circle 或 ellipse，默认ellipse；repeating-radial-gradient()多重径向渐变
+
   - 文字效果
-    - text-shadow，向文本添加阴影。
+    - text-shadow，向文本添加阴影。水平阴影，垂直阴影，模糊的距离，以及阴影的颜色
     - box-shadow，添加盒子阴影
     - text-overflow，规定当文本溢出包含元素时发生的事情。
     - word-wrap，允许对长的不可分割的单词进行分割并换行到下一行。
     - word-break，规定非中日韩文本的换行规则。
+    
   - 字体
+    
     - @font-face 可以使用网络字体
-  - 2D、3D转换
+    
+  - 2D、3D转换 transform
+    
     - 旋转，缩放，移动（平移）和倾斜
-  - 过渡trainsition
+    
+  - 过渡trainsition：CSS属性 花费时间 效果曲线(默认ease) 延迟时间(默认0)
+
   - 动画
+
+    - **@keyframes**规则，就是中间关键帧啦。
+
+      ```scss
+      div
+      {
+      	width:100px;
+      	height:100px;
+      	background:red;
+      	position:relative;
+      	animation:myfirst 5s linear 2s infinite alternate;
+      }
+      
+      @keyframes myfirst
+      {
+      	0%   {background:red; left:0px; top:0px;}
+      	25%  {background:yellow; left:200px; top:0px;}
+      	50%  {background:blue; left:200px; top:200px;}
+      	75%  {background:green; left:0px; top:200px;}
+      	100% {background:red; left:0px; top:0px;}
+      }
+      
+      ```
+
+      
+
   - 多列布局
+
   - 用户界面：resize、box-sizing、outline-offset、
+
   - **媒体查询**@media
+
+    ```css
+    @media not|only mediatype and (expressions) {
+        CSS 代码...;
+    }
+    ```
+
   - 图片
     - filter 图片滤镜属性，为元素添加可视效果 (例如：模糊与饱和度) 。
-    - 模态
-  - 
+    - 模态Modal
+    
+  - 弹性盒子：`display: flex`
+
+  - 网格模型：`display: grid`
+
+  - 目标伪类 `:target`：可以为活动的锚点设置样式
+
+  - UI元素状态伪类 `:enabled`匹配启用的元素、`:disable`匹配禁用的元素、`:checked`匹配被选中的元素
+
+  - 结构性伪类
+
+    - `:root`匹配文档根元素； 
+    - ` :nth-child(n)`匹配其父元素的第n个子元素； 
+    - `:nth-last-child(n)`匹配其父元素倒数第n个元素； 
+    - `:nth-of-type(n)`匹配父元素第n个有相同选择器的子元素； 
+    - `:nth-last-of-type`匹配其父元素倒数第n个有相同选择器的子元素； 
+    - `:first-child`匹配其父元素的第一个子元素； 
+    - `lat-child`匹配其父元素最后一个子元素； 
+    - `first-of-type`匹配父元素第1个有相同选择器的子元素 ；
+    - `last-of-type`匹配父元素最后一个有相同选择器的子元素； 
+    - `only-child` 匹配其父元素唯一有着相同选择器的子元素
+    - `empty`匹配没有子元素（包括文字节点）的元素
+  
+ - 语言伪类`:lang(val)`，匹配带有指定lang属性的元素
+
+- 否定伪类`:not(style)`，匹配所有非指定类型元素的其他元素
 
 - JavaScript中有set()函数吗？
 
@@ -2558,17 +2632,16 @@ alert($("#div")) // [object Object]
 
   ```javascript
   function f(num1, num2){
+      if(num1 < 1 || num2 < 1 || parseInt(num1) !== num1 || parseInt(num2) !== num2){
+          throw "ERROR：请输入正整数";
+      }
   	var yushu = 0;
   	if(num1 < num2){
   		num1 = [num2, num2 = num1][0];} // 保证num1大于等于num2
   	yushu = num1 % num2;
-  	if(yushu !== 0){
-  		num1 = num2;
-  		num2 = yushu;
-  		}
-  	return yushu == 0? num2 : f(num1, num2)} // 如果余数为0，返回较小的值作为最大公约数，如果不为0，继续递归求值
+  	return yushu == 0? num2 : f(num2, yushu)} // 如果余数为0，返回较小的值作为最大公约数，如果不为0，继续递归求值
   ```
-
+  
 - JavaScript11种内置对象：Array、String、Boolean、Number、Math、Object、Date、Function、Global、Error、RegExp
 
 - JavaScript的typeof有6种：object、function、string、boolean、number、undefined
@@ -2815,5 +2888,42 @@ alert($("#div")) // [object Object]
 
   - IE不支持
 
-- 
+- 重温**CSS组合选择器**
 
+  - 紧邻兄弟选择器`A + B`：节点B紧邻着节点A，并且拥有共同的父节点
+  - 一般兄弟选择器`A ~ B`：节点B在节点A后面的任意位置，并且这俩节点的父节点相同。（CSS3）
+  - 孩子选择器`A > B`：选择节点A的所有直接子节点B。
+  - 后代选择器`A B`：选择节点A下所有子节点B，无论B是否是直接子节点。
+
+- `:`表示伪类，`::`表示伪元素，虽然一般都可以用`:`表示伪类和伪元素，但是严谨点比较好。
+
+- 属性前缀：
+
+  之所以要加属性前缀，是因为在某个属性成为W3C标准之前，一部分浏览器产商已经先有了对应实现，此时还只是该浏览器的私有属性，因为需要加入前缀以示区分。
+
+- Modernizr.js ：
+
+  检查浏览器端属性支持情况的js库，支持定制检查。
+
+- 使用`::before`和`::after`两个伪元素时，content属性必须设置，否则伪元素不能生效，如果不想显示content内容，可以将其设置为空值。
+
+- `!!`就是将所有其他类型都转换成boolean型
+
+  ```javascript
+  var foo,goo;  
+  alert(!foo);//undifined情况下，一个感叹号返回的是true;  
+  alert(!goo);//null情况下，一个感叹号返回的也是true;  
+  var o={flag:true};  
+  var test=!!o.flag;//等效于var test=o.flag||false;  
+  alert(test);  
+  
+  这段例子，演示了在undifined和null时，用一个感叹号返回的都是true,用两个感叹号返回的就是false,所以两个感叹号的作用就在于，如果明确设置了变量的值（非null/undifined/0/""等值),结果就会根据变量的实际值来返回，如果没有设置，结果就会返回false。
+  ```
+
+- 选择器权重：
+
+  - 分4个等级：内联样式；ID选择器；类、伪类、属性选择器；元素、伪元素。内联样式优先级最高，元素和伪元素的优先级最低，最终权重根据不同的优先级加权运算。
+  - `!important`可以将规则提升到最高权重。
+  - 由于从右向左匹配，建议用更简短、更容易被查找到的选择器
+
+- 
