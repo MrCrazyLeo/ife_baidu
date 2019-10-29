@@ -2,7 +2,7 @@ ife_baidu
 
 百度前端技术学院的作业代码仓库
 ---- 
-# 09.09 day 1
+# 09.09 day1
 
 - HTML5新增特性：
   - 用于绘画的canvas元素；（\<canvas\>只是图形容器，需要用js脚本来绘制）
@@ -24,7 +24,7 @@ ife_baidu
 - web语义化是使用恰当的html标签、class类名让页面有良好的结构和含义，方便人和机器理解。
 
 ---
-# 09.10 day 2
+# 09.10 day2
 - - JS中表示“假”：0、0.0、NaN、""、null和undefined；
   - 表示“真":除上边几个的其他所有，比如字符串零（"0"） 
 -
@@ -60,13 +60,13 @@ ife_baidu
   - JS变量生命周期在它声明时初始化，局部变量在函数执行完毕后销毁；全局变量在页面关闭后销毁。
 
 ---
-# 09.11 day 3
+# 09.11 day3
 - **DOM**，Document Objuct Model，文档对象模型，是HTML和XML编程接口。
 - \<button \>貌似没有data-value这个属性啊，什么鬼。
 - Node类型：文档类、元素类、文本类、属性类、内容类
 
 ---
-# 09.12 day 4
+# 09.12 day4
 - display:flex 弹性布局，参考[阮一峰大佬的文章](http://www.ruanyifeng.com/blog/2015/07/flex-grammar.html)
 
 - 相对长度<br>
@@ -93,12 +93,12 @@ ife_baidu
   |pc|pica|
 
 ---
-# 09.13 day 5
+# 09.13 day5
 - JS是由ECMAScript、DOM、BOM组成。
 - JS字符串不可改变，除非重新赋值。
 
 ---
-# 09.14 day 6
+# 09.14 day6
 - 逆波兰表达式：又叫“后缀表达式”，需要利用一个栈和一个输出字符串Output，从左到右读入中缀表达式：
 ```javascript
 class Stack {
@@ -266,11 +266,11 @@ var re = new RegExp("ab+c");
 - flexbox盒子模型
 
 ---
-# 09.15 day 7
+# 09.15 day7
 - JS里的快排，[阮一峰大神的博客](http://www.ruanyifeng.com/blog/2011/04/quicksort_in_javascript.html)，主要用了递归和分治法的思想。
 
 ---
-# 09.16 day 8
+# 09.16 day8
 - 斐波那契数列的解法：
 ```
 create a Fibonacci function, fabonacci(n), which returns the nth element of the Fibonacci sequence
@@ -340,7 +340,7 @@ function hideVowel(str){
   |childNodes|所有子节点的数目|
 
   ---
-# 09.17 day 9
+# 09.17 day9
 - 文档节点和元素节点可以拥有子节点，但是文本节点和属性节点不行；
 - window.onload()：用于浏览器加载完网页之后立刻执行某些操作。这是因为JS中的函数方法等需要在HTML文件渲染完成之后才可使用；如果没有渲染完成，此时的DOM树是不完整的，这样JS文件可能报出“undefined”错误。
 - |BOM对象|描述|
@@ -373,13 +373,13 @@ function hideVowel(str){
 
 
 ---
-# 09.18 day 10
+# 09.18 day10
 - 什么时候不带“( )”，什么时候带？
 > 加括号会立即调用函数。
 - HTML文档和DOM都是树型结构，因此当一个事件发生的时候，既作用在当前元素上，也作用在当前元素的父元素和祖先元素上。
 
 ---
-# 09.19 day 11
+# 09.19 day11
 - Don`t write a loaded document.
 - 给事件添加监听器，方法第一个参数为时间名，第二个参数为事件处理器。
 ```javascript
@@ -392,12 +392,12 @@ button.addEventListener('click', function(){alert('hello world');});
   |  window  | 浏览器窗口                                                   |
 
 ---
-# 09.20 day 12
+# 09.20 day12
 - JS中的let：可以代替var。es6的新特性。
 - 当使用 position 属性时，IE8 以及更早的版本存在一个问题。如果容器元素（在我们的案例中是 <div class="container">）设置了指定的宽度，并且省略了 !DOCTYPE 声明，那么 IE8 以及更早的版本会在右侧增加 17px 的外边距。这似乎是为滚动条预留的空间。当使用 position 属性时，请始终设置 !DOCTYPE 声明。
 
 ---
-# 09.21 day 13
+# 09.21 day13
 - ES6中新增了两个重要的关键字：**let**和**const**。let声明的变量只在let命令所在的代码块中有效；const声明一个只读变量，一旦声明就不能改变。ES6之前，JS只有全局变量和函数内局部变量这两种作用域。let可以理解为局部变量的局部变量。关于js作用域的范围，我还理解不够彻底。
 ```javascript
 var x = 10;
@@ -426,7 +426,7 @@ var x = 10;
 - do{....}while(...)相比while(...){...}，无论while的条件满不满足，前者都会执行一次循坏的代码块，后者则不会。
 
 ---
-# 09.22 day 14
+# 09.22 day14
 - nested function嵌套函数
 ```javascript
 var outer = function(){
@@ -592,7 +592,7 @@ sayHello.call(peter, 'hello', 'Marry'); // peter says hello to Marry
 
 ---
 
-# 09.23 day 15
+# 09.23 day15
 
 - 无法向已存在的对象构造器中添加新属性，但是可以通过对象的原型属性（prototype）给对象的构造函数添加新的属性
 - 原型链
@@ -607,7 +607,7 @@ sayHello.call(peter, 'hello', 'Marry'); // peter says hello to Marry
 
 ---
 
-# 09.24 day 16
+# 09.24 day16
 
 - JS中万物皆对象，但是对象有别，分为普通对象Object和函数对象Function。姑且理解变量声明时带function或者Functioin的就是函数对象，其他是普通对象。每个对象都有\_\_proto\_\_属性，但是**只有函数对象才有prototype属性**。
 
@@ -2063,7 +2063,7 @@ alert($("#div")) // [object Object]
   - 队列队头添加，队尾移除：unshift( ) & pop( )
 
 ---
-# 10.21 day 35
+# 10.21 day35
 
 - 检测数组
 
@@ -2471,7 +2471,6 @@ alert($("#div")) // [object Object]
       // 同趟正反双冒泡标记法
       ```
     
-      
   - 
 
 ---
@@ -2494,7 +2493,30 @@ alert($("#div")) // [object Object]
 
 - css3跟css2有什么区别？
 
-- JS中有set()函数吗？
+  - 边框样式：CSS3增加了圆角边框（border-radius）、阴影框（box-shadow）、边框图片（border-image）
+  - 背景样式：新增了几种背景属性background-image背景图片、background-size背景图片大小、background-origin指定背景图像的位置区域（content-box, padding-box,和 border-box）、background-clip从指定位置开始绘制；还有增加了多重背景
+  - 渐变样式：linear-gradient，可以设置线性渐变、透明度；repeating-linear-gradient()设置多重线性渐变；radial-gradient，径向渐变，外加shape 参数定义了形状，可以是值 circle 或 ellipse，默认ellipse；repeating-radial-gradient()多重径向渐变
+  - 文字效果
+    - text-shadow，向文本添加阴影。
+    - box-shadow，添加盒子阴影
+    - text-overflow，规定当文本溢出包含元素时发生的事情。
+    - word-wrap，允许对长的不可分割的单词进行分割并换行到下一行。
+    - word-break，规定非中日韩文本的换行规则。
+  - 字体
+    - @font-face 可以使用网络字体
+  - 2D、3D转换
+    - 旋转，缩放，移动（平移）和倾斜
+  - 过渡trainsition
+  - 动画
+  - 多列布局
+  - 用户界面：resize、box-sizing、outline-offset、
+  - **媒体查询**@media
+  - 图片
+    - filter 图片滤镜属性，为元素添加可视效果 (例如：模糊与饱和度) 。
+    - 模态
+  - 
+
+- JavaScript中有set()函数吗？
 
   - ES6才提供的新的数据结构Set
 
@@ -2547,10 +2569,7 @@ alert($("#div")) // [object Object]
   	return yushu == 0? num2 : f(num1, num2)} // 如果余数为0，返回较小的值作为最大公约数，如果不为0，继续递归求值
   ```
 
-- JavaScript11种内置对象：
-
-
-  - Array、String、Boolean、Number、Math、Object、Date、Function、Global、Error、RegExp
+- JavaScript11种内置对象：Array、String、Boolean、Number、Math、Object、Date、Function、Global、Error、RegExp
 
 - JavaScript的typeof有6种：object、function、string、boolean、number、undefined
 
@@ -2558,7 +2577,7 @@ alert($("#div")) // [object Object]
 
 ---
 
-# 10.27 day38
+# 10.27 day41
 
 - **JavaScript中没有类的概念！！！** **JavaScript中没有类的概念！！！** **JavaScript中没有类的概念！！！**
 
@@ -2569,10 +2588,211 @@ alert($("#div")) // [object Object]
 - 类
 
   - 类是ES6引入的，实质上是JavaScript现有的基于原型继承的**语法糖**。类语法不会为JavaScript引入新的面向对象的继承模型
+
   - 函数声明会提升，但是类声明并不会。因此要先声明类再使用。
+
   - 一个类只能有一个constructor初始化方法，包含多个会报错。
+
   - 一个构造函数可以使用super关键字来调用一个父类的构造函数
+
   - static关键字用来定义一个类的静态方法。静态方法通常用于为一个应用程序创建工具函数。
 
-- 
+    
+---
+# 10.28 day42
 
+- **由于不存在函数签名的特性，ECMAScript函数不能重载**
+
+- 创建对象
+
+  - 工厂模式
+
+    ```javascript
+    function createPerson(name, age, job){
+        var o = new Object; // 记得要创建一个新对象
+        o.name = name;
+        o.age = age;
+        o.job = job;
+        o.sayName = function(){
+            alert(this.name);
+        }
+        return o; // 记得要return
+    }
+    
+    var person1 = createPerson("leo", 24, "Software Engineer");
+    ```
+
+    - 工厂模式虽然解决了多个相似对象的问题，但是**没有解决对象识别的问题**，即不能用instanceof之类的函数来检测对象是不是属于该类。
+
+  - 构造函数模式
+
+    ```javascript
+    function Person(name, age, job){
+        this.name = name;
+        this.age = age;
+        this.job = job;
+        this.sayName = function(){
+            alert(this.name);
+        }
+    }
+    var person1 = new Person("leo", 24, "Software Engineer");
+    ```
+
+    - 缺点：每个方法要在每个实例上重新创建一遍。
+
+  - 原型模式
+
+- 复习字符串的加减规则 
+
+- 严格模式
+
+  - 旨在提前发现错误，及时捕获一些可能导致编程错误的ECMAScript行为；
+  - "use strict"这种模式可以向后兼容不支持严格模式的JavaScript引擎。对于支持严格模式的引擎会启动，对于不支持的引擎则是当作遇到了一个未赋值的字符串字面量而忽略这一编译指令。
+  - 变量：
+    - 没有声明的变量赋值，抛出ReferenceError；
+    - 不能使用implements、interface、let、package、private、peotected、public、static和yield这些保留字作为变量名
+  - 对象：
+    - 为只读属性赋值抛出TypeError
+    - 为不可配置属性使用delete操作符会抛出TypeError
+    - 为不可拓展对象添加属性会抛出TypeError
+    - 同一对象内不能有重名属性名
+  - 函数
+    - 命名函数的参数必须唯一，否则抛出错误
+    - arguments的值仍然是传入的值
+    - 淘汰了arguments.callee和arguments.caller
+    - 与变量相似，不能使用implements、interface、let、package、private、peotected、public、static和yield这些保留字作为函数名
+  - eval()
+    - 在包含的上下文中不再创建变量或者函数。
+    - 虽然可以在eval()中声明变量和函数，但这些变量或函数只能在被求值的特殊作用域中有效，随即被销毁。
+    - 明确禁止eval和arguments作为标识符，也不允许读写它们的值
+  - 抑制this
+    - 在非严格模式下，使用apply或call时，null或undefined值会转换成全局对象，而严格模式则仍然是null或undefined，因此访问null或undefined的属性时就会报错。
+  - 其他变化
+    - 去掉八进制字面量
+    - 修改了parseInt() 的行为
+
+- Electron
+
+  - [Electron构建跨平台应用Mac/Windows/Linux](https://juejin.im/post/5c46ab47e51d45522b4f55b1#heading-45https://juejin.im/post/5c46ab47e51d45522b4f55b1#heading-45)
+  - 是一个用HTML、CSS和JavaScript来构架桌面应用的开源库
+  - `github` 的 `atom` 编辑器、微软的 `vscode` 编辑器，包括阿里内部的一些 软件也是用 `electron` 开发的
+- for、forEach、for...in...、for...of...的区别
+  
+  - for循环
+  
+  - forEach（ES5起）
+  
+    ```javascript
+    myArray.forEach(function (value) {
+      console.log(value);
+    });
+    ```
+  
+    缺点：不能通过break或者return中断循环；
+  
+  - for...in...循环实际是为可枚举（enumerable）对象设计的
+  
+    ```javascript
+    var obj = {a:1, b:2, c:3};
+        
+    for (var prop in obj) {
+      console.log("obj." + prop + " = " + obj[prop]);
+    }
+    
+    // 输出:
+    // "obj.a = 1"
+    // "obj.b = 2"
+    // "obj.c = 3"
+    ```
+  
+    不推荐用for...in...来循环数组
+  
+  - for...of...（ES6）循环可迭代（iterable）对象
+  
+    ```javascript
+    // ------------ 循环数组 ------------
+    var iterable = [10, 20, 30];
+    
+    for (const value of iterable) {
+      console.log(value);
+    }
+    // 10
+    // 20
+    // 30
+    
+    // ------------ 循环字符串 ------------
+    var iterable = "boo";
+    for (let value of iterable) {
+      console.log(value);
+    }
+    // "b"
+    // "o"
+    // "o"
+    
+    // ------------ 循环类型化的数组（TypedArray）------------
+    var iterable = new Uint8Array([0x00, 0xff]);
+    for(let value of iterable){
+        console.log(value);
+    }
+    // 0
+    // 255
+    
+    // ------------ 循环Map ------------ 
+    var iterable = new Map([["a", 1], ["b", 2], ["c", 3]]);
+    for (let [key, value] of iterable) {
+      console.log(value);
+    }
+    // 1
+    // 2
+    // 3
+    for (let entry of iterable) {
+      console.log(entry);
+    }
+    // [a, 1]
+    // [b, 2]
+    // [c, 3]
+    
+    // ------------ 循环Set ------------
+    var iterable = new Set([1, 1, 2, 2, 3, 3]);
+    for (let value of iterable) {
+      console.log(value);
+    }
+    // 1
+    // 2
+    // 3
+    
+    // ------------ 循环一个 DOM collection ------------ 
+    // Note: This will only work in platforms that have
+    // implemented NodeList.prototype[Symbol.iterator]
+    let articleParagraphs = document.querySelectorAll("article > p");
+    
+    for (let paragraph of articleParagraphs) {
+      paragraph.classList.add("read");
+    }
+    
+    // ------------ 循环一个拥有枚举属性的对象 ------------
+    for (var key of Object.keys(someObject)) {
+      console.log(key + ": " + someObject[key]);
+    }
+    
+    // ------------ 循环一个生成器 ------------
+    function* fibonacci() { // a generator function
+      let [prev, curr] = [0, 1];
+      while (true) {
+        [prev, curr] = [curr, prev + curr];
+        yield curr;
+      }
+    }
+    
+    for (let n of fibonacci()) {
+      console.log(n);
+      // truncate the sequence at 1000
+      if (n >= 1000) {
+        break;
+      }
+    }
+    // 输出1到1600之间的斐波那契数
+    ```
+  
+    
+- 
