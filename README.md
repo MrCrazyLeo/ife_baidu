@@ -2676,6 +2676,7 @@ alert($("#div")) // [object Object]
   - [Electron构建跨平台应用Mac/Windows/Linux](https://juejin.im/post/5c46ab47e51d45522b4f55b1#heading-45https://juejin.im/post/5c46ab47e51d45522b4f55b1#heading-45)
   - 是一个用HTML、CSS和JavaScript来构架桌面应用的开源库
   - `github` 的 `atom` 编辑器、微软的 `vscode` 编辑器，包括阿里内部的一些 软件也是用 `electron` 开发的
+  
 - for、forEach、for...in...、for...of...的区别
   
   - for循环
@@ -2795,4 +2796,24 @@ alert($("#div")) // [object Object]
     ```
   
     
+  
+---
+# 10.29 day43
+- box-sizing
+
+  - CSS3新增特性
+
+  - 该属性定义了 [user agent](https://developer.mozilla.org/en-US/docs/Glossary/user_agent) 应该如何计算一个元素的总宽度和总高度。首先，重新认识下盒子模型：
+
+    ![盒子模型](img/boxModel.png)
+
+    默认设置是content-box，如果设置一个元素的width为100px，那么最终绘制出来的元素的content的宽会有100px，如果有任何border或padding，最后绘制出来的元素回比预想大；设置成border-box则会告知浏览器你想要设置的border和padding都是包含在width内的，content区的实际宽度是width减去(border + padding)的值
+
+    ![box-sizing](img/box-sizing.png)
+
+    ![box-sizing动图](img/box-sizing.gif)
+
+  - IE不支持
+
 - 
+
