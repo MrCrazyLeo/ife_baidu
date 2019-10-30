@@ -28,15 +28,15 @@ ife_baidu
 - - JS中表示“假”：0、0.0、NaN、""、null和undefined；
   - 表示“真":除上边几个的其他所有，比如字符串零（"0"） 
 |    表达式    | 真假  |
-    | :----------: | :---: |
-    |  10 < "42"   | true  |
-    | 10 < "42人"  | false |
-    | 10 > "42人"  | false |
-    | 10 == "42人" | false |
-    |  42 == "42"  | true  |
-    | 42 == "42.0" | true  |
-    | 42 === 42.0  | true  |
-    | 42 === "42"  | false |
+| :----------: | :---: |
+|  10 < "42"   | true  |
+| 10 < "42人"  | false |
+| 10 > "42人"  | false |
+| 10 == "42人" | false |
+|  42 == "42"  | true  |
+| 42 == "42.0" | true  |
+| 42 === 42.0  | true  |
+| 42 === "42"  | false |
 - 
   |        类别(优先级降序)        |         运算符         |
   | :----------------------------: | :--------------------: |
@@ -1572,7 +1572,7 @@ alert($("#div")) // [object Object]
   // 不写Cat.prototype.constructor = Cat;
   alert(Cat.prototype.constructor == Animal); //true
   alert(cat1.constructor == Cat.prototype.constructor); // true
-  // 前边都没问题，但是下边这句有问题。cat1的构造函数应该是Cat才对，但是现在确是Animal，而不是Cat
+  // 前边都没问题，但是下边这句有问题。cat1的构造函数应该是Cat才对，但是现在却是Animal，而不是Cat
   alert(cat1.constructor == Animal); // true
   alert(cat1.constructor == Cat); // false
   
@@ -2715,6 +2715,16 @@ alert($("#div")) // [object Object]
 
   - 原型模式
 
+    - 使用构造函数prototype属性来指定那些应该被共享的属性和方法。组合使用构造函数模式和原型模式时，使用构造函数定义实例属性，而使用原型定义共享的属性和方法	
+
+  - 组合使用构造函数模式和原型模式
+
+  - 动态原型模式
+
+  - 寄生构造函数模式
+
+  - 稳妥构造函数模式
+
 - 复习字符串的加减规则 
 
 - 严格模式
@@ -2925,5 +2935,229 @@ alert($("#div")) // [object Object]
   - 分4个等级：内联样式；ID选择器；类、伪类、属性选择器；元素、伪元素。内联样式优先级最高，元素和伪元素的优先级最低，最终权重根据不同的优先级加权运算。
   - `!important`可以将规则提升到最高权重。
   - 由于从右向左匹配，建议用更简短、更容易被查找到的选择器
+
+---
+# 10.30 day44
+
+- JavaScript面向对象
+
+  - [js:面向对象编程，带你认识封装、继承和多态](https://juejin.im/post/59396c96fe88c2006afc2707)
+
+    ​	![JS面向对象](img/OO.png)
+
+  - 私有、保护、公有
+
+    ```javascript
+    var Book = function(id, name, price0){
+        //private(在函数内部定义，函数外部访问不到，实例化之后实例化的对象访问不到)
+    	var num = 1;
+        var id = id;
+        function checkID(){
+            console.log('private');
+        }
+        
+        //protected(可以访问到函数内部的私有属性和私有方法，在实例化之后就可以对实例化的类进行初始化拿到函数的私有属性)
+        this.getName = function(){
+            console.log(id);
+        }
+        this.getPrice = function(){
+            console.log(price);
+        }
+        
+        //public(实例化的之后，实例化的对象就可以访问到了~)
+        this.name = name;
+        this.copy = function(){
+            console.log('public!')
+        }
+    }
+    
+    //在Book的原型上添加的方法实例化之后可以被实例化对象继承
+    Book.prototype.proFunction = function(){
+    	console.log('This is a proFunction')
+    }
+    
+    //在函数外部通过.语法创建的属性和方法，只能通过该类访问，实例化对象访问不到
+    Book.setTime = function(){
+        console.log('This is new time')
+    }
+    
+    var book1 = new Book('111', 'JS高级程序设计', '$999');
+    book1.getName();        // 111 getName是protected，可以访问到类的私有属性，所以实例化之后也可以访问到函数的私有属性
+    book1.checkID();        //报错book1.checkId is not a function
+    console.log(book1.id)   // undefined id是在函数内部通过定义的，是私有属性，所以实例化对象访问不到
+    console.log(book1.name) //name 是通过this创建的，所以在实例化的时候会在book1中复制一遍name属性，所以可以访问到
+    book1.copy()            //public!
+    book1.proFunction();    //This is a proFunction
+    Book.setTime();         //This is new time
+    book1.setTime();        //报错book1.setTime is not a function
+    ```
+
+  - 继承（参考https://juejin.im/post/59396c96fe88c2006afc2707#heading-16）
+
+    - 类型继承：使用原型的方式，将方式添加在**父类原型**上，然后子类的原型是父类的一个实例化对象 `var o = new Object; o.__proto__ = Object.prototype ? `。**子类之间会互相影响。**
+
+      ```javascript
+      // 声明父类
+      var SuperClass = function(){
+          var id = 1; // 父类私有变量
+          this.name = ['JavaScript']; // public，实例化的之后，实例化的对象就可以访问到了~)
+          this.superValue = function(){ // 父类访问私有变量的方法，protected
+              console.log('superValue is true!');
+              console.log(id);
+          }
+      };
+      
+      // 为父类添加公有方法
+      SuperClass.prototype.getSuperValue = function(){
+          return this.superValue();
+      }
+      
+      // 声明子类
+      var SubClass = function(){
+          this.subValue = function(){
+              console.log('this is subValue!')
+          }
+      };
+      
+      // 继承父类，关键代码！！！！
+      SubClass.prototype = new SuperClass();
+      
+      // 为子类添加公有方法
+      SubClass.prototype.getSubValue = function(){
+          return this.subValue()
+      }
+      
+      var sub = new SubClass();
+      var sub2 = new SubClass();
+      
+      sub.getSuperValue();
+      sub.getSubValue();
+      
+      console.log(sub.id); // undefined
+      console.log(sub.name); // ['JavaScript']
+      
+      sub.name.push("Java");
+      sub2.name; // ["JavaScript", "Java"]
+      ```
+
+      
+
+    - 构造函数继承：除去类型继承的缺点，核心思想是`SuperClass.call(this, id)`，直接改变this的指向，使得this创建的属性和方法在子类中复制一份，因为是单独负值，所以各个实例化的子类互不影响。但是缺点是带来了**内存浪费**的问题。
+
+      ```javascript
+      // 父类
+      function SuperClass(id){
+          var name = 'JavaScript';
+          this.books = ['JS','HTML5','CSS3'];
+          this.id = id;
+      }
+      
+      // 父类原型
+      SuperClass.prototype.showBooks = function(){
+          console.log(this.books);
+      }
+      
+      // 子类
+      function SubClass(id){
+          SuperClass.call(this, id)
+      }
+      
+      var sub1 = new SubClass(101);
+      var sub2 = new SubClass(111);
+      
+      console.log(sub1.books); // ["JS", "HTML5", "CSS3"]
+      console.log(sub2.id); // 1111
+      console.log(sub1.name); // undefined
+      sub2.showBooks(); // 报错
+      sub2.books.push("JQuery");
+      console.log(sub2.books); // ["JS", "HTML5", "CSS3", "JQuery"]
+      ```
+
+      
+
+    - 组合式继承：对前两者继承方式取长补短
+
+      ```javascript
+      // 父类
+      var SuperClass = function(name){
+          this.name = name;
+          this.books = ["JavaScript", "HTML5", "CSS3"];
+      }
+      // 父类原型上的方法
+      SuperClass.prototype.showBooks = function(){
+          console.log(this.books);
+      }
+      
+      // 子类
+      var SubClass = function(name){
+          SuperClass.call(this, name) // 父类构造函数第二次被调用
+      };
+      
+      // 子类继承父类（链式继承）
+      SubClass.prototype = new SuperClass(); // 调用new，父类构造函数第一次被调用
+      SubClass.prototype.constructor = SubClass; // 替换了prototype对象，下一步必须为新的prototype对象加上constructor属性，并将这个属性指回原来的构造函数
+      
+      // 实例化子类
+      var sub1 = new SubClass("web1");
+      var sub2 = new SubClass("web2");
+      sub1.showBooks(); // ["JavaScript", "HTML5", "CSS3"]
+      sub1.books.push("Zepto"); //  ["JavaScript", "HTML5", "CSS3", "Zepto"]
+      console.log(sub1.books); //  ["JavaScript", "HTML5", "CSS3", "Zepto"]
+      console.log(sub2.books); // ["JavaScript", "HTML5", "CSS3"]
+      ```
+
+      
+
+    - 寄生式继承
+
+    - 寄生组合继承：由于组合继承中父类的构造函数被创建了2次（一次在call()，一次在new），寄生组合继承解决了这个问题。它通过给父类的原型创建一个副本，然后修改子类constructor属性，最后再指定了子类的原型。
+
+      ```javascript
+      // 原型式继承
+      // 原型式继承其实就是类式继承的封装，实现的功能是返回一个实例，该实例的原型继承了传入的o对象
+      function inheritObject(o){
+          // 声明一个过渡函数对象
+          function F(){};
+          // 过渡对象的原型继承父对象
+          F.prototype = o;
+          // 返回一个过渡对象实例，该实例的原型继承父对象
+          return new F();
+      }
+      
+      // 寄生式继承
+      // 寄生式继承就是对原型继承的二次封装，使得子类的原型等于父类的原型，并且在封装的过程中对继承的对象进行了扩展
+      function inheritPrototype(subClass, superClass){
+          //复制一份父类的原型保存在变量中，使得p的原型等于父类的原型
+          var p = inheritObject(superClass.prototype);
+          //修正因为重写子类原型导致子类constructor属性被修改
+          p.constructor = subClass;
+          //设置子类的原型
+          subClass.prototype = p;
+      }
+      
+      // 定义父类
+      var SuperClass = function(name){
+          this.name = name;
+          this.books = ["JavaScript", "HTML5", "CSS3"];
+      }
+      // 父类原型上的方法
+      SuperClass.prototype.showBooks = function(){
+          console.log(this.books);
+      }
+      // 子类
+      var SubClass = function(name){
+          SuperClass.call(this, name) // 父类构造函数被创建一次
+      };
+      
+      inheritPrototype(SubClass,SuperClass);
+      // 实例化子类
+      var sub1 = new SubClass("web1");
+      ```
+
+      
+
+- Symbol：ES6引入的原始数据类型、也是基本数据类型，表示独一无二的值。JavaScript有6种基本数据类型：Undefined、Null、Boolean、Number、String、Symbol；1种引用类型Object，再细分为4种类型：Object、Array、Data、RegExp、Function。基本数据类型放在栈中，按值访问；引用类型放在堆中，按引用访问。栈内存保存了变量标识符和指向堆内存中该对象的指针；堆内存保存了对象的内容。
+
+  > 参考https://segmentfault.com/a/1190000006752076
 
 - 
