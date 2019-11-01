@@ -3160,4 +3160,167 @@ alert($("#div")) // [object Object]
 
   > 参考https://segmentfault.com/a/1190000006752076
 
+- 回调地狱
+
+  - https://segmentfault.com/a/1190000009644973
+
+  - 特点：多个回调函数，回调深度大，往往是代码块结尾有很多层右括号
+
+    ```javascript
+    ajax('http://url-1', data1, function (err, result) {
+        if (err) {
+            return handle(err);
+        }
+        ajax('http://url-2', data2, function (err, result) {
+            if (err) {
+                return handle(err);
+            }
+            ajax('http://url-3', data3, function (err, result) {
+                if (err) {
+                    return handle(err);
+                }
+                return success(result);
+            });
+        });
+    });
+    ```
+
+  - 解决方案：
+
+    - 【法1】promise
+      - 三种状态pending、resolve、reject，最迟到指定时间返回回调函数的结果
+    - 【法2】generator
+    - 【法3】async / await
+
+- HTML5语义标签
+
+  ```html
+  <body>
+      <header>header</header>
+      <nav>navigator</nav>
+      <div>
+      	<article>article
+       	 	<section>section</section>
+      	</article>
+      </div>
+      <aside>sidebar</aside>
+      </div>
+      <footer>footer</footer>
+  </body>
+  ```
+
+  ![HTML5语义标签](img/html5article.png)
+
+---
+# 10.31 day45
+
+- 垂直居中
+
+  - 绝对定位
+
+    - 简单粗暴，需要知道文本所放置的块的高度和宽度，直接写死 
+
+      ```css
+      .wrapper{
+          margin: 10px, 10px;
+          background: gray;
+          width: 200px;
+          height: 250px;
+          position: relative
+      }
+      .inner{
+          width: 100px;
+          overflow-wrap: break-word;
+          position: absolute;
+          left:50%;
+          top:50%;
+          transform:translate(-50%,-50%); //如果我们不知道容器的高度和宽度，这是一种将元素居中而不使用边距的巧妙方法
+      }
+      ```
+
+      
+
+  - flex布局
+
+    - 在兼容性允许的情况下能用flex就用flex
+
+      ```css
+      .flex{
+          display: flex;
+          align-items: center;
+          justify-content: center;
+      }
+      
+      .block-text{
+          width: 100px;
+          overflow-wrap: break-word;
+      }
+      
+      ```
+
+      
+
+  - 单行文本/行内元素/行内块级元素
+
+    - 设置line-height 等于 height，缺点是只能用于单行内容，并且要知道高度值
+
+      ```css
+      .test {
+        margin-top: 20px;
+        width: 200px;
+        height: 50px;
+        line-height: 50px;
+        background-color: gray;
+        text-align: center;
+      }
+      ```
+
+      
+
+  - 多行文本/行内元素/行内块级元素
+
+    - 如元素在页面呈现为5行,则line-height的值为height/5。只能用于行内内容；需要知道高度和最终呈现多少行来计算line-height的值。
+
+  - 单个块级元素
+
+    ```css
+    #parent{
+        display: table-cell;
+        vertical-align: middle;
+    }
+    ```
+
+    - 缺点：设置table-cell的元素，宽度和高度设置百分比都将无效，需要给它父元素设置display: table才生效。table-cell不感知margin。在父元素上设置table-row等属性，也会使其不感知height。设置float或position会对默认布局造成破坏，可以考虑为之增加一个父div定义float等属性。内容溢出时会自动撑开父元素。
+
+  - vertical-align和line-height
+
+    - [vertical-align和line-height的基友关系](https://www.zhangxinxu.com/wordpress/2015/08/css-deep-understand-vertical-align-and-line-height/) 
+    - 需要熟知原理才能顺手使用！
+
+- 移动web思维导图
+
+  ![移动web前端高效开发实战脑图](img/移动web前端高效开发实战脑图.jpg)
+
+- HTML5
+
+  - 新语义元素
+  - 表单增强型应用：
+    - input元素的type属性扩充：search、tal、url、email、date、color、range、datetime、month、week
+    - input通过属性进行表单验证：required、pattern
+    - input元素其他有用属性：autofocus、form、placeholder
+  - HTML5新元素progress、meter和特殊属性contenteditable
+  - 音频audio、视频video
+  - 访问设备相关
+    - 定位当前地理位置navigator.geolocation
+    - 调用摄像头navigator.mediaDevices.getUserMedia
+  - 离线和存储
+    - .manifest和.appcache
+    - Service Worker
+      - 后台消息传递、网络代理、离线缓存、消息推送
+      - 是一段后台运行的脚本，不会直接参与DOM操作，但是会通过postMessage传递信息与DOM交互
+    - indexedDB
+      - 是一个**事务型**数据库系统，基于Javascript的**面向对象**的数据库系统；
+      - 可以大量存储结构化的数据，并且使用**基于索引**的高效API检索
+  - 
+
 - 
