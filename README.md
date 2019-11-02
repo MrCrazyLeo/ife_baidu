@@ -3299,28 +3299,190 @@ alert($("#div")) // [object Object]
 
 - 移动web思维导图
 
-  ![移动web前端高效开发实战脑图](img/移动web前端高效开发实战脑图.jpg)
+  ! [移动web前端高效开发实战脑图](img/移动web前端高效开发实战脑图.jpg)
 
 - HTML5
 
   - 新语义元素
+  
   - 表单增强型应用：
     - input元素的type属性扩充：search、tal、url、email、date、color、range、datetime、month、week
     - input通过属性进行表单验证：required、pattern
     - input元素其他有用属性：autofocus、form、placeholder
+    
   - HTML5新元素progress、meter和特殊属性contenteditable
+  
   - 音频audio、视频video
+  
   - 访问设备相关
     - 定位当前地理位置navigator.geolocation
     - 调用摄像头navigator.mediaDevices.getUserMedia
+    
   - 离线和存储
     - .manifest和.appcache
+    
     - Service Worker
       - 后台消息传递、网络代理、离线缓存、消息推送
       - 是一段后台运行的脚本，不会直接参与DOM操作，但是会通过postMessage传递信息与DOM交互
+      
     - indexedDB
+      - 一个前端DB，为了满足localStorage、sessionStorage等5M存储空间不够用和解决web Stroage只能存储string类型的数据而提出。存储空间很大，一般来说不少于250MB。
+      
       - 是一个**事务型**数据库系统，基于Javascript的**面向对象**的数据库系统；
+      
+        - ACID特性，即原子性（Atomicity）、一致性（Consistency）、隔离性（Isolation）、持久性（Durability）
+        - 简单来说事务型数据库就是要么全部成功，要么全部失败。如修改多条数据，前边几条已经成功，但是中间某一条失败了，那么应该直接返回失败，放弃所有已有的修改。
+        - 一个数据库**事务**通常包含了一个序列的对数据库的读/写操作。它为数据库操作序列提供了一个从失败中恢复到正常状态的方法，同时提供了数据库即使在异常状态下仍能保持一致性的方法；此外，当多个应用程序在并发访问数据库时，可以在这些应用程序之间提供一个隔离的方法，以防止彼此操作互相干扰
+      
       - 可以大量存储结构化的数据，并且使用**基于索引**的高效API检索
-  - 
+      
+      - 创建一个indexedDB数据库
+      
+        ```javascript
+        var request = indexedDB.open("myDatabase", 1) //数据库名、版本号
+        request.addEventListener("success", e =>{
+            console.log("连接数据库成功");
+        });
+        request.addEventListener("error", e=>{
+            console.log("连接数据库失败")
+        })
+        ```
+      
+      - 创建一个对象仓库（Object store），类似MySQL中“表”的概念
+      
+        ```javascript
+        var request = indexedDB.open('myDatabase', 2);
+        
+        request.addEventListener('upgradeneeded', e => {
+            const db = e.target.result;
+            const  store = db.createObjectStore('Users', {keyPath: 'userId', autoIncrement: false}); // 第一个是对象仓库的名字, 第二个是可选参数，用于指定数据的主键,以及是否自增主键
+            console.log('创建对象仓库成功');
+        });
+        ```
+      
+      - 增删改查
+      
+        ```javascript
+        // 添加数据
+        const request = indexedDB.open('myDatabase', 3);
+        request.addEventListener("success", e => {
+            const db = e.target.result;
+        	// 使用transaction()来创建一个事务.transaction()接受两个参数,第一个是你要操作的对象仓库名称,第二个是你创建的事务模式.
+            const tx = db.transaction("Users", "readwrite");
+            const store = tx.objectStore("Users");
+        	const reqAdd = store.add({"userID": 1, "userName": "李白", "age": 24});
+        	reqAdd.addEventListener("success", e => {console.log("保存成功")}); 
+        }) // 保存成功
+        
+        ```
+        
+        ```javascript
+        // 删除数据
+        const request = indexedDB.open("myDatabase", 3);
+        request.addEventListerner("success", e => {
+            const db = e.target.result;
+            const tx = db.transaction("Users", "readwrite");
+            const store = tx.objectStore("User");
+            //真正删除数据的一行代码
+            const reqDelete = store.delete(1);
+            reqDelete.addEventListener("success", e => {
+                console.log("删除成功"); // 删除成功
+            })
+        })
+        ```
+        
+        ```javascript
+        // 查找数据
+        const request = indexedDB.open("myDatabase", 3);
+        request.addEventListerner("success", e => {
+            const db = e.target.result;
+            const tx = db.transaction("Users", "readwrite");
+            const store = tx.objectStore("User");
+            // 获取数据
+            const reqGet = store.get(1);
+            reqGet.addEventListener("success", e => {
+                console.log(this.result.userName); // 李白
+            })
+        ```
+      
+    - [阮一峰的indexedDB介绍](http://www.ruanyifeng.com/blog/2018/07/indexeddb.html)里边有具体讲到IndexedDB的API
+    
+      > IndexedDB 不属于关系型数据库（不支持 SQL 查询语句），更接近 NoSQL 数据库。
+      
+    - ```
+	    数据库： IDBDatabase对象；
+	    对象仓库：IDBObjectStore对象
+	    索引：IDBIndex对象
+	    事务：IDBTransaction对象
+	    操作请求：IDBRequest对象
+	    指针：IDBCursor对象
+	    主键集合：IDBKeyRange对象
+	    ```
+	  
+	- Canvas、SVG、WebGL
+	
+  - 不一样的通信
+  
+    - PostMessages
+  
+    - XMLHttpRequest Level 2
+  
+      - 1代就是AJAX
+      - 2代相比1代增加了如下几点：
+        
+        1. 设置HTTP请求超时时间
+        
+        2. 使用FormData对象管理表单数据
+        
+        3. 用于上传文件
+      
+        4. 跨域请求（需要浏览器支持，并且服务器进行对应设置）
+      
+        5. 获取服务器端的二进制数据
+      
+        6. 获得数据传输的进度信息
+  
+    - Server Sent Event
+  
+      - 服务端主动向客户端发送数据，并更新客户端信息，替代原本客户端向服务端轮询以获取、更新信息的行为
+    
+    - 优点：轻量，相对简单；单项传送数据（服务端 -> 客户端）；基于HTTP协议；默认支持断线重连；自定义发送数据类型 
+    
+  - WebSocket
+    
+      - 基于TCP、全双工
+      - 可替代AJAX，可以开发即时聊天、互动游戏、股票信息等
+      
+    - WebRTC
+    
+      - Web Real-time Communication，Web实时通信，为浏览器和移动网页应用提供实时语音或视频通话功能
+  - 其他
+     - 	History 新增pushState和replaceState API，配合在window对象上新增的popState事件使用，实现单页应用功能；
+     - 	Drag和Drop
+     - 	Web Workers 多线程
+     - 	window.performance 分析网站性能
+---
+# 11.01 day46
+- 为什么刷新之后网页能滚动到刷新前浏览的位置？
+
+  答：跳转页面前将滚动条的位置存储在了用户的cookie里,下次自动判断当前页面获取cookie里的滚动条的值进行滚动 。参考[页面刷新后保持滚动条的位置不变](https://blog.csdn.net/kunguo/article/details/1660400?locationNum=3&fps=1)。
+
+- 控制台输出图片、带样式的字体
+
+  ```javascript
+  console.log("%cHello World"," text-shadow: 0 1px 0 #ccc,0 2px 0 #c9c9c9,0 3px 0 #bbb,0 4px 0 #b9b9b9,0 5px 0 #aaa,0 6px 1px rgba(0,0,0,.1),0 0 5px rgba(0,0,0,.1),0 1px 3px rgba(0,0,0,.3),0 3px 5px rgba(0,0,0,.2),0 5px 10px rgba(0,0,0,.25),0 10px 10px rgba(0,0,0,.2),0 20px 20px rgba(0,0,0,.15);font-size:5em")
+  ```
+
+  ![3D字体](img/console3DText.png)
+
+  只要将上边代码的样式部分添加"background:url(XXXXX)" 就能在控制台看到图片了。
+
+  
+
+  
+
+  ---
+
+  # 11.02 day47
 
 - 
