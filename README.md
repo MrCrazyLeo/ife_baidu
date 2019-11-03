@@ -3322,8 +3322,38 @@ alert($("#div")) // [object Object]
     - .manifest和.appcache
     
     - Service Worker
+      
+      - **解决离线之后资源如何缓存、更新的问题**
+        
       - 后台消息传递、网络代理、离线缓存、消息推送
+      
       - 是一段后台运行的脚本，不会直接参与DOM操作，但是会通过postMessage传递信息与DOM交互
+      
+        ```javascript
+        // 注册service worker
+        navigator.serviceWorker.register("sw.js").then(function(registration){
+            console.log("Service Worker注册成功")
+        }).catch(function(err){
+            console.log("Service Worker注册失败")
+        })
+        
+        // ------------------------------------ //
+            
+        // sw.js
+        // 操纵需要缓存的资源
+        var cacheFiles = [
+            "style.css",
+            "main.js"
+        ]
+        // 在install事件中缓存资源
+        self.addEventListener("install", function(evt){
+            evt.waiUntil(
+                caches.open("mycache").then(function(cache){
+                    return cache.addAll(cacheFiles);
+            	})
+            ); 
+        });
+        ```
       
     - indexedDB
       - 一个前端DB，为了满足localStorage、sessionStorage等5M存储空间不够用和解决web Stroage只能存储string类型的数据而提出。存储空间很大，一般来说不少于250MB。
@@ -3380,17 +3410,17 @@ alert($("#div")) // [object Object]
         // 删除数据
         const request = indexedDB.open("myDatabase", 3);
         request.addEventListerner("success", e => {
-            const db = e.target.result;
-            const tx = db.transaction("Users", "readwrite");
-            const store = tx.objectStore("User");
-            //真正删除数据的一行代码
-            const reqDelete = store.delete(1);
-            reqDelete.addEventListener("success", e => {
-                console.log("删除成功"); // 删除成功
-            })
-        })
-        ```
-        
+	          const db = e.target.result;
+	          const tx = db.transaction("Users", "readwrite");
+	          const store = tx.objectStore("User");
+	          //真正删除数据的一行代码
+	          const reqDelete = store.delete(1);
+	          reqDelete.addEventListener("success", e => {
+	              console.log("删除成功"); // 删除成功
+	          })
+	      })
+	      ```
+	      
         ```javascript
         // 查找数据
         const request = indexedDB.open("myDatabase", 3);
@@ -3410,17 +3440,17 @@ alert($("#div")) // [object Object]
       > IndexedDB 不属于关系型数据库（不支持 SQL 查询语句），更接近 NoSQL 数据库。
       
     - ```
-	    数据库： IDBDatabase对象；
-	    对象仓库：IDBObjectStore对象
-	    索引：IDBIndex对象
-	    事务：IDBTransaction对象
-	    操作请求：IDBRequest对象
-	    指针：IDBCursor对象
-	    主键集合：IDBKeyRange对象
-	    ```
-	  
-	- Canvas、SVG、WebGL
-	
+      数据库： IDBDatabase对象；
+      对象仓库：IDBObjectStore对象
+      索引：IDBIndex对象
+      事务：IDBTransaction对象
+      操作请求：IDBRequest对象
+      指针：IDBCursor对象
+      主键集合：IDBKeyRange对象
+      ```
+    
+  - Canvas、SVG、WebGL
+  
   - 不一样的通信
   
     - PostMessages
@@ -3436,7 +3466,7 @@ alert($("#div")) // [object Object]
         
         3. 用于上传文件
       
-        4. 跨域请求（需要浏览器支持，并且服务器进行对应设置）
+        4. **跨域请求**（需要浏览器支持，并且服务器进行对应设置）
       
         5. 获取服务器端的二进制数据
       
@@ -3444,15 +3474,14 @@ alert($("#div")) // [object Object]
   
     - Server Sent Event
   
-      - 服务端主动向客户端发送数据，并更新客户端信息，替代原本客户端向服务端轮询以获取、更新信息的行为
+      - **服务端主动向客户端发送数据，并更新客户端信息**，替代原本客户端向服务端轮询以获取、更新信息的行为
+      - 优点：轻量，相对简单；单项传送数据（服务端 -> 客户端）；基于HTTP协议；默认支持断线重连；自定义发送数据类型 
+      - Server Sent Event通过**EvevtSource对象**接收服务端发送的事件通知
     
-    - 优点：轻量，相对简单；单项传送数据（服务端 -> 客户端）；基于HTTP协议；默认支持断线重连；自定义发送数据类型 
-    
-  - WebSocket
-    
+    - WebSocket
       - 基于TCP、全双工
-      - 可替代AJAX，可以开发即时聊天、互动游戏、股票信息等
-      
+        - 可替代AJAX，可以开发即时聊天、互动游戏、股票信息等
+        
     - WebRTC
     
       - Web Real-time Communication，Web实时通信，为浏览器和移动网页应用提供实时语音或视频通话功能
@@ -3485,4 +3514,5 @@ alert($("#div")) // [object Object]
 
   # 11.02 day47
 
-- 
+- Web代理工具NProxy和HTTP服务器http-server有啥用？
+- devicePixelRatio设备像素比：物理像素 / dips。（PS：dips，设备独立像素）

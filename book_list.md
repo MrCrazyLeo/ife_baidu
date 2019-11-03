@@ -3,6 +3,7 @@
 - [ ] 了不起的Node.js将JavaScript进行到底 —— Guillermo Rauch **284页**
 - [ ] 移动Web前端高效开发实战：HTML5 + CSS3 + JavaScript + Webpack + React Native + Vue.js + Node.js —— IKcamp团队 **521页**
 - [ ] JavaScript语言精粹
+- [ ] CSS世界 —— 张鑫旭 **328页**
 - [ ] 图解算法 —— 俞征武 **279页**
 - [ ] ECMAScript6入门 —— 阮一峰 **547页**
 - [ ] 深入理解ECMAScript6 —— 尼古拉斯.泽卡斯 **398页**
