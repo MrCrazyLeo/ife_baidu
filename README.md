@@ -3481,7 +3481,7 @@ alert($("#div")) // [object Object]
     - WebSocket
       - 基于TCP、全双工
         - 可替代AJAX，可以开发即时聊天、互动游戏、股票信息等
-        
+      
     - WebRTC
     
       - Web Real-time Communication，Web实时通信，为浏览器和移动网页应用提供实时语音或视频通话功能
@@ -3508,11 +3508,38 @@ alert($("#div")) // [object Object]
 
   
 
-  
 
-  ---
+---
 
-  # 11.02 day47
+# 11.02 day47
 
 - Web代理工具NProxy和HTTP服务器http-server有啥用？
 - devicePixelRatio设备像素比：物理像素 / dips。（PS：dips，设备独立像素）
+
+
+
+---
+
+# 11.03 day48
+
+- WebRTC主要用于实时通信，处理实时媒体流
+
+  - 主要API：
+    - MediaDevice
+    - RTCPeerConnection
+    - RTCDataChannel
+
+- 9种跨域方式实现
+
+- AJAX
+
+  - Asynchronous JavaScript and XML，用JavaScript执行异步XML请求（`XMLHttpRequest`）
+
+  - 现代浏览器上写AJAX主要依靠`XMLHttpRequest`对象
+
+    
+
+---
+
+# 11.04 day49
+
