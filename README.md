@@ -1496,7 +1496,7 @@ alert($("#div")) // [object Object]
     - align-items：定义项目在交叉轴上的对齐方式，默认flex-start，交叉轴的起点对齐。
     - align-content：定义了多根轴线的对齐方式，若只有一根轴线则设置无效，默认flex-start，交叉轴的起点对齐。
 
-  - 项目（content）的6个属性：
+  - 项目（item / content）的6个属性：
 
     - order：数值越小，排列越靠前，默认为0；
     - flex-grow：定义项目的放大比例，默认为0；
@@ -1515,6 +1515,22 @@ alert($("#div")) // [object Object]
     }
     ```
 
+    ```css
+    .container{
+        height: 200px;
+        display: flex;
+        border: 1px solid gray;
+    }
+    
+    /* 设置父元素display为flex，之后子元素margin:auto就可以垂直居中 */
+    .box{
+        width: 60px;
+        height: 60px;
+        background-color: gray;
+        margin: auto;
+    }
+    ```
+    
     
 
 - angular、react、vue、jquery区别
@@ -3508,7 +3524,6 @@ alert($("#div")) // [object Object]
 
   
 
-
 ---
 
 # 11.02 day47
@@ -3543,3 +3558,31 @@ alert($("#div")) // [object Object]
 
 # 11.04 day49
 
+- CSS3
+  - 盒模型：box-sizing改变默认的CSS盒模型对元素宽高的计算方式，默认content-box，width和height只包括内容的宽高。border-box是IE怪异模式使用的盒模型，width和height包括内边距和边框，不包括外边框。
+  - @font-face：获取指定在线字体，使得网页在不适用图片的情况下，运用更加个性化、美观的字体。
+  - 自适应布局：calc函数
+  
+- DOM2事件模型：
+  - 支持为同一DOM元素注册多个同类型事件
+  - 把事件分成捕获阶段和冒泡阶段
+  
+- 事件委托：将事件交给父元素或者祖先元素处理的方式。优点：
+
+  ```javascript
+  function showMe(e){
+      alert(e.target.tagName);
+  }
+  document.querySelector("body").addEventListener('click', showMe, false)
+  ```
+  -  提高性能：所占用内存空间更小
+  -  动态监听：无论未来子元素 b增删多少，监听依旧有效
+
+- typeof返回六种类型：
+
+  -  undefined——未定义；
+  -  boolean——布尔值；
+  -  string——字符串；
+  -  number——数值型；
+  -  object——对象或者null
+  -  function——函数
