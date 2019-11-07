@@ -2410,7 +2410,7 @@ alert($("#div")) // [object Object]
   ```javascript
   if(!Array.isArray){
       Array.isArray = function(arg){
-          return Object.prototype.toString.call(arg) === '[object Array]'
+          return Object.prototype.toString.call(arg) === '[object Array]' // 注意是小写o
       }
   }
   ```
@@ -3546,13 +3546,177 @@ alert($("#div")) // [object Object]
 
 - 9种跨域方式实现
 
-- AJAX
+  参考[九种跨域方式实现原理（完整版）](https://juejin.im/post/5c23993de51d457b8c1f4ee1)
 
-  - Asynchronous JavaScript and XML，用JavaScript执行异步XML请求（`XMLHttpRequest`）
-
-  - 现代浏览器上写AJAX主要依靠`XMLHttpRequest`对象
-
+  - JSONP
+  
+    - 原生实现：JSON
+  
+      - ```js
+      var script = document.createElement('script');
+        script.type = 'text/script';
+        // 传参一个回调函数名给后端，方便后端返回时执行这个在前端定义的回调函数
+        script.src = 'http://www.domain2.com:8080/login?user=admin&callback=handleCallback';
+        document.head.appendChild(script);
+        
+        // 回调函数
+        function handleCallback(res){
+            alert(JSON.stringify(res));
+        }
+        ```
+        
+        服务端返回如下（返回时即执行全局函数）
+        
+        ```js
+        handleCallback({"status": true, "user": "admin"})
+        ```
+      
+    - AJAX
     
+      - Asynchronous JavaScript and XML，用JavaScript执行异步XML请求（`XMLHttpRequest`）
+      
+      - 现代浏览器上写AJAX主要依靠`XMLHttpRequest`对象（XMLHttpRequest Level 2）
+      
+      - ```js
+        // JQuery ajax
+        $.ajax({
+            url: 'http://www.domain2.com:8080/login',
+            type:'get',
+            dataType: 'jsonp', // 请求方式为jsonp
+            jsonpCallback: 'handleCallback' // 自定义回调函数名
+            data: {}
+        })
+        ```
+      
+    - vue.js里边的$http.jsonp
+    
+      ```js
+      this.$http.jsonp("http://www.domain2.com:8080/login",{
+          params:{},
+          jsonp: 'handleCallback'
+      }).then(res => console.log(res));
+      ```
+    
+    - 后端node.js代码实例：
+    
+      ```js
+      var querystring = require('querystring');
+      var http = require('http');
+      var server = http.createServer();
+      
+      server.on('request', function(req,res){
+          var params = qs.parse(req.url.split('?')[1]);
+          var fn = params.callback;
+          
+          // jsonp返回设置
+          res.writeHead(200, {'Content-Type': 'text/javascript'});
+          res.write(fn + '(' + JSON.stringify(params) + ')');
+          
+          res.end();
+      })
+      
+      server.listen('8080');
+      console.log('Server is running at port 8080...');
+      ```
+    
+    - 只能实现GET一种请求
+    
+  - CORS
+  
+  - PosrMessage
+  
+  - WebSocket
+  
+  - Node中间件代理（两次跨域）
+  
+  - Nginx反向代理
+  
+  - window.name + iframe
+  
+  - location.hash + iframe
+  
+    - 实现原理：a与b通过中间页面c通信。三个页面中，不同域间通过iframe的location.hash传值，相同域直接js访问通信
+    
+    - a与b不同域，b与c不同域，a与c同域
+    
+      1.）a.html：(http://www.domain1.com/a.html)
+    
+      ```html
+      <iframe id="iframe" src="http://www.domain2.com/b.html" style="display:none;"></iframe>
+      <script>
+          var iframe = document.getElementById('iframe');
+      
+          // 向b.html传hash值
+          setTimeout(function() {
+              iframe.src = iframe.src + '#user=admin';
+          }, 1000);
+          
+          // 开放给同域c.html的回调方法
+          function onCallback(res) {
+              alert('data from c.html ---> ' + res);
+          }
+      </script>
+      ```
+    
+      2.）b.html：(http://www.domain2.com/b.html)
+    
+      ```html
+      <iframe id="iframe" src="http://www.domain1.com/c.html" style="display:none;"></iframe>
+      <script>
+          var iframe = document.getElementById('iframe');
+      
+          // 监听a.html传来的hash值，再传给c.html
+          window.onhashchange = function () {
+              iframe.src = iframe.src + location.hash;
+          };
+      </script>
+      ```
+    
+      3.）c.html：(http://www.domain1.com/c.html)
+    
+      ```html
+      <script>
+          // 监听b.html传来的hash值
+          window.onhashchange = function () {
+              // 再通过操作同域a.html的js回调，将结果传回
+              window.parent.parent.onCallback('hello: ' + location.hash.replace('#user=', ''));
+          };
+      </script>
+      ```
+    
+  - document.domain + iframe
+  
+    - 主域相同、子域不同的跨域方案
+    
+    - 实现原理：两个页面都通过JS强制设置document.domain为基础主域，从而实现同域
+    
+      父窗口：(http://www.domain.com/a.html)
+    
+      ```html
+      <iframe id='iframe' src='http://child.domain.com/b.html'></iframe>
+      <script>
+          document.domain = 'domain.com';
+          var user = 'admin';
+      </script>
+      ```
+    
+      子窗口：(http://child.domain.com/b.html)
+    
+      ```html
+      <script>
+          document.domain = 'domain.com';
+          // 获取父窗口中变量
+          alert('Get js data from parent -->' + window.parent.user); // 返回"admin"
+      </script>
+      ```
+  
+- 为什么有同源策略？ 
+
+  同源策略是为了安全。同源策略限制了从同一个源加载的文档或脚本如何与来自另一个源的资源进行交互。这是一个用于隔离潜在恶意文件的重要安全机制。 如果没有同源策略，入侵者可能利用cookie（CSRF攻击）或者直接操纵DOM元素来获取你的账号密码。
+
+- 为什么要跨域？
+
+  为了获取外界的资源，即上线跟别人（别的域）打交道，所以得绕开同源策略，这就是“跨域”。
 
 ---
 
@@ -3575,8 +3739,15 @@ alert($("#div")) // [object Object]
   }
   document.querySelector("body").addEventListener('click', showMe, false)
   ```
-  -  提高性能：所占用内存空间更小
-  -  动态监听：无论未来子元素 b增删多少，监听依旧有效
+  - 提高性能：所占用内存空间更小
+
+  - 动态监听：无论未来子元素 b增删多少，监听依旧有效
+
+  - IE没有event .target属性。所以兼顾IE写成如下形式
+
+    ```javascript
+    return e.srcElement ? e.srcElement : e.target
+    ```
 
 - typeof返回六种类型：
 
@@ -3586,3 +3757,99 @@ alert($("#div")) // [object Object]
   -  number——数值型；
   -  object——对象或者null
   -  function——函数
+
+---
+
+# 11.05 day50
+
+- ACID:
+  - A，原子性
+  - C，一致性
+  - I，隔离性
+  - D，持久性
+
+---
+# 11.06 day51 
+- 后发优势：
+  - 又叫后动优势、次动优势、先动劣势，指相对于行业的先进入企业，后进入者由于较晚进入行业而获得的较先动企业不具有的[竞争优势](https://baike.baidu.com/item/竞争优势/80963)，通过观察先动者的行动及效果来减少自身面临的不确定性而采取相应行动，获得更多的[市场份额](https://baike.baidu.com/item/市场份额/7026134)。例如：研发成本优势、[行业风险](https://baike.baidu.com/item/行业风险/5431948)把握优势等。
+  - 优势体现在三个方面：
+    - 后动者的**“免费搭乘”**效应：后动者可能会在产品和工艺研究与开发、顾客教育、员工培训、政府审批、基础投资等很多方面比先动者节省大量的投资，却可以从中获益。
+    - 先动者锁定了**错误的技术或营销策略**：由于市场初期，技术和[顾客需求](https://baike.baidu.com/item/顾客需求)的不确定性和“非连续性”(discontinuities)往往导致先动者的错误决策，而后动者可以从先动者的错误中吸取这些教训，不再犯先动者曾经犯过的错误。
+    - **在位者惯性**：：由于[沉没成本](https://baike.baidu.com/item/沉没成本)的存在，组织僵化，企业不愿引进[新产品](https://baike.baidu.com/item/新产品)或改进产品，不愿改革，而后动者作为一个追赶者，时刻都想抓住机遇从而取代先动者的地位，因而对企业的[组织结构](https://baike.baidu.com/item/组织结构)、技术、[产品](https://baike.baidu.com/item/产品)等都进行大量的革新，从而在与先动者的竞争中占有优势。
+- attribute 与 property的不同
+  - attribute是“属性”的意思，property是“所有物”的意思；
+  
+  - attribute返回字符串类型；property返回任意类型
+  
+  - attribute由HTML来定义，并不存在于DOM中，即只要是HTML标签内定义的都是attribute
+  
+  - property属于DOM，DOM本质是Javascript中的一个object。我们可以像普通操作一样读写、设置property。
+  
+    ```js
+    document.getElementById('test').foo = 1;
+    // 设置property：foo为number: 1
+    document.getElementById('test').foo;
+    // 读取property，返回number：1
+    $('#test').prop('foo');
+    // jQuery读取property，返回number：1
+    ```
+  
+    ```js
+    $('test').prop('foo',{
+        age: 23,
+        name: 'John'
+    });
+    // jQuery设置property：foo为一个object
+    document.getElementById('test').foo.age;
+    // 返回number：23
+    document.getElementById('test').foo.name;
+    // 返回string："John"
+    ```
+  
+    非自定义attribute，如id、class、title等，都会有对应的property映射
+  
+    ```html
+    <div id="test" class="button" foo="1"></div>
+    ```
+  
+    ```js
+    document.getElementById("test").id; // 返回string："test"
+    document.getElementById("test").className; // 返回string："button"
+    document.getElementById('test').foo; // // 返回undefined，因为foo是自定义attribute
+    ```
+  
+    非自定义的property或attribute的变化多是联动的
+  
+    ```html
+    <div id="test" class="button" foo="1"></div>
+    ```
+  
+    ```js
+    var div = document.getElementById('test');
+    div.className = 'red-input';
+    div.getAttribute('class');
+    // 返回string："red-input"
+    div.setAttribute('class','green-input');
+    div.className;
+    // 返回string："green-input"
+    ```
+  
+    带有默认值的attribute不随property变化而变化
+  
+    ```html
+    <input id="search" value="foo" />
+    ```
+  
+    ```js
+    var input = document.getElementById('search');
+    input.value = 'foo2';
+    input.getAttribute('value');
+    // 返回string："foo"
+    ```
+
+
+
+---
+
+# 11.07 day52
+
