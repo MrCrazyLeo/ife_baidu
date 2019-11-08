@@ -3853,3 +3853,278 @@ alert($("#div")) // [object Object]
 
 # 11.07 day52
 
+- undefined和null的区别
+
+  - 以下来自阮一峰https://www.ruanyifeng.com/blog/2014/03/undefined-vs-null.html：
+
+    - 在JavaScript中，将一个变量赋值为undefined或null，老实说，几乎没区别。undefined和null在if语句中，都会被自动转为false，相等运算符甚至直接报告两者相等。
+
+      ```js
+      undefined == null
+      // true
+      ```
+
+      Google公司开发的JavaScript语言的替代品Dart语言，就明确规定只有null，没有undefined！
+
+    - JavaScript的最初版本是这样区分的：**null是一个表示“无”的对象，转为数值时为0；undefined时一个表示“无”的值，转为数值时为NaN**
+
+      ```js
+      Number(null);
+      // 0
+      
+      Number(undefined)
+      // NaN
+      ```
+
+    - 但是，上面这样的区分，在实践中很快就被证明不可行。null和undefined基本是同义的，只有一些细微的差别。
+    
+      **null表示"没有对象"，即该处不应该有值**
+    
+      （1） 作为函数的参数，表示该函数的参数不是对象。
+    
+      （2） 作为对象原型链的终点。
+    
+      ```js
+      Object.getPrototypeOf(Object.prototype)
+      // null
+      ```
+    
+      **undefined表示"缺少值"，就是此处应该有一个值，但是还没有定义。**典型用法是：
+    
+      （1）变量被声明了，但没有赋值时，就等于undefined。
+    
+      （2) 调用函数时，应该提供的参数没有提供，该参数等于undefined。
+    
+      （3）对象没有赋值的属性，该属性的值为undefined。
+    
+      （4）函数没有返回值时，默认返回undefined。
+    
+      ```js
+      var i;
+      i // undefined
+      
+      function f(x){console.log(x)}
+      f() // undefined
+      
+      var  o = new Object();
+      o.p // undefined
+      
+      var x = f();
+      x // undefined
+      ```
+
+- 定义函数的几种方式
+
+  - 参考[**javascript函数的三种定义方式及区别**](https://blog.csdn.net/sinat_32546159/article/details/62072569)
+
+  - 函数语句式
+
+    ```js
+    function add(m, n){return m+n;};
+    ```
+
+  - 函数表达式（函数字面量、函数直接量）
+
+    ```js
+    var sum = function add(m, n){return m + n;};
+    ```
+
+  - 函数构造法（参数必须加引号，一般不推荐这种方式）
+
+    ```js
+    var fun = new Function('arg1', 'arg2', 'alert(arg1 + "," + arg2);');
+    ```
+
+    - 每一次调用都动态新建一个Function，用完之后就销毁了，不占用内存，所以说是“动态”的
+
+  - ```js
+    //3种函数定义方式，前两种常用
+     
+    /**
+    * 1，function 语句式
+    * 形式：句子
+    * 名称：有名
+    * 性质：静态
+    * 解析时机：优先解析
+    * 作用域：具有函数的作用域（正常的作用域）
+    */
+    function test1() {
+        alert("我是test1");
+    }
+    test1();
+     
+     
+    /**
+    * 2，函数直接量 ECMAScript 推荐的方式
+    * 形式：表达式
+    * 名称：匿名
+    * 性质：静态
+    * 解析时机：顺序解析
+    * 作用域：具有函数的作用域（正常的作用域）
+    */
+    var test2 = function() {
+        alert("我是test2");
+    };
+    test2();
+     
+    /**
+    * 3，function 构造函数式,a,b是形参，函数执行体直接写在后边，以分号结束
+    * 形式：表达式
+    * 名称：匿名
+    * 性质：动态
+    * 解析时机：顺序解析
+    * 作用域：顶级函数（顶级作用域）
+    */
+    var test3 = new Function("a", "b", "return a+b;");
+    alert(test3(10,20));
+    ```
+
+  - **优先级**：前两者会被解释一次，是静态的，有函数的作用域；Function构造函数式每次执行都动态new一次，说明有顶级作用域。执行顺序优先级不同，函数语句式优先解释，其他两个程序运行到哪解释到哪。
+
+    ```js
+    //********************执行顺序经典例子**************
+    /**
+     * js解析器会先找所有的function当做全局变量放内存，就找到了1,4，静态的，4把1覆盖，
+     * 执行到函数1，所以打印4
+     * 执行到函数2，是动态构建的覆盖4，所以打印2，之后销毁
+     * 执行到函数3，覆盖函数4，打印3
+     * 执行到函数4，其实调用的是函数3，打印3
+     * 执行到函数5，动态创建一个覆盖3，打印5，后销毁
+     * 执行到函数6，覆盖函数3，打印6
+     */
+    //alert结果：4 2 3 3 5 6
+    
+    function f(){ return 1;}             //函数1
+    alert(f());        //返回值为4，说明第1个函数被第4个函数覆盖，
+            
+    var f = new Function("return 2;");    //函数2
+    alert(f());        //返回值为2，说明第4个函数被第2个函数覆盖
+            
+    var f =  function(){ return 3;};    //函数3
+    alert(f());        //返回值为3，说明第4个函数被第3个函数覆盖
+            
+    function f(){ return 4;}            //函数4
+    alert(f());        //返回值为3，说明第4个函数被第3个函数覆盖
+            
+    var f = new Function("return 5;");    //函数5
+    alert(f());        //返回值为5，说明第3个函数被第5个函数覆盖
+            
+    var f =  function(){ return 6;};    //函数6
+    alert(f());        //返回值为6，说明第3个函数被第6个函数覆盖
+    ```
+
+  - **执行效率**：function语句式比构造函数式效率要高，函数直接量和function语句式效率差不多。
+
+    ```js
+    var d1 = new Date();
+    var t1 =d1.getTime();
+    for(var i=0;i<100000;i++){
+        function test1(){ ;}; //function语句式
+        //var test2 = new Function(); //构造函数式
+    }
+              
+    var d2 = new Date();
+    var t2 = d2.getTime();
+    alert(t2-t1);
+    // function语句式 11秒左右
+    // 构造函数式5539秒左右
+    ```
+
+  - **作用域**：Function构造函数式，顶级的作用域；其他，所在块的作用域
+
+    ```js
+    var k = 1;
+    function t1(){
+        var k = 2;
+        //function test(){return k;} // function语句式，k = 2
+       // var test = function(){return k;} // 函数直接量，k = 2
+        var test = new Function("return k"); // 构造函数式，相当于在全局new一个函数，只能找到全局的k = 1
+        alert(test());
+    }
+    t1();
+    ```
+
+- Mixin模式
+
+  - Mixin解决的是JavaScript里边多重继承的问题。
+
+  - ```js
+    // 接收一个构造函数和一个原型对象
+    var mixin = function(obj, mixins){
+        var newObj = obj; // 保存构造函数等待拓展原型链
+        newObj.prototype = Object.create(obj.prototype); // 构造函数实例赋给新的函数的原型
+        for(var key in mixins){ // 遍历原型对象上的属性
+            if(mixins.hasOwnProperty(key)){ // 如果是对象自身属性
+    			newObj.prototype[key] = mixins[key]} // 复制给新函数的原型
+    	}
+    	return newObj;}
+    
+    var mixinObj = {
+        foo: function(){
+            console.log('foooooooooo');}}
+    
+    var MyFunc = function(){
+        console.log('bar')}
+    
+    var NewFunc = mixin(MyFunc, mixinObj);
+    
+    var newFunc = new NewFunc;
+    
+    newFunc.foo() // foooooooooo
+    ```
+
+    ```js
+    // 装饰器模式
+    function handleClass(){
+        for(let i = 0, l = mixins.length; i < l; i++){
+            const descs = Object.getOwnPropertyDescriptors(mixins[i]);
+            for(const key in descs){
+                if(!(key in target.prototype)){
+                    Object.defineProperty(target.peototype, key, descs[key]);
+                }
+            }
+        }
+    }
+    
+    export default function mixin(...mixins){
+        return target => {return handleClass(target, mixins);}
+    }
+    
+    @mixin(mixinObj)
+    class A {};
+    ```
+
+---
+# 11.08 day53
+- `debounce` 反跳 / 函数防抖
+
+  - 反跳是调用动作n毫秒内，才会执行该动作。如果n毫秒内又调用该动作，则将重新计算时间：
+
+    ```js
+    function debounce(idle, func){ // 接受两个参数：间隔时间和实际调用函数
+        var last; // 保存异步调用实际函数，通过闭包赋值不被销毁
+        return function(){
+            var ctx = this, args = arguments; // 存放函数的this和变量给下边的函数调用
+            clearTimeout(last); // 如果函数被调用，则清楚上一个异步调用实际函数
+            last = setTimeout(function(){
+                func.apply(ctx ,args) // 让实际函数在间隔设置的时间后调用
+            }, idle)
+        }
+    }
+    ```
+
+    
+
+- `throttle` 节流
+
+  - 先执行一个时间周期，当调用的时刻大于等于执行周期时则执行并进入下一个周期
+
+    ```js
+    
+    ```
+
+  - `debounce`和`throttle`是**“节流函数”**的两种方法
+
+- **不用成对出现的HTML标签**（长期记录）：\<p\>、\<link\>、\<img\>、\<br\>、\<meta\>
+
+-  不能focus的元素？
