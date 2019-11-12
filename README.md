@@ -3552,24 +3552,24 @@ alert($("#div")) // [object Object]
   
     - 原生实现：JSON
   
-      - ```js
+      ```js
       var script = document.createElement('script');
-        script.type = 'text/script';
-        // 传参一个回调函数名给后端，方便后端返回时执行这个在前端定义的回调函数
-        script.src = 'http://www.domain2.com:8080/login?user=admin&callback=handleCallback';
-        document.head.appendChild(script);
-        
-        // 回调函数
-        function handleCallback(res){
-            alert(JSON.stringify(res));
-        }
-        ```
-        
-        服务端返回如下（返回时即执行全局函数）
-        
-        ```js
-        handleCallback({"status": true, "user": "admin"})
-        ```
+      script.type = 'text/script';
+      // 传参一个回调函数名给后端，方便后端返回时执行这个在前端定义的回调函数
+      script.src = 'http://www.domain2.com:8080/login?user=admin&callback=handleCallback';
+      document.head.appendChild(script);
+      
+      // 回调函数
+      function handleCallback(res){
+          alert(JSON.stringify(res));
+      }
+      ```
+      
+      服务端返回如下（返回时即执行全局函数）
+      
+      ```js
+      handleCallback({"status": true, "user": "admin"})
+      ```
       
     - AJAX
     
@@ -3577,7 +3577,7 @@ alert($("#div")) // [object Object]
       
       - 现代浏览器上写AJAX主要依靠`XMLHttpRequest`对象（XMLHttpRequest Level 2）
       
-      - ```js
+        ```js
         // JQuery ajax
         $.ajax({
             url: 'http://www.domain2.com:8080/login',
@@ -4133,7 +4133,7 @@ alert($("#div")) // [object Object]
 
 ---
 
-# 11.10 day 54
+# 11.10 day54
 
 - a标签中href=""的几种用法
 
@@ -4155,4 +4155,204 @@ alert($("#div")) // [object Object]
 
   ![diff](img/diff_SASS_SCSS.png)
 
-- 
+- 原生ajax
+
+
+
+---
+
+# 11.12 day 56
+
+- 判断数据类型
+
+  ```js
+  var str = 'hello world'
+  str instanceof String // false
+  
+  var str1 = new String('hello world')
+  str1 instanceof String // true
+  ```
+
+  可以看到str明明是个字符串，但却不是String对象。对于原始类型（boolean、null、undefined、number、string、symbol）来说，想直接通过instancof来判断是不行的。当然我们也还是可以让instanceof判断原始类型：
+
+  ```js
+  class PrimitiveString{
+      static [Symbol.hasInstance](x){
+          return typeof x === 'string'}}; //Symbol.hasInstance 用于判断某对象是否为某构造器的实例
+  
+  str instanceof PrimitiveString // true
+  ```
+
+  
+
+- JavaScript转换
+
+  ![](img/JS转换.webp)
+
+- 重写 `Symbol.toPrimitive` ，在转原始类型时调用优先级最高：
+
+  ```js
+  let a = {
+    valueOf() {
+      return 0
+    },
+    toString() {
+      return '1'
+    },
+    [Symbol.toPrimitive]() {
+      return 2
+    }
+  }
+  1 + a // => 3
+  ```
+
+- `yield`：可认为是一个基于生成器版本的return函数。
+
+- 相等运算符`==` 和 严格相等运算符`===`：
+
+  1. `==`叫做相等运算符，`===`叫做严格运算符。
+
+  2. `==`，equality -> 等同  的意思， 两边值类型不同的时候，要先进行类型转换为同一类型后，再比较值是否相等；`===`，identity -> 恒等 的意思，不做类型转换，类型不同的结果一定不等。 
+
+  3. `==`表示只要值相等即可为真；`===`则要求不仅值相等，而且也要求类型相同。
+
+  4. **相等运算符`==`的运算规则：**
+
+     1. 如果两个值类型相同，进行 === 比较。 
+
+     2. 如果两个值类型不同，他们可能相等。根据下面规则进行类型转换再比较：
+
+        1. 如果一个是null、一个是undefined，那么[相等]。 
+        2. 如果一个是字符串，一个是数值，把字符串转换成数值再进行比较。 
+        3. 如果任一值是 true，把它转换成 1 再比较；如果任一值是 false，把它转换成 0 再比较。 
+        4. 如果一个是对象，另一个是数值或字符串，把对象转换成基础类型的值再比较。对象转换成基础类型，利用它的toString或者valueOf方法。 js核心内置类，会尝试valueOf先于toString；例外的是Date，Date利用的是toString转换。
+        5. 任何其他组合，都[不相等]。 
+
+        ```js
+        '' == '0'          // false 
+        0 == ''            // true
+        0 == '0'            // true
+        false == 'false'    // false。Number(false)为0，Number('false')为NaN
+        false == '0'        // true
+        false == undefined  // false
+        false == null      // false
+        null == undefined  // true
+        ' \t\r\n ' == 0    // true
+        ```
+
+  5. **相等运算符`===`的运算规则：**
+
+     1. 如果类型不同，就[不相等] 
+     2. 如果两个都是数值，并且是同一个值，那么[相等]；(！例外)的是，如果其中至少一个是NaN，那么[不相等]。（判断一个值是否是NaN，只能用isNaN()来判断） 
+     3. 如果两个都是字符串，每个位置的字符都一样，那么[相等]；否则[不相等]。 
+     4. 如果两个值都是true，或者都是false，那么[相等]。 
+     5. 如果两个值都引用同一个对象或函数，那么[相等]；否则[不相等]。 
+     6. 如果两个值都是null，或者都是undefined，那么[相等]。 
+
+- JavaScript数据类型重辨析：
+
+  - 基本数据类型：Boolean、Null、Undefined、Number、String、Symbol（ES6）、BigInt（ES7）
+    - 存放于`栈`中
+    - **基本数据类型的值是按值访问的。**
+  - 引用类型Object（细分为Object、Date、RegExp、Function等）
+    - 存放于`堆`中
+    - **基本数据类型的值是按引用访问的。**
+    - 引用类型的值是可变的
+    - 引用类型的比较是引用的比较
+
+- typeof和instanceof 的区别：
+
+  - JavaScript有三种方法判断一个值到底是什么类型：`typeof`、`instanceof`、`Object.prototype.toString`。
+  - `typeof`返回的数据类型有：原始数据类型（number、string、boolean）、函数function、undefined、object（本质上null是一个类似于undefined的特殊值，但并不是说null就属于对象）
+  - `instanceof`判断变量是否为某个对象的实例。`typeof` 对数组 `[]` 和对象 `{}` 的返回值都是`Object`，无法区分数组和对象，但是`instanceof`可以区分。
+
+- 深浅拷贝：
+
+  - 深拷贝：两者内存空间不同；
+
+    - 实现深拷贝：
+
+       1. jQuery .extend()
+
+          ```js
+          var target = {a: 1, b: 1};
+          var copy1 = {a: 2, b: 2, c: {ca: 21, cb: 22, cc: 23}};
+          var copy2 = {c: {ca: 31, cb: 32, cd: 34}};
+          var result = $.extend(true, target, copy1, copy2);   // 进行深拷贝
+          console.log(target);    // {a: 2, b: 2, c: {ca: 31, cb: 32, cc: 23, cd: 34}}
+          ```
+
+       2. JSON.parse()和JSON.stringify()
+
+          ```js
+          var target = {a: 1, b: 1, c: {ca: 11, cb: 12, cc: 13}};
+          var targetCopy = JSON.parse(JSON.stringify(target));
+          targetCopy.a = 2;
+          targetCopy.c.ca = 21;
+          console.log(target);   // {a: 1, b: 1, c: {ca: 11, cb: 12, cc: 13}}
+          console.log(targetCopy);    // {a: 2, b: 1, c: {ca: 21, cb: 12, cc: 13}}
+          console.log(target === targetCopy);  // false
+          
+          // PS:JSON.parse() 和 JSON.stringify() 能正确处理的对象只有 Number、String、Array 
+          // 等能够被 json 表示的数据结构，因此函数这种不能被 json 表示的类型将不能被正确处理。
+          // 会忽略undefined
+          // 会忽略symbol
+          // 不能解决循环引用的对象
+          ```
+
+  - 浅拷贝：两者实际指向同一内存空间
+
+    - 实现浅拷贝：Object.assign()
+
+      ```js
+      var target = {a: 1, b: 1};
+      var copy1 = {a: 2, b: 2, c: {ca: 21, cb: 22, cc: 23}};
+      var copy2 = {c: {ca: 31, cb: 32, cd: 34}};
+      var result = Object.assign(target, copy1, copy2);
+      console.log(target);    // {a: 2, b: 2, c: {ca: 31, cb: 32, cd: 34}}
+      console.log(target === result);    // true
+      // 深拷贝，target的a并没有变化
+      copy1.a = -1;
+      console.log(target); //  {a: 2, b: 2, c: {ca: 31, cb: 32, cd: 34}}
+      // 浅拷贝，target的c的ca变化了
+      copy2.c[ca] = 0;
+      console.log(target); // {a: 2, b: 2, c: {ca: 0, cb: 32, cd: 34}} 
+      ```
+
+    - 可以通过拓展运算符`...`实现浅拷贝
+    
+      ```js
+      var a = { 
+          age: 1,
+          job: {
+              first: 'engineer'
+          }     
+              };
+      var b = {...a};
+      a.age = 2;
+      console.log(b.age) // 深拷贝，1
+      a.job.first = 'doctor';
+      console.log(b.job.first); // 浅拷贝，doctor
+      ```
+
+- 原型链 ：
+  
+  - Object是所有对象的爸爸
+  
+  - Function是所有函数的爸爸
+  
+  - 函数的prototype是一个对象
+  
+  - 对象的\_\_proto\_\_属性指向原型，\_\_proto\_\_将对象和原型连接起来组成了原型链
+  
+    ![原型链](img/prototypeChain.webp)
+  
+- document.ready 和 window.onload的区别
+
+  - document.ready表示文档结构加载完成（不包含图片等非文字媒体文件）；ready如果定义多个，就会按渲染顺序执行；
+    - jquery中写做$(document).ready(function(){})，可简写$(function(){});
+  - window.onload包含图片等在内的所有元素都加载完成。不管onload定义多少个，只执行最后一个；
+  - 小程序：onload 先，然后到 onshow，最后 onready ，跟原生js的 document.ready 和 window.onload 刚好相反
+
+- split、splice的区别
+
