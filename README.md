@@ -1,4 +1,4 @@
-ife_baidu
+- ife_baidu
 
 百度前端技术学院的作业代码仓库
 ---- 
@@ -2557,12 +2557,10 @@ alert($("#div")) // [object Object]
       	25%  {background:yellow; left:200px; top:0px;}
       	50%  {background:blue; left:200px; top:200px;}
       	75%  {background:green; left:0px; top:200px;}
-      	100% {background:red; left:0px; top:0px;}
+      	100% {background:red; left:0p; top:0px;}
       }
       
       ```
-
-      
 
   - 多列布局
 
@@ -2571,27 +2569,28 @@ alert($("#div")) // [object Object]
   - **媒体查询**@media
 
     ```css
-    @media not|only mediatype and (expressions) {
+  @media not|only mediatype and (expressions) {
         CSS 代码...;
     }
     ```
-
+  
   - 图片
-    - filter 图片滤镜属性，为元素添加可视效果 (例如：模糊与饱和度) 。
+  - filter 图片滤镜属性，为元素添加可视效果 (例如：模糊与饱和度) 。
+    
     - 模态Modal
     
   - 弹性盒子：`display: flex`
-
-  - 网格模型：`display: grid`
-
-  - 目标伪类 `:target`：可以为活动的锚点设置样式
-
-  - UI元素状态伪类 `:enabled`匹配启用的元素、`:disable`匹配禁用的元素、`:checked`匹配被选中的元素
-
-  - 结构性伪类
-
+  
+- 网格模型：`display: grid`
+  
+- 目标伪类 `:target`：可以为活动的锚点设置样式
+  
+- UI元素状态伪类 `:enabled`匹配启用的元素、`:disable`匹配禁用的元素、`:checked`匹配被选中的元素
+  
+- 结构性伪类
+  
     - `:root`匹配文档根元素； 
-    - ` :nth-child(n)`匹配其父元素的第n个子元素； 
+  - ` :nth-child(n)`匹配其父元素的第n个子元素； 
     - `:nth-last-child(n)`匹配其父元素倒数第n个元素； 
     - `:nth-of-type(n)`匹配父元素第n个有相同选择器的子元素； 
     - `:nth-last-of-type`匹配其父元素倒数第n个有相同选择器的子元素； 
@@ -2601,11 +2600,11 @@ alert($("#div")) // [object Object]
     - `last-of-type`匹配父元素最后一个有相同选择器的子元素； 
     - `only-child` 匹配其父元素唯一有着相同选择器的子元素
     - `empty`匹配没有子元素（包括文字节点）的元素
+    
+   - 语言伪类`:lang(val)`，匹配带有指定lang属性的元素
   
- - 语言伪类`:lang(val)`，匹配带有指定lang属性的元素
-
-- 否定伪类`:not(style)`，匹配所有非指定类型元素的其他元素
-
+  - 否定伪类`:not(style)`，匹配所有非指定类型元素的其他元素
+  
 - JavaScript中有set()函数吗？
 
   - ES6才提供的新的数据结构Set
@@ -4155,13 +4154,30 @@ alert($("#div")) // [object Object]
 
   ![diff](img/diff_SASS_SCSS.png)
 
-- 原生ajax
+- **原生ajax**
 
+  ```js
+  function ajax(url, callback){
+      var xhr = new XMLHttpRequest();  // 新建XMLHttpRequest对象
+      xhr.onreadystatechange = function(){ // 检测readystatechange事件
+          if(xhr.readyState === XMLHttpRequest.DONE){ // 当请求完成
+              if(xhr.status === 200){ // 如果服务器相应没有错误
+                  callback(null, xhr.responseText); 
+              } else{
+                  callback(xhr.status)
+              }
+          }
+      };
+      xhr.open("GET", url); // 建立一个链接
+      xhr.send(null); // 发送一个空数据 
+  }
+  ```
 
+  
 
 ---
 
-# 11.12 day 56
+# 11.12 day56
 
 - 判断数据类型
 
@@ -4264,6 +4280,9 @@ alert($("#div")) // [object Object]
 
   - JavaScript有三种方法判断一个值到底是什么类型：`typeof`、`instanceof`、`Object.prototype.toString`。
   - `typeof`返回的数据类型有：原始数据类型（number、string、boolean）、函数function、undefined、object（本质上null是一个类似于undefined的特殊值，但并不是说null就属于对象）
+    - `typeof null`结果是`object` ，实际这是`typeof`的一个bug，null是原始值，非引用类型
+    - `typeof [1, 2]`结果是`object`，结果中没有`array`这一项，引用类型除了`function`其他的全部都是`object`
+    - `typeof Symbol()` 用`typeof`获取`symbol`类型的值得到的是`symbol`，这是 ES6 新增的知识点
   - `instanceof`判断变量是否为某个对象的实例。`typeof` 对数组 `[]` 和对象 `{}` 的返回值都是`Object`，无法区分数组和对象，但是`instanceof`可以区分。
 
 - 深浅拷贝：
@@ -4319,6 +4338,8 @@ alert($("#div")) // [object Object]
       console.log(target); // {a: 2, b: 2, c: {ca: 0, cb: 32, cd: 34}} 
       ```
 
+      **PS：**Object.assign方法
+    
     - 可以通过拓展运算符`...`实现浅拷贝
     
       ```js
@@ -4345,6 +4366,8 @@ alert($("#div")) // [object Object]
   
   - 对象的\_\_proto\_\_属性指向原型，\_\_proto\_\_将对象和原型连接起来组成了原型链
   
+  - 先有`Object.prototype`（原型链顶端），`Function.prototype`继承`Object.prototype`而产生，最后，`Function`和`Object`和其它构造函数继承`Function.prototype`而产生。
+  
     ![原型链](img/prototypeChain.webp)
   
 - document.ready 和 window.onload的区别
@@ -4353,6 +4376,138 @@ alert($("#div")) // [object Object]
     - jquery中写做$(document).ready(function(){})，可简写$(function(){});
   - window.onload包含图片等在内的所有元素都加载完成。不管onload定义多少个，只执行最后一个；
   - 小程序：onload 先，然后到 onshow，最后 onready ，跟原生js的 document.ready 和 window.onload 刚好相反
+  - ![onlad事件与ready的区别](img/load.png)
 
 - split、splice的区别
 
+
+
+---
+
+# 11.13 day57
+
+- **状态码304**
+
+  - “未改变”，说明无需再次传输请求的内容，表示可以使用缓存的内容
+  - 缓存过期后直接向服务器发起请求验证缓存是否有效，有效的话则返回304，表示可以直接使用缓存资源
+
+- **汽车车牌正则表达式验证**
+
+  ```js
+  function check_licensePlate(licensePlate) {
+  	console.info("进入到车牌校验");
+      // 下边这个不是特别准确，但是够用就好。
+  	var re = /^[京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领A-Z]{1}[A-Z]{1}[A-Z0-9]{4}[A-Z0-9挂学警港澳]{1}$/;
+  	if(licensePlate.search(re) == -1) {
+  		return false;
+  	} else {
+  		return true;
+  	}
+  
+  ```
+
+   - [中国车牌号正则表达式（包括新能源汽车）](https://blog.csdn.net/tangjili5620/article/details/77159453)
+
+- **一道编程题**：拉平数组
+
+  输入：array
+
+  输出：新的已拉平的数组
+
+  示例
+
+  > flattenDeep([1, [2, [3, [4]], [5]]]);
+  >
+  > // => [1, 2, 3, 4, 5]
+
+  ```js
+  var arr = [1, [2, [3, [4]], [5]]];
+  
+  // 法1：直接用join转换成字符串再split变回数组（有点瑕疵，数组元素是字符串，不是规定的数值型）
+  arr.join(',').split(','); // ["1", "2", "3", "4", "5"]
+  
+  // 法2：递归，判断是否为数组，是的话递归调用，不是的就压入目标数组
+  var tempArr = [];
+  function flattenDeep(arr){
+      arr.map( v => {
+          if(Array.isArray(v)){
+              flattenDeep(v)}
+          else{
+              tempArr.push(v)}
+      }
+  )}
+  flattenDeep(arr)
+  console.log(tempArr) // [1, 2, 3, 4, 5]
+  
+  // 精简版
+  const
+  ```
+
+  
+
+- **一道编程题**：实现这个函数groupBy(collection, function)
+
+  描述：创建一个对象，它的key是collection经function迭代得到的结果，它的value是一个collection元素对应key的数组。其中function接受一个参数：collection中的元素。
+
+  输入：collection（将要被迭代的集合），function（转换key的迭代器）
+
+  输出：新的构造的聚合对象
+
+  实例：	groupBy([6.1, 4.2, 6.3], Math.floor) // => {'4': [4.2], '6': [6.1, 6.3]}
+
+  groupBy(['one', 'two', 'three'], 'length') // => {'3': ['one', 'two'], '5':['three']}
+
+  ```js
+  function groupBy(col ,fn){
+      if(!Array.isArray(col))return;
+  	var newFn, groupByObj = {};
+      if(typeof(fn) === 'string'){
+          newFn = function(item){
+  			return item[fn];
+          }
+  	} else if(typeof(fn) === 'function'){
+  		newFn = fn;
+  	} else return;
+  
+  	col.map(v => {
+  		var key = newFn(v)
+  		if(!groupByObj.hasOwnProperty(key)){
+  			groupByObj[key] = [v]  // 注意这里是[v]，表示创建一个数组
+          } else{
+  			groupByObj[key].push(v)
+          }
+      })
+  	return groupByObj
+  }	
+  
+  console.log(groupBy([6.1, 4.2, 6.3], Math.floor));
+  console.log(groupBy(['one', 'two', 'three'], 'length'))
+  
+  
+  // 更精简的实现
+  const groupBy = (arr, fn) =>
+    arr.map(typeof fn === 'function' ? fn : val => val[fn]).reduce((acc, val, i) => {
+      acc[val] = (acc[val] || []).concat(arr[i]);
+      return acc;
+    }, {});
+  ```
+
+- **CSRF**(Cross-site Request Forgery)跨站请求伪造
+
+  - 利用当前用户权限偷偷完成某项操作，而不是拿到用户信息。比如某个网站`http://buy.com`的用户收到了一封邮件，邮件里边插入了一行在当前网站购物的恶意代码，这样就悄悄地完成购买的操作，而实际上用户并没有购买的打算。
+
+- **XSS**（Cross Site Scripting，跨站脚本攻击）
+
+  - 原理是黑客通过某种方式插入恶意JS代码（发布文章、发布评论等），然后别人再看这篇文章的时候，之前注入的代码就会运行，执行获取cookie等操作，之后就可以模拟cookie登录网站，对用户信息进行篡改等。
+  - 最根本的办法就是对用户输入内容进行验证、转换。比如“&amp;”换成“\&amp;amp;”。替换了这些字符之后，黑客输入的攻击代码就会失效，XSS 攻击将不会轻易发生。除此之外，还对cookie设置诸如”read-only“之类的安全限制，让JS获取不到cookie的内容
+
+- 前端开发跟后端开发的区别：
+
+  - 前端开发：简单来说前端开发就是负责网页的交互部分，如网页特效、网页布局等，同事通过接口与后端数据交互
+  - 后端开发：负责网站后台逻辑的设计和实现以及用户和网站数据的保存和读取。
+  - 其他：根据互联网的发展，也同时进化出了更多的其他生物：我们发现网页太丑了。好，我们叫擅长美工的人来帮忙，他们成了**UI**。我们发现用户太能折腾了，老板太能折腾了，甲方太能折腾了。好，我们叫擅长沟通的人来帮忙把客户和老板讲的东西理成结构化的文档，或是把用户的需求收集起来理成将来要做成软件的样子，他们成了**产品经理**。我们发现往网站上写文章，填内容实在是麻烦，而且要把网站流量做大，还得找个人出出主意，于是，**运营**也诞生了。我们发现上线后服务器怎么老是不稳定，后端大佬们都去做新项目了，得找个hold的住服务器和机房的专家，然后**运维**出现了
+    
+
+- 
+
+  
