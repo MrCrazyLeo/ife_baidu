@@ -4161,6 +4161,7 @@ alert($("#div")) // [object Object]
       var xhr = new XMLHttpRequest();  // 新建XMLHttpRequest对象
       xhr.onreadystatechange = function(){ // 检测readystatechange事件
           if(xhr.readyState === XMLHttpRequest.DONE){ // 当请求完成
+              // 以前总写成if(xhr.readysta)
               if(xhr.status === 200){ // 如果服务器相应没有错误
                   callback(null, xhr.responseText); 
               } else{
@@ -4338,7 +4339,7 @@ alert($("#div")) // [object Object]
       console.log(target); // {a: 2, b: 2, c: {ca: 0, cb: 32, cd: 34}} 
       ```
 
-      **PS：**Object.assign方法
+      **PS**：Object.assign方法
     
     - 可以通过拓展运算符`...`实现浅拷贝
     
@@ -4506,8 +4507,121 @@ alert($("#div")) // [object Object]
   - 前端开发：简单来说前端开发就是负责网页的交互部分，如网页特效、网页布局等，同事通过接口与后端数据交互
   - 后端开发：负责网站后台逻辑的设计和实现以及用户和网站数据的保存和读取。
   - 其他：根据互联网的发展，也同时进化出了更多的其他生物：我们发现网页太丑了。好，我们叫擅长美工的人来帮忙，他们成了**UI**。我们发现用户太能折腾了，老板太能折腾了，甲方太能折腾了。好，我们叫擅长沟通的人来帮忙把客户和老板讲的东西理成结构化的文档，或是把用户的需求收集起来理成将来要做成软件的样子，他们成了**产品经理**。我们发现往网站上写文章，填内容实在是麻烦，而且要把网站流量做大，还得找个人出出主意，于是，**运营**也诞生了。我们发现上线后服务器怎么老是不稳定，后端大佬们都去做新项目了，得找个hold的住服务器和机房的专家，然后**运维**出现了
+
+---
+# 11.14 day58
+- DOM ”先天即慢“？
+
+  - dom操作影响性能最主要是因为它导致了浏览器的重绘（repaint）和重排（reflow）
+  
+- ES5为数组定义了5种迭代方法：
+
+  - every()
+  - filter()
+  - forEach()
+  - map
+  - some()
+  
+- ES5新增两个归并数组的方法：
+
+  - reduce()
+  - reduceRight()
+  
+- `let`、`var`、`function`
+
+  - ES6里面的`let`和`const`是不存在变量提升的，存在“暂时性死区”
+  
+    ```js
+    let name = 'ConardLi'
+    {
+      console.log(name) // Uncaught ReferenceError: name is not defined
+        // es6里面的let和const是不存在变量提升的
+      let name = 'code秘密花园'
+    }
+    ```
     
+  - 
+  
+- 一道错题：
+
+  [平安人寿前端面试错题](https://blog.csdn.net/sinat_36521655/article/details/80253311)
+  
+  ```js
+  var length = 10;
+  function fn() {
+      console.log(this.length);
+  }
+   
+  var obj = {
+    length: 5,
+    method: function(fn) {
+      fn();
+      arguments[0]();
+    }
+  };
+   
+  obj.method(fn, 1);//输出是什么？
+  ```
+  
+  输出“10 2”。
+  
+  对于`arguments[0]()`，全局函数fn同时也属于arguments数组中的一员，即当作为arguments成员之一调用的时候，其作用域就绑定到了arguments上，this也就是指向了arguments对象，所以`arguments[0]()`这段代码调用了身为成员的fn()函数，this.length就等于是arguments.length，又因为method传入的参数为2个，所以最后输出2
+  
+  ```js
+  // 改成let声明变量
+  let length = 10;
+  function fn() {
+      console.log(this.length);
+  }
+   
+  let obj = {
+    length: 5,
+    method: function(fn) {
+      fn();
+      arguments[0]();
+    }
+  };
+   
+  obj.method(fn, 1);//输出是什么？
+  ```
+  
+  输出：“1 2”。
+  
+  let声明变量会形成块级作用域，且不存在声明提升，而var存在声明提升。所以当使用let声明变量时，不存在声明提升，length属性实际上并没有添加到window对象中
+  
+- Vue中父子组件生命周期执行顺序
+
+  参考[Vue中父子组件生命周期执行顺序初探](https://segmentfault.com/a/1190000015890245)
+
+  ![父子组件生命周期执行顺序](img/父子组件生命周期执行顺序.png)
+
+  可以看到父组件先创建，然后子组件创建；之后子组件挂载，然后父组件挂载
+
+  ![生命周期钩子](img/生命周期钩子.png)
+
+- LESS跟SCSS的区别
+
+- 在严格模式下，语句var a = b = 3;会产生一个ReferenceError的运行时错误：b没有定义，从而避免了可能导致的任何头headfakes/bugs。 （这就是为什么你应该在你的代码中使用strict，一个重要的例子！）
+
+- 另外一道错题：
+
+  [平安人寿前端面试错题2](https://zhuanlan.zhihu.com/p/36550058)
+
+  ```js
+  // 下面的代码将输出到控制台的是什么？，为什么？
+  var myObject = {
+      foo: "bar",
+      func: function() {
+          var self = this;
+          console.log("outer func:  this.foo = " + this.foo); // 'bar'
+          console.log("outer func:  self.foo = " + self.foo); // 'bar'
+          (function() {
+              console.log("inner func:  this.foo = " + this.foo); // 'undefined' 
+              console.log("inner func:  self.foo = " + self.foo); // 'bar'
+          }());
+      }
+  };
+  myObject.func();
+  ```
 
 - 
-
-  
