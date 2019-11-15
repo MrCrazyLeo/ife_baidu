@@ -4623,5 +4623,119 @@ alert($("#div")) // [object Object]
   };
   myObject.func();
   ```
+  
+  
+
+---
+# 11.15 day59
+
+- **选择排序**
+
+  - 时间复杂度O(N^2)，不稳
+
+  ```js
+  Array.prototype.selectionSort = function(){
+      let min;
+      for(let i = 0; i < this.length; i++){
+          min = i;
+          for(let j = i + 1; j < this.length; j++){
+              if(this[min] > this[j]) min = j;
+          }
+          // 如果有更小值，需要交换两者，用位运算
+          if(min != i){
+              this[min] = this[min] ^ this[i];
+              this[i] = this[min] ^ this[i];
+              this[min] = this[min] ^ this[i];
+              
+              // 也可以直接写this[min] = [this[i], this[i] = this[min]][0]进行两者交换
+          }
+      }
+      return this;
+  }
+  ```
+
+    ![选择排序](img/选择排序.gif)
+
+  紅色表示目前最小值，黃色表示已排序序列，藍色表示目前位置。
+
+  
+
+- **快排** 
+
+  - 时间复杂度O(NlogN)，不稳
+
+  - > 快速排序使用分治法来把一个串（list）分为两个子串（sub-lists）。具体算法描述如下：
+    >
+    > - <1>.从数列中挑出一个元素，称为 "基准"（pivot）；
+    > - <2>.重新排序数列，所有元素比基准值小的摆放在基准前面，所有元素比基准值大的摆在基准的后面（相同的数可以到任一边）。在这个分区退出之后，该基准就处于数列的中间位置。这个称为分区（partition）操作；
+    > - <3>.递归地（recursive）把小于基准值元素的子数列和大于基准值元素的子数列排序。
+
+  ```js
+  // 快速排序一般就是取第一个数为哨兵，然后从第二数遍历数组，看到比哨兵大的放在哨兵右边，比哨兵小的放在哨兵左边，递归结束条件是输入数组的数在1个及以下的时候直接返回数组
+  Array.prototype.quickSort() = function(){
+      const len = this.length;
+      if(len < 2)return this;
+      const basic = this[0], left = [], right = [];
+      for(let i = 1; i < len; i++){
+          const iv = this[i];
+          iv < basic ? left.push(iv) : right.push(iv)
+      }
+      return left.quickSort().concat(basic, right.quickSort());
+  } 
+  ```
+
+  
+
+- **归并排序**
+
+  - 时间复杂度O（NlogN），稳
+
+  ```js
+  // 此函数是为了把拆分好的left和right部分排序并合并起来
+  function merge(left, right){
+   
+      var temp = [];
+      while(left.length && right.length){
+          left[0] < right[0] ? temp.push(left.shift()) : temp.push(right.shift())
+      }
+      return temp.concat(left, right) // 这里很奇妙，上边停止的条件是left或者right其中之一长度为0，这里把较长者剩余部分一股脑都合并到目标数组里边
+  }
+  
+  // 此函数主要是拆分原数组，然后交给merge()函数处理
+  function mergeSort(arr){
+      // 递归结束条件
+      if(arr.length < 2) return arr;
+      var mid = Math.floor(arr.length/2);
+      var left = arr.slice(0, mid);
+      var right = arr.slice(mid);
+      // 递归表达式
+      return merge(mergeSort(left), mergeSort(right))
+  }
+  ```
+
+  ```js
+  // 自己改的，把方法写到Array原型上去，但是还是得有额外的merge()函数。
+  function merge(left, right){
+    var result = [];
+    while(left.length && right.length){
+          left[0] < right[0] ? temp.push(left.shift()) : temp.push(right.shift())
+    }
+    return result.concat(left, right);
+  }
+  
+  Array.prototype.mergeSort = function(){
+      if(this.length < 2)return this;
+      var mid = Math.floor(this.length/2);
+      var left = this.slice(0,mid); 
+      var right = this.slice(mid);
+      return merge(left.mergeSort(), right.mergeSort())}
+  
+  var arr = [1,3,5,7,8,3,5,7]
+  console.log(arr.mergeSort()); // [1, 3, 3, 5, 5, 7, 7, 8]
+  ```
+
+  ![归并排序](img/归并排序.gif)
+
+  
 
 - 
