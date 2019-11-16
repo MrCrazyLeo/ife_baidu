@@ -4599,6 +4599,8 @@ alert($("#div")) // [object Object]
 
   ![生命周期钩子](img/生命周期钩子.png)
 
+  ![ Vue官方组件的生命周期](img/Vue官方组件生命周期.png)
+
 - LESS跟SCSS的区别
 
 - 在严格模式下，语句var a = b = 3;会产生一个ReferenceError的运行时错误：b没有定义，从而避免了可能导致的任何头headfakes/bugs。 （这就是为什么你应该在你的代码中使用strict，一个重要的例子！）
@@ -4738,4 +4740,9 @@ alert($("#div")) // [object Object]
 
   
 
-- 
+---
+# 11.16 day60
+- vue中子组件如何向父组件传值，最少说两种？
+- Vue：
+  - 缩写：`v-bind: class = 'color'`缩写成`: class = 'color'` ，`v-on:click="doSomething"`缩写成`@click="doSomething"`
+  - 使用 `watch` 选项允许我们执行异步操作 (访问一个 API)，限制我们执行该操作的频率，并在我们得到最终结果前，设置中间状态。这些都是计算属性无法做到的。
