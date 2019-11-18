@@ -4686,7 +4686,10 @@ alert($("#div")) // [object Object]
   } 
   ```
 
-  
+  ![快速排序](img/快速排序.gif)
+
+
+
 
 - **归并排序**
 
@@ -4746,3 +4749,104 @@ alert($("#div")) // [object Object]
 - Vue：
   - 缩写：`v-bind: class = 'color'`缩写成`: class = 'color'` ，`v-on:click="doSomething"`缩写成`@click="doSomething"`
   - 使用 `watch` 选项允许我们执行异步操作 (访问一个 API)，限制我们执行该操作的频率，并在我们得到最终结果前，设置中间状态。这些都是计算属性无法做到的。
+
+---
+# 11.17 day61
+- [Web语义化](https://juejin.im/entry/5ab5f229518825558a069304)
+
+
+
+---
+
+# 11.18 day62
+
+- 右移等于Math.floor(x/2)，很好用
+
+  > 13 >> 1 // -> 6
+
+- 按位异或就是**不进位加法***
+
+  ```js
+  // 两个数不使用四则运算得出和
+  // 
+  //  a + b = (a ^ b) + ((a & b) << 1)
+  function sum(a, b) {
+      if (a == 0) return b
+      if (b == 0) return a
+      let newA = a ^ b
+      let newB = (a & b) << 1
+      return sum(newA, newB)
+  }
+  ```
+
+  
+
+- 实现数组去重
+
+  ```js
+  function unique_arr(arr){
+  	function callback(value,index,self){
+  		if(index === self.indexOf(value)) return true}
+      let new_arr = arr.filter(callback);
+      return new_arr;
+  }
+  
+  var arr = [5,4,3,2,1,11,12,24,25,75,26, 1,1,1,1,1,2,3,4,5,6,7,8,4,2,3,745];
+  console.log(unique_arr(arr)); // [5, 4, 3, 2, 1, 11, 12, 24, 25, 75, 26, 6, 7, 8, 745]
+  ```
+
+  
+
+- JavaScript 数据结构
+
+  - 栈
+
+    ```js
+    class Stack{
+        constructor(){
+            this.items = []}
+        
+        // 注意有的方法有用get有的没有，调用的时候有差异
+        // 入栈
+        push(element){
+            this.items.push(element)}
+        
+        // 出栈
+        pop(){
+            return this.items.pop()}
+        
+        isEmpty(){
+            return !this.items.length
+        }
+        
+        // 末位
+        get peek(){
+            return this.items[this.items.length-1]}
+        
+    	// 深度
+        get size(){
+            return this.items.length}
+    
+    	// 清空栈
+    	clear(){
+    		this.items = []}
+    	
+    	// 打印栈
+    	print(){
+    		console.log(this.items.toString())}
+    }
+    
+    // 实例化一个栈
+    const stack = new Stack()
+    console.log(stack.isEmpty()) // true   
+    // 添加元素
+    stack.push(5)
+    stack.push(8)
+    // 读取属性
+    console.log(stack.peek) // 8
+    console.log(stack.pop())
+    ```
+
+  - 
+
+- 
