@@ -2398,7 +2398,7 @@ alert($("#div")) // [object Object]
       }
   }
   
-  console.log("出现次数最多的是" + Char + "，出现次数为" + Max + "次");
+  console.log("出现次数最多的是" + Char + "，出现次数为" + Max + "次"); // k 6
   ```
 
   
@@ -4773,10 +4773,18 @@ alert($("#div")) // [object Object]
   function sum(a, b) {
       if (a == 0) return b
       if (b == 0) return a
-      let newA = a ^ b
+      let newA = a ^ b //这句话很关键，a ^ b是不进位加法！！
+      console.log('newA', newA)
       let newB = (a & b) << 1
-      return sum(newA, newB)
+      console.log('newB', newB)
+      return sum(newA, newB) // 迭代实现
   }
+  
+  // sum(8,9)
+  // newA 1
+  // newB 16
+  // newA 17
+  // newB 0
   ```
 
   
@@ -4847,6 +4855,193 @@ alert($("#div")) // [object Object]
     console.log(stack.pop())
     ```
 
-  - 
+  - 队列
 
-- 
+    ```js
+    class Queue{
+        constructor(items){
+            this.items = items || []}
+        
+        // 入队
+        enqueue(element){
+            this.items.push(element)}
+        
+        // 出队
+        dequeue(){
+            return this.items.shift()}
+        
+        // 取队首元素
+    	front(){
+            return this.items[0]}
+        
+        // 清除队列
+        clear(){
+            this.items = []}
+        
+        // 拿到队的size
+        get size(){
+            return this.items.length}
+        
+        // 判断是否对空
+        get isEmpty(){
+            return !this.items.length}
+        
+        // 打印队列
+        print(){
+            console.log(this.items.toString())}
+    }
+    
+    const queue = new Queue()
+    console.log(queue.isEmpty) // true
+    
+    queue.enqueue('John')
+    queue.enqueue('Jack')
+    queue.enqueue('Camila')
+    console.log(queue.size) // 3
+    console.log(queue.isEmpty) // false
+    queue.dequeue()
+    queue.dequeue()
+    queue.print() // 'Camila'
+    ```
+
+    - 优先队列
+
+      ```js
+      // 优先队列就是插入元素有优先级，多了个显示优先级的参数
+      class PriorityQueue{
+          constructor(){
+              this.items = []
+          }
+          
+          // 入队
+          enqueue(element, priority){
+              const queueElement = {element, priority}
+              if(this.isEmpty){
+                  // 如果队列空，直接插入
+                  this.items.push(queueElement)
+              } else{
+                  // 权重越小越靠前，找到小于当前元素item权重的位置，找不到则返回-1
+                  const preIndex = this.items.findIndex((item) => queueElement.priority < item.priority)
+                  if(preIndex > -1){
+                      this.items.splice(preIndex, 0, queueElement)
+                  } else{
+                      this.items.push(queueElement)
+                  }
+              }
+              
+          // 出队
+          dequeue(){
+              return this.items.shift()}
+          
+          // 取队首元素
+      	front(){
+              return this.items[0]}
+          
+          // 清除队列
+          clear(){
+              this.items = []}
+          
+          // 拿到队的size
+          get size(){
+              return this.items.length}
+          
+          // 判断是否对空
+          get isEmpty(){
+              return !this.items.length}
+          
+          // 打印队列
+          print(){
+              console.log(this.items.toString())}
+          }
+      
+      }
+      ```
+
+    - 循环队列
+
+      ```js
+      // 基于首次实现的队列类，简单实现一个循环引用的示例
+      class LoopQueue extends Queue{
+          constructor(items){
+              super(items)
+          }
+          
+          getIndex(index){
+              const length = this.items.length
+              return index > length ? (index % length) : index
+          }
+          
+          find(index){
+              return !this.isEmpty ? this.items[this.getIndex(index)] : null
+          }
+      }
+      ```
+
+  - 链表
+
+    ```js
+    // 定义节点
+    class Node{
+        constructor(element){
+            this.element = element;
+            this.next = null;}
+    }
+    
+    // 定义链表
+    class LinkedList{
+        constructor(){
+            this.head = null;
+            this.length = 0
+    	}
+        
+        append(element){
+            const node = new Node(element);
+            let current = null;
+            if(this.head === null){
+                this.head = node
+            } else{
+                current = this.head;
+                while(current.next){
+                    current = current.next
+                }
+                current.next = node
+            }
+            this.length++
+        }
+        
+        // 任意位置插入元素
+        insert(position, element){
+            if(position >=0 && position <= this.length){
+                const node = new Node(element);
+                let current = this.head;
+                let previous = null;
+                let index = 0;
+                if(position === 0){
+                    this.head = node
+                } else{
+                    while(index++ < position){
+                        previous = current
+                        current = current.next
+                    }
+                    // 中间插入节点需要记录前后指针
+                    node.next = current
+                    previous.next = node
+                }
+                this.length++;
+                return true;
+            }
+            return false;
+        }
+        
+    }
+    ```
+
+    
+
+- JavaScript继承总结
+
+- Vue跟React的区别
+
+- Vue内部双向绑定的原理
+
+- Promise底层实现
