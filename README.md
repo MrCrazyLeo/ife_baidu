@@ -1,4 +1,4 @@
-- ife_baidu
+ife_baidu
 
 百度前端技术学院的作业代码仓库
 ---- 
@@ -282,7 +282,7 @@ function fibonacci1(nth){
     else{
         return fibonacci1(nth-1)+fibonacci1(nth-2);
         }}
-
+de
 //解法2使用迭代：
 function fibonacci2(nth){
     if(nth == 1 ||nth ==2){
@@ -1254,7 +1254,7 @@ alert($("#div")) // [object Object]
   - HTTP响应
 - 前后端分离是什么？
   - 本质是前后端业务分开，中间通过特定接口（如Ajax、JSONP）连接。前端项目与后端项目是两个项目，放在两个不同的服务器，需要独立部署，两个不同的工程，两个不同的代码库，不同的开发人员。前端只需要关注页面的样式与动态数据的解析及渲染，而后端专注于具体业务逻辑。
-  - 从经典的JSP+Servlet+JavaBean的MVC时代，到SSM（Spring + SpringMVC + Mybatis）和SSH（Spring + Struts + Hibernate）的Java 框架时代，再到前端框架（KnockoutJS、AngularJS、vueJS、ReactJS）为主的MV*时代，然后是Nodejs引领的全栈时代，技术和架构一直都在进步。
+  - 从经典的JSP+Servlet+JavaBean的MVC时代，到SSM（Spring + SpringMVC + Mybatis）和SSH（Spring + Struts + Hibernate）的Java 框架时代，再到前端框架（KnockoutJS、AngularJS、Vue.js、React）为主的MV*时代，然后是Nodejs引领的全栈时代，技术和架构一直都在进步。
   - [前后端分离架构概述](https://blog.csdn.net/fuzhongmin05/article/details/81591072)
 - 设计模式是什么？
 - Typescript
@@ -1535,7 +1535,7 @@ alert($("#div")) // [object Object]
 
 - angular、react、vue、jquery区别
 
-  - Angluar.js是一代，从2代开始叫angular，2代是1代很大的改进
+  - Angluar.js是一代，从2代开始叫Angular，2代是1代很大的改进
   - https://www.cnblogs.com/zhuzhenwei918/p/7447434.html说到，react周边是整个社区在维护，Vue主要是作者尤雨溪在维护。Vue和React都采用虚拟DOM的方式，都是渐进式、组件化的。
 
 - 渐进增强、平稳退化
@@ -1959,7 +1959,7 @@ alert($("#div")) // [object Object]
     <!-- 缩写 -->
     <a :href="url">...</a>
     ```
-  
+
     
 
   - v-on缩写`@`
@@ -1971,7 +1971,7 @@ alert($("#div")) // [object Object]
     <!-- 缩写 -->
     <a @click="doSomething">...</a>
     ```
-  
+
     
 
   - APP.vue，入口文件
@@ -1979,6 +1979,14 @@ alert($("#div")) // [object Object]
   - 组件，我目前理解就是包含了特定html结构（写在template里边）、css样式（写在style里边）和js交互特效（写在script）的封装好的模块，可以在别的网页嵌入使用、复用多次。
 
     > 组件是可复用的 Vue 实例，且带有一个名字
+
+  - 本地构建Vue应用有以下几种方式：
+
+    - CDN：直接下载并用\<script\>标签引入，Vue会被注册为一个全局变量
+    - Node.js
+    - npm
+    - webpack
+      - Vue-cli：Vue脚手架工具，用来生成模板的Vue工程
 
   - 
 
@@ -3549,7 +3557,7 @@ alert($("#div")) // [object Object]
 
   - JSONP
   
-    - 原生实现：JSON
+    - 原生实现：JSONP
   
       ```js
       var script = document.createElement('script');
@@ -4101,10 +4109,10 @@ alert($("#div")) // [object Object]
 
     ```js
     function debounce(idle, func){ // 接受两个参数：间隔时间和实际调用函数
-        var last; // 保存异步调用实际函数，通过闭包赋值不被销毁
+        var last = null; // 保存异步调用实际函数，通过闭包赋值不被销毁。last也是定时器ID。
         return function(){
             var ctx = this, args = arguments; // 存放函数的this和变量给下边的函数调用
-            clearTimeout(last); // 如果函数被调用，则清楚上一个异步调用实际函数
+            clearTimeout(last); // 如果函数被调用，则清除上一个异步调用实际函数
             last = setTimeout(function(){
                 func.apply(ctx ,args) // 让实际函数在间隔设置的时间后调用
             }, idle)
@@ -4119,10 +4127,64 @@ alert($("#div")) // [object Object]
   - 先执行一个时间周期，当调用的时刻大于等于执行周期时则执行并进入下一个周期
 
     ```js
-    
+    var throttle = function(action, delay){
+        var statTime = 0;
+        
+        return function() {
+            var currTime = +new Date();
+            var self = this, args = arguments;
+            if (currTime - statTime > delay) {
+                action.apply(this, arguments);
+                statTime = currTime ;
+            }
+        }
+    }    
     ```
 
   - `debounce`和`throttle`是**“节流函数”**的两种方法
+
+  - throttle跟debounce的最大不同就是，throttle会有一个阀值，当到达阀值的时候action必定会执行一次。所以throttle的实现可以基于前面的debounce的实现，只需要加上一个阀值：
+
+    ```js
+    var throttleV1 = function(action, delay, mustRunDelay) {
+        var timer = null,
+              startTime;
+              
+        return function() {
+            var self = this, 
+                  args = arguments, 
+                  currTime = new Date();
+                  
+            clearTimeout(timer);
+            
+            if(!startTime) {
+                startTime = currTime;
+            }
+            
+            if(currTime - startTime >= mustRunDelay) {
+                action.apply(self, args);
+                startTime = currTime;
+            }
+            else {
+                timer = setTimeout(function() {
+                    action.apply(self, args);
+                }, delay);
+            }
+        };
+    };
+    ```
+
+  - debounce应用场景：
+
+    - 对于键盘事件，当用户输入比较频繁的时候，可以通过debounce合并键盘事件处理
+    - 对于ajax请求的情况，例如当页面下拉超过一定返回就通过ajax请求新的页面内容，这时候可以通过debounce合并ajax请求事件
+
+  - throttle应用场景：
+
+    - 对于键盘事件，当用户输入非常频繁，但是我们又必须要在一定时间内（阀值）内执行处理函数的时候，就可以使用throttle
+      - 例如，一些网页游戏的键盘事件
+    - 对于鼠标移动和窗口滚动，鼠标的移动和窗口的滚动会带来大量的事件，但是在一段时间内又必须看到页面的效果
+      - 例如对于可以拖动的div，如果使用debounce，那么div会在拖动停止后一下子跳到目标位置；这时就需要使用throttle
 
 - **不用成对出现的HTML标签**（长期记录）：\<p\>、\<link\>、\<img\>、\<br\>、\<meta\>
 
@@ -4161,7 +4223,7 @@ alert($("#div")) // [object Object]
       var xhr = new XMLHttpRequest();  // 新建XMLHttpRequest对象
       xhr.onreadystatechange = function(){ // 检测readystatechange事件
           if(xhr.readyState === XMLHttpRequest.DONE){ // 当请求完成
-              // 以前总写成if(xhr.readysta)
+              // 以前总写成if(xhr.readystate === 4)
               if(xhr.status === 200){ // 如果服务器相应没有错误
                   callback(null, xhr.responseText); 
               } else{
@@ -4441,7 +4503,7 @@ alert($("#div")) // [object Object]
   console.log(tempArr) // [1, 2, 3, 4, 5]
   
   // 精简版
-  const
+  const deepFlatten = arr => [].concat(...arr.map(v => (Array.isArray(v) ? deepFlatten(v) : v))); 
   ```
 
   
@@ -5042,6 +5104,543 @@ alert($("#div")) // [object Object]
 
 - Vue跟React的区别
 
+  > Vue 的表单可以使用 `v-model` 支持双向绑定，相比于 React 来说开发上更加方便，当然了 `v-model` 其实就是个语法糖，本质上和 React 写表单的方式没什么区别。
+  >
+  > 改变数据方式不同，Vue 修改状态相比来说要简单许多，React 需要使用 `setState` 来改变状态，并且使用这个 API 也有一些坑点。并且 Vue 的底层使用了依赖追踪，页面更新渲染已经是最优的了，但是 React 还是需要用户手动去优化这方面的问题。
+  >
+  > React 16以后，有些钩子函数会执行多次，这是因为引入 Fiber 的原因，这在后续的章节中会讲到。
+  >
+  > React 需要使用 JSX，有一定的上手成本，并且需要一整套的工具链支持，但是完全可以通过 JS 来控制页面，更加的灵活。Vue 使用了模板语法，相比于 JSX 来说没有那么灵活，但是完全可以脱离工具链，通过直接编写 `render` 函数就能在浏览器中运行。
+  >
+  > 在生态上来说，两者其实没多大的差距，当然 React 的用户是远远高于 Vue 的。
+  >
+  > 在上手成本上来说，Vue 一开始的定位就是尽可能的降低前端开发的门槛，然而 React 更多的是去改变用户去接受它的概念和思想，相较于 Vue 来说上手成本略高。
+
 - Vue内部双向绑定的原理
 
 - Promise底层实现
+
+- 函数式编程
+
+  > - 为什么函数式编程要求函数必须是纯的，不能有副作用？因为它是一种数学运算，原始目的就是求值，不做其他事情，否则就无法满足函数运算法则了。
+  > - 总之，在函数式编程中，函数就是一个管道（pipe）。这头进去一个值，那头就会出来一个新的值，没有其他作用。
+  > - 柯里化 f(x)和g(x)合成为f(g(x))，有一个隐藏的前提，就是f和g都只能接受一个参数。如果可以接受多个参数，比如f(x, y)和g(a, b, c)，函数合成就非常麻烦。
+  >   这时就需要函数柯里化了。所谓"柯里化"，就是把一个多参数的函数，转化为单参数函数。
+
+- 实现 `add(1)(2)(3)=6`
+
+  > 这题考察的是柯里化，**柯里化就是把接收多个参数的函数变换成接收一个单一参数(最初函数的第一个参数)的函数**
+  >
+  > ```js
+  > const curry = (fn, ...args) => 
+  >             args.length < fn.length 
+  >             // 参数长度不足时,重新柯里化函数,等待接受新参数
+  >             ? (...arguments) => curry(fn, ...args, ...arguments)
+  >             // 函数长度满足时,执行函数
+  >              : fn(...args);
+  > function sumFn(a,b,c){
+  >     return a+b+c;
+  > }
+  >         var sum=curry(sumFn);
+  >         console.log(sum(1)(2)(3)); //6
+  > ```
+  >
+  > 
+
+- **柯里化**的作用:
+
+  - 参数复用
+  - 提前返回 – 返回接受余下的参数且返回结果的新函数
+  - 延迟执行 – 返回新函数，等待执行
+
+- 为什么要“`三次握手`”，不能是两次吗？
+
+  > 谢希仁著《计算机网络》第四版中讲“三次握手”的目的是“**为了防止已失效的连接请求报文段突然又传送到了服务端，因而产生错误**”。在另一部经典的《计算机网络》一书中讲“三次握手”的目的是为了解决“网络中存在延迟的重复分组”的问题。这两种不用的表述其实阐明的是同一个问题。
+
+  > 三次握手：
+  > “喂，你听得到吗？”
+  > “我听得到呀，你听得到我吗？”
+  > “我能听到你，今天balabala……”
+  >
+  > 两次握手：
+  > “喂，你听得到吗？”
+  > “我听得到呀”
+  > “喂喂，你听得到吗？”
+  > “草，我听得到呀！！！！”
+  > “你TM能不能听到我讲话啊！！喂！”
+  > “……”
+  >
+  >
+  > 四次握手：“喂，你听得到吗？”“我听得到呀，你听得到我吗？”“我能听到你，你能听到我吗？”“……不想跟傻逼说话”
+
+- 为什么要“四次挥手”，不能是三次吗？
+
+  > 因为TCP是全双工通信的
+  >
+  >    （1）第一次挥手
+  >
+  > ​     因此当主动方发送断开连接的请求（即FIN报文）给被动方时，仅仅代表主动方不会再发送数据报文了，但主动方仍可以接收数据报文。
+  >
+  > ​    （2）第二次挥手
+  >
+  > ​     被动方此时有可能还有相应的数据报文需要发送，因此需要先发送ACK报文，告知主动方“我知道你想断开连接的请求了”。这样主动方便不会因为没有收到应答而继续发送断开连接的请求（即FIN报文）。
+  >
+  >    （3）第三次挥手
+  >
+  > ​    被动方在处理完数据报文后，便发送给主动方FIN报文；这样可以保证数据通信正常可靠地完成。发送完FIN报文后，被动方进入LAST_ACK阶段（超时等待）。
+  >
+  >    （4）第四挥手
+  >
+  > ​    如果主动方及时发送ACK报文进行连接中断的确认，这时被动方就直接释放连接，进入可用状态。
+
+- JSONP的原理和原生实现
+
+  - 利用\<script\>实现跨域
+
+  - 步骤：
+
+    1. 声明指定回调函数；
+    2. 利用\<script\>传递上述回调函数
+    3. 服务器收到、按需处理
+    4. 返回指定回调函数
+
+    ```js
+    // 客户端
+    function jsonp(url, params, callback){
+        return new Promise((resolve, reject) => {
+            let script = document.createElement('script');
+            
+        })
+    }
+    ```
+
+    
+
+- 清除浮动都有哪些方法
+
+  - [css清除浮动float的七种常用方法总结和兼容性处理](https://blog.csdn.net/promiseCao/article/details/52771856)
+
+    - clear: both
+
+    - 父元素设置overflow: auto或者overflow: hidden
+
+    - :after方法（现在**主流**方法，**推荐使用**，IE6，7下不兼容）
+
+      ```css
+      选择符:after{
+                  content:".";
+                  clear:both;
+                  display:block;
+                  height:0;
+                  overflow:hidden;
+                  visibility:hidden;
+                    }
+      ```
+
+    -  br自带清浮动属性
+
+      ```css
+      <div class="box">
+          <div class="top"></div>
+          <br clear="both" />
+      </div>
+      ```
+
+-  jQuery的事件委托方法on、live、delegate之间有什么区别？
+
+  > live 把事件委托交给了document（根节点），document 向下去寻找符合条件的元素，不用等待document加载结束也可以生效。
+  >
+  > delegate可指定事件委托对象，相比于live性能更优，直接锁定指定选择器；
+  >
+  > on事件委托对象选填，如果不填，即给对象自身注册事件，填了作用和delegate一致。
+  >
+  > band只能给调用它的时候已经存在的元素绑定事件，不能给未来新增的元素绑定事件，存在局限性。
+
+
+
+---
+# 11.21 day63
+
+- 可被JSON序列化的对象
+
+  - 数组、字符串
+  - 函数、
+
+- `htm`与`html`的区别
+
+- **创建对象**
+
+  - 初衷：使用同一个接口创建很多对象，会产生大量的重复代码。为解决这个问题，人们开始使用工厂模式的一个变体
+
+    - `工厂模式`：用函数来封装以特定接口创建对象的细节
+
+      ```js
+      function creationPerson(name, age, job){
+          var o = new Object();
+          o.name = name;
+          o.age = age;
+          o.job = job;
+          o.sayName = function(){
+              console.log(this.name);
+          }
+          return o;
+      }
+      
+      var person1 = createPerson("Nicholas", 29, "Software Engineer")
+      var person2 = createPerson("Leo", 24, "Software Engineer")
+      ```
+
+      工程模式虽然解决了创建多个相似对象的问题，但却没有解决对象识别的问题（即怎么知道一个对象的类型）。所以下一个模式出现了。
+
+    - `构造函数模式`：创建自定义的构造函数，从而创建自定义对象的属性和方法
+
+      ```js
+      function Person(name, age, job){
+          this.name = name;
+          this.age = age;
+          this.job = job;
+          this.sayName = function(){
+              console.log(this.name);
+          }
+      }
+      
+      var person1 = new Person();
+      var person2 = new Person()
+      ```
+
+      与`工厂模式`的对比：
+
+      - 没有显示创建对象；
+      - 直接将属性和方法赋给了this对象；
+      - 没有return语句
+      - 函数名首字母大写
+      - 可以将实例识别为一种特定类型： person1 instanceof Person => true
+
+      缺点：使用构造函数的主要问题，就是每个方法都要在每个实例上重新创建一遍，导致内存浪费。这就引出了下一个模式：`原型模式`
+    
+    - `原型模式`：不必再构造函数中定义对象实例的信息，而是将这些信息直接添加到原型对象中
+    
+      ```js
+      function Person(){
+      }
+      Person.prototype.name = "Nicholas";
+      Person.prototype.age = 29;
+      Person.prototype.job = 'Software Engineer';
+      Person.prototype.sayName = function({
+          console.log(this.name);
+      })
+      
+      var person1 = new Person();
+      person1.sayName() // "Nicholas"
+      var person2 = new Person();
+      person2.sayName() // "Nicholas"
+      ```
+    
+      在默认情况下，所有原型对象都会自动获得一个constructor属性，这个属性包含了一个指向prototype属性所在函数的指针。而通过这个构造函数，我们还可继续为原型对象添加其他属性和方法。创建了自定义的构造函数之后，其原型对象默认只会取得constructor属性；至于其他方法，都是从Object继承而来的。当调用构造函数创建一个新实例后，该实例的内部将包含一个指针（内部属性），指向构造函数的原型对象。ECMA-262第五版中管这个指针叫[[Protorype]]（就是"\_\_proto\_\_")
+    
+      ![Person构造函数和Person.prototype创建实例的代码下各个对象之间的关系](img\Person和Person.prototype.png)
+      **实例中的指针只指向原型，而不指向构造函数！！**
+    
+      使用hasOwnProperty + in就能确认属性是在对象中还是原型中
+    
+      ```js
+      function hasPrototypeProperty(object, name){
+          return !object.hasOwnProperty(name) && (name in object);
+      }
+      ```
+    
+      重写原型对象切断了现有原型与任何之前已经存在的对象实例之间的联系；他们引用的仍然是最初的原型
+    
+      ```js
+      // 原型动态性：
+      function Person(){}
+      var friend = new Person();
+      Person.prototype.sayHi = function(){
+          console.log("Hi!")
+      }
+      friend.sayHi() // "Hi!"
+      
+      // 将原型修改为另一个对象，上边是对原来的原型添加属性
+      Person.prototype = {
+          constructor: Person,
+          name: "Leo",
+          age: 24,
+          job: "Software Engineer",
+          sayName: function(){
+              console.log("Aloha");
+          }
+      }
+      friend.sayName; // 报错，因为friend指向的原型中不包含以该名字命名的属性
+      ```
+    
+      ![重写原型对象](img/重写原型对象.png)
+    
+    - `组合使用构造函数模式和原型模式`：创建自定义类型的最常用方式，就是组合使用构造函数模式和原型模式。构造函数模式用于定义实例属性，而原型模式用于定义方法和共享的属性。结果，每个实例都会有自己的一份实例属性的副本，但又同时共享着对方法的引用，最大限度地节省了内存。另外，这种混成模式还支持向构造函数传递参数。
+    
+      ```js
+      function Person(name, age, job){
+          this.name = name;
+          this.age = age;
+          this.job = job;
+          this.friends = ["XiaoBai", "XiaoHuang"];
+      }
+      
+      Person.prototype = {
+          constructor: Person,
+          sayName: function(){
+              console.log(this.name)
+          }
+      }
+      
+      var person1 = new Person("Leo", 24, "Software Engineer");
+      var person2 = new Person("Nicholas", 29, "Author");
+      person1.friends.push("XiaoLan");
+      console.log(person1.friends) // "XiaoBai", "XiaoHuang", "XiaoLan"
+      console.log(person2.friends) // "XiaoBai", "XiaoHuang"
+      ```
+    
+    - `动态原型模式`：把所有信息都封装在构造函数中，而通过构造函数中初始化原型（仅在必要的情况下），又保持了同时使用构造函数和原型的优点。换句话说，可以通过检查某个应该存在的方法是否有效，来决定是否需要初始化原型
+    
+      ```js
+      function Person(name, age, job){
+          this.name = name;
+          this.age = age;
+          this.job = job;
+          if(typeof this.sayName != "function"){
+              Person.prototype.sayName = function(){
+                  console.log(this.name)
+              }
+          }
+      }
+      var person1 = new Person("Leo", 24, "Software Engineer");
+      person1.sayName(); // "Leo"
+      ```
+      
+    - `寄生构造函数模式`：在前边几种模式都不适用的情况下使用这种模式。这种模式的基本思想是创建一个函数，该函数的作用仅仅是封装创建对象的代码，然后再返回新创建的对象；但从表面上看，这个函数又很像是典型的构造函数。（其实就是比构造函数多了使用new操作符生成对象并最终返回对象，包装函数也叫做构造函数）。
+      
+      ```js
+      // 构造函数模式
+      function Person(name, age, job){
+          this.name = name;
+          this.age = age;
+          this.job = job;
+          this.sayName = function(){
+              console.log(this.name);
+          }
+      }
+      
+      var person1 = new Person();
+      var person2 = new Person()
+      
+      // 寄生构造函数模式
+      function Person(name, age, job){
+          var o = new Object();
+          o.name = name;
+          o.age = age;
+          o.job = job;
+          o.sayName = function(){
+              console.log(this.name);
+          }
+          return o;
+      }
+      
+      var person1 = new Person("Leo", 24, "Software Engineer");
+      person1.sayName(); // "Leo"
+      ```
+      
+      关于构造寄生函数模式，有一点需要说明：首先，返回的对象与构造函数或者构造函数的原型属性之间没有关系；也就是说，构造函数返回的对象与在构造函数外部创建的对象没有什么不同。为此，不能依赖instanceof操作符来确定对象类型。除非万不得已，否则不要使用此模式
+      
+    - `稳妥构造函数模式`：稳妥，就是“安全”。**禁用this，不适用new**操作符调用构造函数。
+    
+      ```js
+      function Person(name, age, job){
+          var o = new Object
+          o.sayName = function(){
+              console.log(name); //而不是this.name
+          }
+          return o;
+      }
+      
+      var person1 = Person("Leo", 24, "Software Engineer"); // 注意这里没用new操作符了。
+      person1.sayName(); // "Leo"
+      ```
+    
+      以这种模式创建的对象中，除了使用sayName()方法，没有其他方法可以访问name的值
+
+- new操作符
+
+- 描述事件队列的过程：
+
+  1. JavaScript是单线程的，会出现阻塞问题，因此有异步队列的出现
+2. 主线程同步执行任务，异步操作添加到异步队列中
+  3. 等候主进程执行完毕之后再执行异步队列中的操作
+
+- 什么是宏任务什么是微任务
+
+  - 异步队列中有宏任务微任务之分
+- 一次事件循环：先运行宏任务队列中的一个，然后运行微任务队列的所有任务。接着开始下一个循环
+  
+- 哪些是宏任务哪些是微任务？
+
+  - 宏任务
+    - setTimeout
+    - setImmediate
+    - setInterval
+    - requestAnimationFrame
+    - I/O
+    - UI rendering
+  - 微任务
+    - process.nextTick
+    - Promise.then
+    - Object.observe
+    - MutationObserver 
+- **平时如何处理对象深拷贝？他们之间的区别？**
+
+  - jQuery
+    - $.extend(true, {}, xxx)
+  - lodash.cloneDeep()
+    - 解决ES6一些新的内置对象的拷贝情况
+    - 解决环对象的情况
+  - JSON.parse(JSON.stringify(xxxx))
+    - 只能处理能后被JSON直接表示的数据结构（支持：简单值、对象、数组；不支持：函数、变量、对象实例）
+  - messagechannel
+    - 利用postMessage(obj)
+  - history API
+    - history.replaceState(obj, document.title)
+  - notification API
+    - new Notification('', {data: obj, silent: true}).data
+
+---
+
+# 11.22 day64
+
+- 访问器属性
+
+  - [[Configurable]]：能否可以通过delete删除属性从而重新定义属性；能否修改属性的特性，或者能够把属性修改成数据属性。默认为true
+  - [[Enumerable]]：是否可枚举，能否通过for in循环返回属性。默认为true
+  - [[Get]]：在读取属性时调用的函数，默认为undefined
+  - [[Set]]：在写入属性时调用的函数，默认为undefined
+  - 访问器属性不能直接定义，必须用Object.defineProperty()定义
+
+- Koa2、Express、Egg的异同
+
+  - 使用Express就必须引入全部的中间件和功能，不管你有没有用到；Koa2将Express继承的中间件进行拆分，开发者按需引入使用即可。
+
+    ![Koa2与Express](img/express与koa2.png)
+
+  - Koa2基于ES7开发，原生支持异步函数async/await，使用Promise作为异步处理标准，支持箭头函数等ES6新语法
+
+  - Express的中间件时线性执行的，每一个中间件处理完后只有两个选择：**交给下一个中间件或者返回Response**。只要请求离开了，中间件就无法再次获得这个请求，更不能再对它进行处理。Koa的中间件机制是洋葱模型，中间件像一层层的洋葱。请求要穿过洋葱，每个中间件也会被穿过两次。洋葱模型机制对解决某些问题帮助很大，比如统计一个请求耗时时间，或者需要回调下一个中间件的处理结果，使用koa处理起来就非常方便，但是使用Express就很难实现。如果Express也想实现Koa的洋葱模型就比较困难，需要开发者在每一个中间件上都添加回调函数。因此Express项目真的很难直接使用Koa的中间件机制，怪不得TJ Holowaychuk大神也要另起炉灶。
+
+  - koa把 request, response 封装到了同一个上下文对象 content。
+
+  - Egg.js是《阿里旗下产品》基于Node.js 和 Koa的一个Nodejs的企业级应用开发框架，它可以帮助开发团队及开发人员降低开发和维护成本。Egg.js则是按照约定进行开发，奉行『约定优于配置』，具备提供基于Egg定制上层框架的能力、高度可扩展的插件机制、内置多进程管理、基于Koa开发，性能优异、框架稳定，测试覆盖率高、渐进式开发、开发成本和维护成本低等特点。
+    
+
+- **Node.js**是一个基于Chrome V8引擎的JavaScript运行环境。Node.js使用一个事件驱动、非阻塞式I/O的模型，轻量又高效；Node.js的包管理器npm，是全球最大的开源库生态系统
+
+- ES6中的class和ES5的类有什么区别？
+
+  - ES6 class内部所有定义的方法都是不可枚举的
+  - ES6 class必须使用new调用
+  - ES6 class不存在变量提升
+  - ES6 class默认即是严格模式
+  - ES6 class子类必须在父类的构造函数中调用super()，这样才有this对象；ES5中类继承的关系是相反的，现有子类的this，然后用父类的方法应用在this上。
+
+---
+# 11.23 day65
+
+- 原生模拟**Set**
+  - [从零到有模拟实现一个Set类](https://segmentfault.com/a/1190000016406045)
+
+---
+# 11.25 day66
+
+- ES6和ES5继承的区别：
+
+  大多数浏览器的ES5实现之中，每一个对象都有\_\_proto\_\_属性，指向对应的构造函数的prototype属性。Class作为构造函数的语法糖，同时有prototype属性和\_\_proto\_\_属性，因此存在两条继承链。
+
+  1. 子类的\_\_proto\_\_属性，表示构造函数的继承，总是指向父类；
+
+  2. 子类prototype属性的\_\_proto\_\_属性，表示方法的继承，总是指向父类的prototype属性
+
+     ```js
+     class A {}
+     class B extends A {}
+     
+     // 子类B的__proto__属性指向父类A，子类B的prototype属性的__proto__属性指向父类A的prototype属性。
+     B.__proto__ === A // true
+     B.prototype.__proto__ === A.prototype // true
+     
+     ```
+
+  3. 这两条继承链，可以这样理解：作为一个对象，子类（B）的原型（\_\_proto\_\_属性）是父类（A）；作为一个构造函数，子类（B）的原型（prototype属性）是父类的实例
+
+     ```js
+     Object.create(A.prototype); // 等同于 B.prototpe.__proto__ = A.prototype
+     ```
+     
+  4. ES6继承的不足：
+
+     1. 不支持静态属性（除函数）
+     2. class中不能定义私有变量和函数。class中i当以的所有函数都会被放到原型当中，都会被子类继承，而属性都会作为实例属性挂到this上。如果子类想定义一个私有的方法或定义一个private变量，便不能直接在class花括号内定义，这真的很不方便。
+     
+  5. 总结一下：和ES5相比，ES6在语言层面上提供了面向对象的部分支持，虽然大多数时候知识语法糖（内部是封装的函数），但使用起来更方便，语义化更强、更直观，同时也给JavaScript继承提供一个标准的方式，还有很重要的一点就是ES6支持原生对象继承。
+
+---
+#11.26 day67
+
+- 箭头函数不绑定this，或者说箭头函数不会改变this本来的绑定
+
+  ```js
+  // 每隔一秒都会有一个NaN打印出来，而不是累加的数字
+  function Counter() {
+      this.num = 0;
+      this.timer = setInterval(function add() {
+          this.num++;
+          console.log(this.num);
+      }, 1000);
+  }
+  
+  var b = new Counter();
+  // NaN
+  // NaN
+  // NaN
+  // ...
+  // 之所以打印NaN，是因为this.num绑定到window对象的num，而window.num未定义。
+  // 首先函数setInterval没有被某个声明的对象调用，也没有使用new关键字，再之没有使用bind, call和apply。setInterval只是一个普通的函数。实际上setInterval里面的this绑定到全局对象的。
+  
+  // 使用箭头函数就可以解决这个问题
+  function Counter() {
+      this.num = 0;
+      this.timer = setInterval(() => {
+          this.num++;
+          console.log(this.num);
+      }, 1000);
+  }
+  var b = new Counter();
+  // 1
+  // 2
+  // 3
+  // ...
+  
+  // 或者使用that
+  function Counter() {
+      this.num = 0;
+  	var that = this;
+      this.timer = setInterval(function add() {
+          that.num++;
+          console.log(that.num);
+      }, 1000);
+  }
+  var b = new Counter();
+  // 1
+  // 2
+  // 3
+  // ...
+  ```
+
+  
+
+- 
+
