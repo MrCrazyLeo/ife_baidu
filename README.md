@@ -2814,7 +2814,7 @@ alert($("#div")) // [object Object]
   
     不推荐用for...in...来循环数组
   
-  - for...of...（ES6）循环可迭代（iterable）对象
+  - for...of...（ES6）循环可迭代/可遍历（iterable）对象
   
     ```javascript
     // ------------ 循环数组 ------------
@@ -5338,7 +5338,7 @@ alert($("#div")) // [object Object]
     
       在默认情况下，所有原型对象都会自动获得一个constructor属性，这个属性包含了一个指向prototype属性所在函数的指针。而通过这个构造函数，我们还可继续为原型对象添加其他属性和方法。创建了自定义的构造函数之后，其原型对象默认只会取得constructor属性；至于其他方法，都是从Object继承而来的。当调用构造函数创建一个新实例后，该实例的内部将包含一个指针（内部属性），指向构造函数的原型对象。ECMA-262第五版中管这个指针叫[[Protorype]]（就是"\_\_proto\_\_")
     
-      ![Person构造函数和Person.prototype创建实例的代码下各个对象之间的关系](img\Person和Person.prototype.png)
+      ![Person构造函数和Person.prototype创建实例的代码下各个对象之间的关系](img/Person和Person.prototype.png)
       **实例中的指针只指向原型，而不指向构造函数！！**
     
       使用hasOwnProperty + in就能确认属性是在对象中还是原型中
@@ -5556,7 +5556,7 @@ alert($("#div")) // [object Object]
 ---
 # 11.25 day66
 
-- ES6和ES5继承的区别：
+- ES6和ES5继承的区别：[参考](https://juejin.im/entry/58253c3fd2030900552ddba8)
 
   大多数浏览器的ES5实现之中，每一个对象都有\_\_proto\_\_属性，指向对应的构造函数的prototype属性。Class作为构造函数的语法糖，同时有prototype属性和\_\_proto\_\_属性，因此存在两条继承链。
 
@@ -5574,18 +5574,40 @@ alert($("#div")) // [object Object]
      
      ```
 
+     ```js
+   //  这是因为类得继承按照如下模式实现：
+     class A{}
+     class B{}
+     
+     // B的实例继承A的实例
+     Object.setPrototypeOf(B.prototype, A.prototype);
+   // B继承A的静态属性
+     Object.setPrototypeOf(B, A)
+     ```
+  
+     ```js
+     // Object.setPrototypeOf的简单实现如下：
+     Object.setPrototypeOf = function (obj, proto) {
+       obj.__proto__ = proto;
+       return obj;
+     } 
+     // 因此，就得到了上面的结果。
+     ```
+  
+     
+  
   3. 这两条继承链，可以这样理解：作为一个对象，子类（B）的原型（\_\_proto\_\_属性）是父类（A）；作为一个构造函数，子类（B）的原型（prototype属性）是父类的实例
-
+  
      ```js
      Object.create(A.prototype); // 等同于 B.prototpe.__proto__ = A.prototype
      ```
      
   4. ES6继承的不足：
-
+  
      1. 不支持静态属性（除函数）
      2. class中不能定义私有变量和函数。class中i当以的所有函数都会被放到原型当中，都会被子类继承，而属性都会作为实例属性挂到this上。如果子类想定义一个私有的方法或定义一个private变量，便不能直接在class花括号内定义，这真的很不方便。
      
-  5. 总结一下：和ES5相比，ES6在语言层面上提供了面向对象的部分支持，虽然大多数时候知识语法糖（内部是封装的函数），但使用起来更方便，语义化更强、更直观，同时也给JavaScript继承提供一个标准的方式，还有很重要的一点就是ES6支持原生对象继承。
+  5. 总结一下：和ES5相比，ES6在语言层面上提供了面向对象的部分支持，虽然大多数时候只是语法糖（内部是封装的函数，ES6的类只是ES5构造函数的一层包装），但使用起来更方便，语义化更强、更直观，同时也给JavaScript继承提供一个标准的方式，还有很重要的一点就是ES6支持原生对象继承。
 
 ---
 #11.26 day67
@@ -5641,6 +5663,18 @@ alert($("#div")) // [object Object]
   ```
 
   
+
+- ES5是先新建子类的实例对象`this`，再将父类的属性添加到子类上，由于父类的内部属性无法获取，导致无法继承原生的构造函数。比如，Array构造函数有一个内部属性`[[DefineOwnProperty]]`，用来定义新属性时，更新`length`属性，这个内部属性无法在子类获取，导致子类的`length`属性行为不正常。ES6允许继承原生构造函数定义子类，因为ES6是先新建父类的实例对象this，然后再用子类的构造函数修饰this，使得父类的**所有行为**都可以继承。
+
+
+
+---
+
+# 11.27 day68
+
+- TypeScript
+
+  TypeScript 是一门由微软开发的免费开源的编程语言。它是 JavaScript 的一个超集，TypeScript 在 JavaScript 的基础上添加了可选的静态类型和基于类的面向对象编程。作为JavaScript的增强版，TypeScript的语法更严格，我们在编写代码的时候就能够发现大部分错误。不仅如此，按照TypeScript官方的说法，TypeScript使得我们能够以JavaScript的方式实现自己的构思。TypeScript对面向对象的支持也非常完善，它拥有面向对象编程语言的所有特性。TypeScript最大的目的是让程序员更具创造性，提高生产力，它将极大增强JavaScript编写应用的开发和调试环节，让JavaScript能够方便用于编写大型应用和进行多人协作。不过目前最后运行时还需要将TypeScript编译为JavaScript。
 
 - 
 
