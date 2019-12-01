@@ -5676,5 +5676,93 @@ alert($("#div")) // [object Object]
 
   TypeScript 是一门由微软开发的免费开源的编程语言。它是 JavaScript 的一个超集，TypeScript 在 JavaScript 的基础上添加了可选的静态类型和基于类的面向对象编程。作为JavaScript的增强版，TypeScript的语法更严格，我们在编写代码的时候就能够发现大部分错误。不仅如此，按照TypeScript官方的说法，TypeScript使得我们能够以JavaScript的方式实现自己的构思。TypeScript对面向对象的支持也非常完善，它拥有面向对象编程语言的所有特性。TypeScript最大的目的是让程序员更具创造性，提高生产力，它将极大增强JavaScript编写应用的开发和调试环节，让JavaScript能够方便用于编写大型应用和进行多人协作。不过目前最后运行时还需要将TypeScript编译为JavaScript。
 
-- 
+- [22 道高频 JavaScript 手写面试题及答案](https://juejin.im/post/5d51e16d6fb9a06ae17d6bbc)
 
+- 一道写不出来的面试题 —— 手写事件分发类 EventPatcher
+
+  [参考（貌似原文很多写错了）](https://blog.csdn.net/Judy_qiudie/article/details/82709331)
+
+  ```js
+  class EventPatcher{
+      constructor(){
+          // events是一个字典，{"event_1": callbacks_1, "event_2": callbacks_2 , ...}
+          this._events = {} 
+      }
+      
+      // 监听event事件，事件触发时调用fn函数；
+      on(event, callback){
+          // callbacks是一个记录各类不同种类callback函数的数组
+          let callbacks = this._events[callback] || []
+          callbacks.push(callback)
+          this._events[event] = callbacks
+          return this
+      }
+      
+      // 清空事件名下的监听的函数，函数为undefined则清空事件名下所有事件
+      off(event, callback){
+          if(!this._events[event]) return this;
+          let callbacks = this._events[event];
+          this._events[event] = callbacks && callbacks.filter(fn => fn !== callback);
+          return this;
+      }
+      
+      // 为指定事件注册一个单次监听器，单次监听器最多只触发一次，触发后立即解除监听器；
+      once(event, callback){
+          let wrapFunc = (...args) => {
+              callback.apply(this.args)
+              this.off(event, callback)
+          }
+          this.on(event, wrapFunc)
+          return this
+      }
+      
+  
+      // 触发event事件，并把参数arg1,arg2,arg3....传给事件处理函数；
+      emit(...args){
+          const event = args[0]
+          const params = [].slice.call(args,1)
+          const callbacks = this._events[event]
+          callbacks.forEach(fn => fn.apply(this.params))
+          return this
+      }
+  }
+  ```
+
+  [参考2](https://blog.csdn.net/liwusen/article/details/81202676)、[参考3](https://blog.csdn.net/bdss58/article/details/51473107)
+
+- 前端路由的本质是监听URL的变化，然后匹配路由规则，显示相应的页面，并且无需刷新页面。目前前端使用的路由就只有两种方式：Hash模式和History模式
+
+  - Hash模式：www.test.com/#/就是Hash URL，当#后边的哈希值发生变化时，可以通过hashchange之间来监听到URL的变化，从而跳转页面，并且无论哈希值如何变化，服务端接收到的URL请求永远是www.test.co。Hash模式相对更简单，而且兼容性也好；
+
+  - History模式：是HTML5新推出的功能，只要使用history.pushState和history.replaceState改变URL。通过History模式改变URL同样不会引起页面的刷新，只会更新浏览器的历史记录。
+
+    ```js
+    // 新增历史记录
+    history.pushState(stateObject, title, URL)
+    // 替换当前历史记录
+    history.replaceState(stateObject, title, URL)
+    ```
+
+  - 两种模式对比：
+
+    1. Hash模式可以改变#后边的内容，History模式可以通过API设置任意的同源URL；
+    2. History模式可以通过API添加任意类型的数据到历史记录中，Hash模式只能更改哈希值，也就是字符串；
+    3. Hash模式无需后端配置，并且兼容性更好。History模式再用户手动输入地址或者刷新页面的时候会发起URL请求，后端要配置index.html页面用于匹配不到静态资源的时候
+
+- **VUE和React的区别**：
+
+  - Vue的表单可以使用v-model支持双向绑定，相比React来说开发更加方便，当然v-model其实就是个语法糖，本质上和React写表单的方式没什么区别；
+
+  - 改变数据的方式不一样：Vue修改状态相比来说要简单许多，React需要使用setState来改变状态，并且这个API也有一些坑点。并且Vue的底层使用了依赖追踪，页面更新渲染已经是最优的了，但是React还是需要用户手动去优化这方面的问题；
+
+  - React16以后，有些钩子函数会执行多次，这是因为引入Fiber的原因
+
+  - React需要用到JSX，有一定的上手成本，并且需要一整套工具链支持，但是完全可以通过JS来控制页面，更加灵活。Vue使用了模板语法，相比于JSX来说没有那么灵活，但是完全可以脱离工具链，通过直接编写render函数就能在浏览器中运行。
+
+  - React源码用TypeScript写，Vue3之后才用TypeScript
+
+  - 生态上来说，React用户远远高于Vue
+
+  - 上手成本上来说，Vue 一开始的定位就是尽可能的降低前端开发的门槛，然而 React 更多的是去改变用户去接受它的概念和思想，相较于 Vue 来说上手成本略高。
+
+- 
