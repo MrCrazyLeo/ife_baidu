@@ -1286,6 +1286,9 @@ alert($("#div")) // [object Object]
     - Vue-router
     - Vue-cli
     - Axios
+  - Vue中除根组件，其他组件的data必须是一个函数（如果是一个对象，改变一处实例，会影响其他所有相关实例。）
+  - 通过Prop（props）向子组件传递数据
+  - 
 - MVC
 	- 	 Django是MVT框架，Model、View、Template
 	- 	 MVC架构初衷就是为解耦和复用提出的
@@ -4811,6 +4814,7 @@ alert($("#div")) // [object Object]
 - Vue：
   - 缩写：`v-bind: class = 'color'`缩写成`: class = 'color'` ，`v-on:click="doSomething"`缩写成`@click="doSomething"`
   - 使用 `watch` 选项允许我们执行异步操作 (访问一个 API)，限制我们执行该操作的频率，并在我们得到最终结果前，设置中间状态。这些都是计算属性无法做到的。
+  - 对于任何复杂逻辑，你都应当使用**计算属性**
 
 ---
 # 11.17 day61
@@ -5765,4 +5769,221 @@ alert($("#div")) // [object Object]
 
   - 上手成本上来说，Vue 一开始的定位就是尽可能的降低前端开发的门槛，然而 React 更多的是去改变用户去接受它的概念和思想，相较于 Vue 来说上手成本略高。
 
-- 
+- Vue绑定class，可以通过对象，也可以通过数组绑定
+
+
+
+
+
+---
+# 12.11
+
+- cron表达式
+
+  - 
+
+- scoped：
+
+  - vue中的scoped 通过在DOM结构以及css样式上加唯一不重复的标记:data-v-hash的方式，以保证唯一（而这个工作是由过PostCSS转译实现的），达到样式私有化模块化的目的。当一个style标签拥有scoped属性时，它的css样式只能用于当前的Vue组件，使组件的样式不互相污染。如果一个项目的所有style标签都加上了scoped属性，相当于实现了样式的模块化；
+
+  - scoped看起来很好用，当时在Vue项目中，当我们引入第三方组件库时(如使用vue-awesome-swiper实现移动端轮播)，需要在局部组件中修改第三方组件库的样式，而又不想去除scoped属性造成组件之间的样式覆盖。这时我们可以通过特殊的方式穿透scoped。
+
+    > stylus样式穿透 >>>
+    >
+    > ```
+    >     外层 >>> 第三方组件 
+    >         样式
+    >         
+    >    .wrapper >>> .swiper-pagination-bullet-active
+    >     background: #fff
+    > ```
+    >
+    > sass和less的样式穿透 使用/deep/
+    >
+    > ```
+    >     外层 /deep/ 第三方组件 {
+    >         样式
+    >     }
+    >     .wrapper /deep/ .swiper-pagination-bullet-active{
+    >       background: #fff;
+    >     }
+    > ```
+
+  - 其他修改第三方组件库样式的方法
+
+    > 在vue组件中不使用scoped属性（个人不推荐）
+
+    ------
+
+    > 在vue组件中使用两个style标签，一个加上scoped属性，一个不加scoped属性，把需要覆盖的css样式写在不加scoped属性的style标签里
+
+    ------
+
+    > 建立一个reset.css(基础全局样式)文件，里面写覆盖的css样式，在入口文件main.js 中引入
+
+  
+
+----
+
+# 2020.05.23
+
+- JSON.stringfy() && JSON.parse()
+
+  - **判断数组是否包含某对象，或者判断对象是否相等**
+
+    ```javascript
+    // 判断数组是否包含某对象
+    let data = [
+        {
+            name: 'leo'
+        },
+        {
+            name: 'ALice'
+        },
+        {
+            name: 'Peter'
+        }
+    ],
+        val = {
+            name: 'Jack'
+        }
+    JSON.stringfy(data).indexOf(JSON.stringfy(val)) !== -1 // true
+    
+    // 判断对象是否相等
+    let a = [1,2,3],
+        b = [1,2,3];
+    JSON.stringify(a) === JSON.stringify(b);//true
+    ```
+
+    
+
+  - **让localStorage/sessionStorage可以存储对象**
+
+    ```javascript
+    //存
+    function setLocalStorage(key,val){
+        window.localStorage.setItem(key,JSON.stringify(val));
+    };
+    //取
+    function getLocalStorage(key){
+        let val = JSON.parse(window.localStorage.getItem(key));
+        return val;
+    };
+    //测试
+    setLocalStorage('demo',[1,2,3]);
+    let  a = getLocalStorage('demo');//[1,2,3]
+    ```
+
+    
+
+  - **实现对象深拷贝**
+
+    ```javascript
+    //深拷贝
+    function deepClone(data) {
+        let _data = JSON.stringify(data),
+            dataClone = JSON.parse(_data);
+        return dataClone;
+    };
+    //测试
+    let arr = [1,2,3],
+        _arr = deepClone(arr);
+    arr[0] = 2;
+    console.log(arr,_arr)//[2,2,3]  [1,2,3]
+    ```
+
+
+
+
+# 2020.06.02
+
+- BEM命名规范：B（块，Block）__E（元素，Element）--M（修饰符，Modifier）
+
+
+
+# 2020.06.04
+
+- toLocalString() 本地化字符串，返回的字符串为不同区域机器对应属性的默认格式的字符串，比如同样是 3 月 21 日，在美国，toLocaleString 可能会返回 "03/21/08 01:02:03"，而在欧洲，返回值则可能是 "21/03/08 01:02:03"，因为欧洲的惯例是将日期放在月份前面。
+
+- 千分位处理
+
+  - ```javascript
+    var num = -12222.3333
+    num.toString().replace(/^-?\d+/g, m=>m.replace(/(?=(?!\b)(\d{3})+$)/g, ',')) // "-12,222.3333"
+    ```
+
+  - ```javascript
+    function toThousandFilter(num) {
+        // num: -12222.33333
+        if (num === null || num === undefined) return ''
+        // 转成字符串处理
+        const str = num + ''
+        const dotIndex = str.indexOf('.')
+        let result = ''
+        // 存在小数点
+        if (dotIndex+1) {
+            const arr = str.split('.')
+            // 直接用tolocalString会丢失精度
+            result = (arr[0] === '-0' ? arr[0] : (nrr[0] - 0).toLocalString()) + '.' + arr[1]
+        } else {
+            result = num.toLocalString() 
+        }
+        return result
+    }
+    ```
+
+- 格式化时间：
+
+  - ```javascript
+    function formatTime(time, label){
+        return time === 1 ? time+label : time + label + 's'
+    }
+    
+    function TimeAgo(time){
+        const duration = Date.now()
+        if (duration < 3600) {
+            return formatTime(~~(duration/60), 'minute')
+        } else if (duration < 3600*24) {
+            return formatTime(~~(duration/3600), 'hour')
+        } else if (duration < 3600*24*7) {
+            return formatTime(~~duration/(3600*24), 'day')
+        } else if (duration < 3600*24*30) {
+            return formatTime(~~duration/(3600*24*7), 'week')
+        } else {
+            return formatTime(~~duration/(3600*24*30),'month')
+        }
+    }
+    ```
+
+    
+
+# 2020.06.05
+
+- 再习正则表达式：
+  - 断言：包括先行断言、后行断言、条件表达式
+
+
+
+# 2020.07.19
+
+- echarts相对其他可视化工具的优势：
+  - echarts相对highcharts：highcharts能够兼容IE6+，echarts通过VML支持IE8+、免费、后者基于svg实现，前者默认采用cances，4.0之后也支持svg、知名度高、社区大；
+  - echarts相对AntV：文档没有后者好，上手较难；后者文档细分太多，一定程度上提升了学习成本；前者社区目前比后者大；前者使用更加广泛
+
+
+
+# 2020.07.27
+
+- ```css
+  html, body {
+      smooth-behavior: smooth
+  }
+  ```
+
+  ```javascript
+  target.scrollIntoView({
+      behavior: "smooth"
+  });
+  ```
+
+  
