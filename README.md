@@ -5986,4 +5986,35 @@ alert($("#div")) // [object Object]
   });
   ```
 
+  ```javascript
+  /**
+   张鑫旭大佬写的小算法
+   @position，指定滚动到的垂直位置，若滚动到顶部，则position为0
+   @description 页面垂直平滑滚动到指定滚动高度
+   @author zhangxinxu(.com)
+  */
+  function scrollSmoothTo = function(position) {
+      // 如果当前浏览器不支持原生API requestAnimationFrame，则用一个定时函数模拟
+      if(!window.requestAnimationFrame) {
+          window.requestAnimationFrame = function(cb, element){
+              return setTimeout(cb, 17)
+          }
+      }
+      // 当前滚动高度
+      var scrollTop = document.documentElement.scrollTop || document.body.scrollTop
+      // 滚动方法step
+      var step = function() {
+          var distance = position - scrollTop
+          scrollTop = scrollTop + distance / 5
+          if(Math.abs(distance < 1)) {
+              window.scrollTo(0, position)
+          } else {
+              window.scrollTo(0, scrollTop)
+              requestAnimation(scrollSmoothTo(step))
+          }
+      }
+      step()
+  }
+  ```
+
   
