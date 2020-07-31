@@ -1098,7 +1098,7 @@ o.f1();
             @include left;
         }
         ```
-      - 可以指定参数和缺省值
+    - 可以指定参数和缺省值
     
         ```scss
         @mixin left($value: 10px) {
@@ -1113,7 +1113,7 @@ o.f1();
     
         
     
-      - 颜色参数
+    - 颜色参数
     
         ```scss
         lighten(#cc3, 10%) // #d6d65c
@@ -1124,7 +1124,7 @@ o.f1();
     
         
     
-      - @import：插入命令
+    - @import：插入命令
     
       ```scss
       @import "path/style.scss"
@@ -1132,9 +1132,9 @@ o.f1();
     
       
     
-      - 条件语句
+    - 条件语句
       
-        - @if
+      - @if
         
         ```scss
         p{
@@ -1157,9 +1157,9 @@ o.f1();
       
         
       
-      - 循环语句
+    - 循环语句
       
-        - @for
+      - @for
         
           ```scss
           @for $i from 1 to 20{
@@ -1171,7 +1171,7 @@ o.f1();
         
           
         
-        - @while 
+      - @while 
         
           ```scss
           $i: 6;
@@ -1181,7 +1181,7 @@ o.f1();
           }
           ```
         
-        - @each
+      - @each
         
           ```scss
           @each $member in a, b, c, d {
@@ -1193,7 +1193,7 @@ o.f1();
         
           
       
-      - 能自定义函数
+    - 能自定义函数
       
         ```scss
         @function double($n){
