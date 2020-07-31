@@ -943,7 +943,7 @@ o.f1();
 - document.getElementById()返回的是DOM对象，而$()返回的是jQuery对象
 
 	```
-alert($("#div")) // [object Object]
+	alert($("#div")) // [object Object]
 	alert(document.getElementById("div")) // [object HTMLDivElement]
 	alert($("#div")[0]) // [object HTMLDivElement]
 	```
@@ -1010,7 +1010,7 @@ alert($("#div")) // [object Object]
       - 指定变量
 
           ```scss
-  $primary-color: #333;
+  		$primary-color: #333;
           ```
 
           
@@ -6011,10 +6011,8 @@ alert($("#div")) // [object Object]
           } else {
               window.scrollTo(0, scrollTop)
               requestAnimation(scrollSmoothTo(step))
-          }
+         }
       }
       step()
   }
   ```
-
-  
