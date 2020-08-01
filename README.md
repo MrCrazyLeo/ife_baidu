@@ -1392,7 +1392,6 @@ o.f1();
 
   - Simple Object Access Protocol，简单对象访问协议
   - SOAP是一种简单的基于XML的协议，它使应用程序通过HTTP交换信息
-  - SOAP是一种简单的基于XML的协议，它使应用程序通过HTTP交换信息
 
 - CRUD
 
@@ -1991,8 +1990,6 @@ o.f1();
     - webpack
       - Vue-cli：Vue脚手架工具，用来生成模板的Vue工程
 
-  - 
-
 - localStorage
 
   - 拓展了cookiet的4K限制；
@@ -2160,7 +2157,7 @@ o.f1();
   <meta http-equiv="X-UA-COMPATIBLE" content="IE=edge,chrome=1"/>
   ```
 
-  - X-UA-COMPATIBLE是从IE8新加的一个设置，对于IE8以下的浏览器是不识别的。通过在meta中设置X-UA-COMPATIBLE来指定兼容性。上述代码告诉IE浏览器，IE 8-10的版本都以Edge引擎来渲染，IE11默认了此设置；chrome=1表示如果用户有安装Google Chrome Frame插件则优先启动它。这个插件可以让用户的IE浏览器外不变，但用户在浏览网页时，实际上使用的是Google Chrome浏览器J内核，而且支持IE6、7、8等多个版本的IE浏览器。但是，由于chrome框架项目已经结束，chrome=1部分对于还没有安装chrome框架插件的浏览器来说是多余的。因此照下边写就可以了：
+  - X-UA-COMPATIBLE是从IE8新加的一个设置，对于IE8以下的浏览器是不识别的。通过在meta中设置X-UA-COMPATIBLE来指定兼容性。上述代码告诉IE浏览器，IE 8-10的版本都以Edge引擎来渲染，IE11默认了此设置；chrome=1表示如果用户有安装Google Chrome Frame插件则优先启动它。这个插件可以让用户的IE浏览器外不变，但用户在浏览网页时，实际上使用的是Google Chrome浏览器内核，而且支持IE6、7、8等多个版本的IE浏览器。但是，由于chrome框架项目已经结束，chrome=1部分对于还没有安装chrome框架插件的浏览器来说是多余的。因此照下边写就可以了：
 
   ```html
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -2184,7 +2181,7 @@ o.f1();
 
   
 
-- toPrecision( ) ：看哪种格式最格式，自动选择toFixed( )或者toExponential( )
+- toPrecision( ) ：看哪种格式最合适，自动选择toFixed( )或者toExponential( )
 
 - 字符串操作方法：slice( )、substr( )、substring( )
 
@@ -2308,11 +2305,14 @@ o.f1();
 - HTTP常见相应代码
 
   -  200：请求成功；
+  -  304：如果客户端发送了一个带条件的GET 请求且该请求已被允许，而文档的内容（自上次访问以来或者根据请求的条件）并没有改变，则服务器应当返回这个304状态码。简单的表达就是：服务端已经执行了GET，但文件未变化。
+  -  401：客户端错误，指的是由于缺乏目标资源要求的身份验证凭证，发送的请求未得到满足。
   -  403：表示资源不可用，服务器理解客户的请求，但拒绝处理它，通常由于服务器上文件或目录的权限设置导致的WEB访问错误；
   -  404：请求失败，请求的资源服务器未能提供；
   -  500：服务器遇到了不知道如何处理的情况；
   -  502：服务器作为网关需要得到一个处理这个请求的响应，但是得到一个错误的响应；
   -  503：服务器没有准备好处理请求。 常见原因是服务器因维护或重载而停机。
+  -  504：扮演网关或者代理的服务器无法在规定的时间内获得想要的响应。
 
 ---
 # 10.24 day38
@@ -2322,7 +2322,7 @@ o.f1();
   - 这是因为HTML默认的font-size是1em = 16px，1em = 100%。为了兼容性采用使用了百分比的rem（root-em）的方式，默认1rem = 10px，所以1rem = 62.5%em = 62.5%
   
 - 垂直居中：
-  - display: flex
+  - display: flex; align-item:center
   - transform
   - display：table + inline-block
   
@@ -2460,12 +2460,6 @@ o.f1();
       var arr=[3,44,38,5,47,15,36,26,27,2,46,4,19,50,48];
       console.log(bubbleSort(arr));
       ```
-    
-      ```javascript
-      
-      ```
-    
-      
     
       ```javascript
       // 同趟正反双冒泡
