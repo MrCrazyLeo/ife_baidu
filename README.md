@@ -6017,3 +6017,23 @@ o.f1();
 - http常用请求字段
 - http2.0改动
 - 网速低时图片加载怎么优化
+- [第一次使用VS Code时你应该知道的一切配置](https://juejin.im/post/6844903826063884296#heading-53)
+
+
+
+# 2020.08.02
+
+- 千分位的处理
+
+  - toLocaleString()
+
+  - 正则匹配
+
+    ```javascript
+    function toThousandFilter(v) {
+        const reg = /\d{1,3}(?=\d{3})+$)/g // 正向肯定预查
+        return `${v}`.replace(reg, '$&,')
+    }
+    ```
+
+    
