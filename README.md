@@ -6035,5 +6035,9 @@ o.f1();
         return `${v}`.replace(reg, '$&,')
     }
     ```
+  
+- vue3.x composition API ----> 将组件的渲染跟逻辑解耦
 
-    
+- ref 将基本类型变成响应式对象
+
+- [MVC，MVP 和 MVVM 的图示](https://www.ruanyifeng.com/blog/2015/02/mvcmvp_mvvm.html)
