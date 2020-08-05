@@ -6041,3 +6041,15 @@ o.f1();
 - ref 将基本类型变成响应式对象
 
 - [MVC，MVP 和 MVVM 的图示](https://www.ruanyifeng.com/blog/2015/02/mvcmvp_mvvm.html)
+
+
+
+# 2020.08.05
+
+- fetch、ajax、axios的区别？
+
+以下参考https://segmentfault.com/a/1190000012836882#item-4
+
+使用ajax要引入jQuery；axios体积小，支持es6往后语法，使用方便、写法清晰；fetch也支持es6往后方法，但是使用有可能要用到别人封装好的插件；fetch只对网络请求报错，对400、500都当作成功的请求，需要封装去处理、fetch默认不会带cookie，需要添加配置项、fetch不支持abort，不支持超时控制，使用setTimeOut及Promise.reject实现的超时控制并不能阻止请求过程继续在后台运行，造成流量的浪费、fetch没有办法原生检测请求的进度，而XHR可以。
+
+- 
