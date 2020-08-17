@@ -6181,3 +6181,15 @@ o.f1();
   ```
 
   之后重启代理
+
+
+
+# 2020.08.17
+
+- 使用clipboard.js 点击\<svg\>图标时报错
+
+  法1：vue-clipboard2
+
+  法2：给svg增加style：pointer-events: none
+
+  
