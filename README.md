@@ -6192,4 +6192,68 @@ o.f1();
 
   法2：给svg增加style：pointer-events: none
 
+
+# 2020.08.23
+- v-charts与VueEcharts
+  - [v-charts](https://v-charts.js.org/#/)是饿了么团队基于vue2.0和echarts封装的v-charts图标组件。（Vue.use）。使用时需要阅读v-charts文档。主要是用于快速开发常见echarts图表。
   
+    ```shell
+    npm i v-charts echarts -S
+    ```
+  
+    ```html
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/v-charts/lib/index.min.js"></script>
+     <!-- -------------------- 下边是按需引入line 组件例子 --------------->
+     <!-------<script src="https://cdn.jsdelivr.net/npm/v-charts/lib/line.min.js"></script> --->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/v-charts/lib/style.min.css">
+     <!---------------------- 使用百度地图 或 高德地图 --------------->
+    <script src="https://cdn.jsdelivr.net/npm/echarts-amap/dist/echarts-amap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/echarts/dist/extension/bmap.min.js"></script>
+    ```
+  
+    如果使用了原生echarts options属性，那么就会直接覆盖相应v-charts options属性
+  
+  - [VueEcharts](https://github.com/ecomfe/vue-echarts/blob/master/README.zh_CN.md)是Vue团队基于vue2.2.6+跟echarts4.1.0+封装的npm包。使用时直接看Echarts的文档即可。
+  
+    ```shell
+    $ npm install echarts vue-echarts
+    ```
+    
+    ``` javascript
+    import Vue from 'vue'
+    import ECharts from 'vue-echarts' // 在 webpack 环境下指向 components/ECharts.vue
+    
+    // 手动引入 ECharts 各模块来减小打包体积
+    import 'echarts/lib/chart/bar'
+    import 'echarts/lib/component/tooltip'
+    
+    // 如果需要配合 ECharts 扩展使用，只需要直接引入扩展包即可
+    // 以 ECharts-GL 为例：
+    // 需要安装依赖：npm install --save echarts-gl，并添加如下引用
+    import 'echarts-gl'
+  
+    // 注册组件后即可使用
+    Vue.component('v-chart', ECharts)
+    ```
+    
+# 2020-08-25
+- 柯里化：本质是多参数变为单一参数
+  ```javascript
+  // 柯里化之前
+  function add(x, y) {
+    return x + y;
+  }
+  
+  add(1, 2) // 3
+  
+  // 柯里化之后
+  function addX(y) {
+    return function (x) {
+      return x + y;
+    };
+  }
+  
+  addX(2)(1) // 3
+  ```
