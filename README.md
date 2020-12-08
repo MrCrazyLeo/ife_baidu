@@ -6270,3 +6270,42 @@ o.f1();
   - 规范化：目录结构的制定、编码规范、前后端接口规范、文档规范、组件管理、Git分支管理、Commit描述规范、定期CodeReview、视觉图标规范
   - 自动化：图标合并、持续集成（自动化构建、自动化部署、自动化测试）
 
+
+
+# 2020-12-08
+
+- 迭代器模式
+
+  ```javascript
+  class Iterator {
+    constructor(container){
+      this.list = container.list
+      this.index = 0
+    }
+    next(){
+      if(this.hasNext()) return this.list[this.index++]
+      return null
+    }
+    hasNext(){
+      if(this.index >= this.list.length) return false
+      return true
+    }
+  }
+  class Container{
+    constructor(list){
+      this.list = list
+    }
+    getIterator() {
+      return new Iterator(this)
+    }
+  }
+  let arr = [1,2,3,4,5,6]
+  let container = new Container(arr)
+  let iterator = container.getIterator()
+  while(iterator.hasNext()){
+    console.log(iterator.next())
+  }
+  ```
+
+  
+
