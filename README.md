@@ -6336,3 +6336,55 @@ o.f1();
     - 访问者模式
     - 中介者模式
     - 解释器模式
+- Unix\Linux设计哲学
+  - 准则1：小即是美
+  - 准则2：让每个程序只做好一件事
+  - 准则3：快速建立原型
+  - 准则4：舍弃高效率而取可移植性
+  - 准则5：采用纯文本来存储数据
+  - 准则6：充分利用软件的杠杆效应（软件复用）
+  - 准则7：使用shell脚本来提高杠杆效应和可移植性
+  - 准则8：避免强制性的用户界面
+  - 准则9：让每个程序都成为过滤器
+
+
+
+# 2020-12-14
+
+- typescript学习
+  - 元祖
+
+  - interface
+
+  - 类型推断  联合类型 类型断言
+
+  - 类与接口
+
+  - 枚举
+
+  - 泛型
+
+    - 可以看成是一个类型占位符，在使用时才动态传入，解决如下场景没报错的问题
+
+      ```javascript
+      function echo<T>(arg: T): T {
+        return arg;
+      }
+      const result:string = echo(true); // 这里，用泛型就会看到报错Type 'boolean' is not assignable to type 'string'
+      ```
+
+    - 约束泛型
+
+      ```javascript
+      // 只要入参有length，就可以使用定义的函数，interface真的蛮好用的
+      interface IWithLength {
+        length: number
+      }
+      
+      function echoWithLength<T extends IWithLength>(arg: T): T {
+        console.log(arg.length)
+        return arg
+      }
+      ```
+      
+    - 泛型在类和接口的使用
